@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './components/Register';
 import RoleSelection from './components/RoleSelection';
