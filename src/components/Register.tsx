@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Home, User, Mail, Phone, Lock, Eye, EyeOff } from "lucide-react";
+import { registerUser } from "../services/authService";
+
 // import { Input } from "@/components/ui/input";
 // import { Button } from "@/components/ui/button";
 // import { Label } from "@/components/ui/label";
@@ -24,7 +26,6 @@ const Register = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [agreed, setAgreed] = useState(false);
   const [mes, setMes] = useState("");
   const [isError, setIsError] = useState(false);
 
@@ -32,25 +33,52 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setMes("");
-    setIsError(false);
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setMes("");
+  //   setIsError(false);
 
-    if (formData.password !== formData.confirmPassword) {
-      setIsError(true);
-      setMes("Passwords do not match");
-      return;
-    }
-    if (!agreed) {
-      setIsError(true);
-      setMes("Please agree to the Terms of Service");
-      return;
-    }
+  //   if (formData.password !== formData.confirmPassword) {
+  //     setIsError(true);
+  //     setMes("Passwords do not match");
+  //     return;
+  //   }
 
-    // TODO: wire up actual registration
+  //   setMes("Registration successful");
+  // };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setMes("");
+  setIsError(false);
+
+  if (formData.password !== formData.confirmPassword) {
+    setIsError(true);
+    setMes("Passwords do not match");
+    return;
+  }
+
+  try {
+    const response = await registerUser({
+      email: formData.email,
+      fullname: formData.fullname,
+      password: formData.password,
+      phone: formData.phone,
+      role: role,
+    });
+
+    console.log("Backend response:", response);
+
     setMes("Registration successful");
-  };
+  } catch (error: any) {
+    console.error(error);
+    setIsError(true);
+    setMes(
+      error?.response?.data?.message || "Something went wrong"
+    );
+  }
+};
+
 
   const otherRole = role === "OWNER" ? "TENANT" : "OWNER";
 
@@ -75,7 +103,7 @@ const Register = () => {
       {/* Right Panel */}
       <div className="flex flex-1 flex-col items-center overflow-y-auto bg-card px-6 py-10">
         <div className="w-full max-w-md">
-          {/* Role & Steps */}
+
           <div className="mb-6 flex flex-col items-center gap-3">
             <p className="text-sm font-medium text-primary">
               Register as {role === "OWNER" ? "Property Owner" : "Tenant"}
@@ -111,7 +139,7 @@ const Register = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Full Name */}
+
             <div className="space-y-1.5">
               <span>Full name</span>
               <div className="relative">
@@ -120,7 +148,6 @@ const Register = () => {
               </div>
             </div>
 
-            {/* Email */}
             <div className="space-y-1.5">
               <span>Email</span>
               <div className="relative">
@@ -129,7 +156,6 @@ const Register = () => {
               </div>
             </div>
 
-            {/* Phone */}
             <div className="space-y-1.5">
               <span>Phone Number</span>
               <div className="relative">
@@ -138,36 +164,26 @@ const Register = () => {
               </div>
             </div>
 
-            {/* Password */}
             <div className="space-y-1.5">
               <span>Password</span>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input name="password" type={showPassword ? "text" : "password"} placeholder="Create a strong password" value={formData.password} onChange={handleChange} className="pl-10 pr-10" required />
+                <input autoComplete="on" name="password" type={showPassword ? "text" : "password"} placeholder="Create a strong password" value={formData.password} onChange={handleChange} className="pl-10 pr-10" required />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
 
-            {/* Confirm Password */}
             <div className="space-y-1.5">
               <span>Confirm Password</span>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input name="confirmPassword" type={showConfirm ? "text" : "password"} placeholder="Create a strong Password" value={formData.confirmPassword} onChange={handleChange} className="pl-10 pr-10" required />
+                <input autoComplete="on" name="confirmPassword" type={showConfirm ? "text" : "password"} placeholder="Create a strong Password" value={formData.confirmPassword} onChange={handleChange} className="pl-10 pr-10" required />
                 <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                   {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-            </div>
-
-            {/* Terms */}
-            <div className="flex items-center gap-2">
-              {/* <Checkbox checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} /> */}
-              <span className="text-sm text-muted-foreground">
-                I agree to the <span className="text-primary cursor-pointer hover:underline">Terms of Service</span> and <span className="text-primary cursor-pointer hover:underline">Privacy Policy</span>
-              </span>
             </div>
 
             <button type="submit" className="w-full">
