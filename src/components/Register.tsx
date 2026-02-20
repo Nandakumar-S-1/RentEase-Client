@@ -33,51 +33,41 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setMes("");
-  //   setIsError(false);
+  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setMes("");
+    setIsError(false);
 
-  //   if (formData.password !== formData.confirmPassword) {
-  //     setIsError(true);
-  //     setMes("Passwords do not match");
-  //     return;
-  //   }
+    if (formData.password !== formData.confirmPassword) {
+      setIsError(true);
+      setMes("Passwords do not match");
+      return;
+    }
+    try {
+      const response =  await registerUser({
+        email:formData.email,
+        fullname:formData.fullname,
+        password:formData.password,
+        phone:formData.phone,
+        role:role
+      })
 
-  //   setMes("Registration successful");
-  // };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setMes("");
-  setIsError(false);
-
-  if (formData.password !== formData.confirmPassword) {
-    setIsError(true);
-    setMes("Passwords do not match");
-    return;
-  }
-
-  try {
-    const response = await registerUser({
-      email: formData.email,
-      fullname: formData.fullname,
-      password: formData.password,
-      phone: formData.phone,
-      role: role,
-    });
-
-    console.log("Backend response:", response);
-
+      console.log('backend ile response',response)
+      
     setMes("Registration successful");
-  } catch (error: any) {
-    console.error(error);
-    setIsError(true);
-    setMes(
-      error?.response?.data?.message || "Something went wrong"
-    );
-  }
-};
+    setTimeout(()=>{
+      navigate(`/verify-otp?email=${formData.email}`)
+    },2000)
+
+    } catch (error) {
+      console.error(error,'---------------------handle submit')  
+      setIsError(true)
+      setMes(
+        error?.response?.data?.message || 'something wrong'
+      )                 
+    }
+
+  };
 
 
   const otherRole = role === "OWNER" ? "TENANT" : "OWNER";
