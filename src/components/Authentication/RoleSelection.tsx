@@ -6,7 +6,7 @@ const RoleSelection = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4">
-      {/* Logo */}
+
       <div className="mb-8 flex items-center gap-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
           <Home className="h-5 w-5 text-primary" />
@@ -14,13 +14,11 @@ const RoleSelection = () => {
         <span className="text-2xl font-bold text-primary">RentEase</span>
       </div>
 
-      {/* Card */}
       <div className="w-full max-w-xl rounded-2xl bg-card p-8 shadow-lg">
         <h1 className="mb-2 text-center text-2xl font-bold text-primary">Join Rent Ease</h1>
         <p className="mb-8 text-center text-card-foreground">How would you like to use Rent Ease</p>
 
         <div className="flex gap-6 justify-center">
-          {/* Owner Card */}
           <div
             onClick={() => navigate('/register?role=OWNER')}
             className="flex w-44 cursor-pointer flex-col items-center gap-3 rounded-xl bg-secondary p-6 transition-all hover:scale-105 hover:shadow-md"
@@ -32,7 +30,6 @@ const RoleSelection = () => {
             <p className="text-center text-xs text-muted-foreground">List and manage your rental Properties</p>
           </div>
 
-          {/* Tenant Card */}
           <div
             onClick={() => navigate('/register?role=TENANT')}
             className="flex w-44 cursor-pointer flex-col items-center gap-3 rounded-xl bg-accent p-6 transition-all hover:scale-105 hover:shadow-md"

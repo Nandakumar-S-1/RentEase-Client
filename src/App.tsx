@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Register from './components/Register';
-import RoleSelection from './components/RoleSelection';
-import Login from './components/Login';
-import VerifyOtp from './components/VerifyOtp';
-import Dashboard from './components/Dashboard';
+import Register from './components/Authentication/Register'; 
+import RoleSelection from './components/Authentication/RoleSelection';
+import Login from './components/Authentication/Login';
+import VerifyOtp from './components/Authentication/VerifyOtp'; 
+import Dashboard from './components/Pages/Dashboard';
+import ResendOtp from './components/Authentication/ResendOtp';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path='/verify-otp' element={<VerifyOtp/>}></Route>
         <Route path='/dashboard' element={<Dashboard/>}></Route>
+         <Route path='/resend-otp' element={<ResendOtp/>}></Route>
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
