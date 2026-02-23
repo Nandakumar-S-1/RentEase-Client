@@ -20,4 +20,6 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showText = true }) => {
       )}
     </div>
   );
-}
+};
+
+export default Logo;
