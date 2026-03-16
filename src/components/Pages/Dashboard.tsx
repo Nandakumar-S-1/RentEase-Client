@@ -15,9 +15,6 @@ function Dashboard() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-    } else {
-
-      setUser({ fullname: 'Nanda Kumar', role: 'OWNER' });
     }
   }, []);
 

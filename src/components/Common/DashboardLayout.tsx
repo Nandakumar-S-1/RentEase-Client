@@ -22,7 +22,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role, userN
 
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-                <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 flex-shrink-0">
+                <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0">
                     <div className="flex-1 max-w-xl">
                         <div className="relative group">
                             <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 group-focus-within:text-primary transition-colors">

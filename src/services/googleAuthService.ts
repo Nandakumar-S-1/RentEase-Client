@@ -22,7 +22,8 @@ export const signinWithGoogle = async ()=>{
                 displayName:result.user.displayName || 'google user',
             }
         }
-    } catch (error:unknown) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
         console.error('google sigin in error',error)
         throw new Error(error.message || 'Google signin failed')        
     }

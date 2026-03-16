@@ -3,15 +3,17 @@ import { axiosApi } from "./api"
 export interface VerifyOtpResponse{
     success:boolean
     message:string,
-    data:{
-        id:string,
-        email:string,
-        fullname:string,
-        phone:string,
-        role:'TENANT'|'OWNER'
+    data: {
+    user: {
+      id: string
+      email: string
+      fullname: string
+      phone: string
+      role: 'TENANT' | 'OWNER'
     }
-    accessToken:string,
-    refreshToken:string
+    accessToken: string
+    refreshToken: string
+  }
 }
 
 export interface ResendOtpResponse{

@@ -12,9 +12,15 @@ export interface UserResponse {
     createdAt: string;
 }
 
-export const getAllUsers = async (page = 1, limit = 10) => {
+export const getAllUsers = async (page = 1, limit = 10,role?:'OWNER'|'TENANT') => {
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const params:any ={page,limit}
+    if(role){
+        params.role=role
+    }
     const response = await axiosApi.get('/admin/users', {
-        params: { page, limit }
+        params
     });
     return response.data;
 };

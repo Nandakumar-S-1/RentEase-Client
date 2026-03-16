@@ -3,7 +3,7 @@ import { User } from 'lucide-react';
 const TenantDashboard = () => {
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] rounded-3xl p-10 text-white shadow-xl shadow-indigo-200 relative overflow-hidden">
+            <div className="bg-linear-to-r from-[#6366f1] to-[#8b5cf6] rounded-3xl p-10 text-white shadow-xl shadow-indigo-200 relative overflow-hidden">
                 <div className="relative z-10 space-y-4">
                     <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">
                         <User className="w-8 h-8 text-white" />

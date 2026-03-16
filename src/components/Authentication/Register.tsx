@@ -50,6 +50,7 @@ const Register = () => {
 
       setMessage('Registration successful!');
       setTimeout(() => navigate('/dashboard'), 1000);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Google register error:', error);
       setIsError(true);
@@ -102,7 +103,7 @@ const Register = () => {
   return (
     <div className="flex min-h-screen">
       {/* Left Panel */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-gradient-to-b from-[hsl(260,20%,18%)] to-[hsl(260,25%,12%)] p-12 text-white">
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-linear-to-b from-[hsl(260,20%,18%)] to-[hsl(260,25%,12%)] p-12 text-white">
         <Logo size="md" />
         <p className="max-w-md text-lg leading-relaxed text-white/70">
           {role === 'OWNER'
@@ -126,7 +127,7 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               name="fullname"
-              placeholder="John Doe"
+              placeholder="Nandakumar S"
               label="Full name"
               value={formData.fullname}
               onChange={handleChange}
@@ -137,7 +138,7 @@ const Register = () => {
             <Input
               name="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="youremail@email.com"
               label="Email"
               value={formData.email}
               onChange={handleChange}
