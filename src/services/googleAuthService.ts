@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { axiosApi } from "./api";
+import { axiosApi } from "../API/api";
 import { firebaseConfiguration } from "../Config/firebase.config";
 // import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth/web-extension";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'

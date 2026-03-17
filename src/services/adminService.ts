@@ -1,4 +1,4 @@
-import { axiosApi } from './api';
+import { axiosApi } from '../API/api';
 
 export interface UserResponse {
     id: string;

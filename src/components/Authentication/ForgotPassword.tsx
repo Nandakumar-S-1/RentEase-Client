@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, ArrowLeft } from 'lucide-react';
 import { Button, FormMessage, Input, AuthLayout } from '../Common';
-import { axiosApi } from '../../services/api';
+import { axiosApi } from '../../API/api';
 // import type { ApiError } from '@/types/auth';
 
 const ForgotPassword = () => {

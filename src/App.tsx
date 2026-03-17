@@ -6,7 +6,7 @@ import VerifyOtp from './components/Authentication/VerifyOtp';
 import Dashboard from './components/Pages/Dashboard';
 import ResendOtp from './components/Authentication/ResendOtp';
 import ForgotPassword from './components/Authentication/ForgotPassword';
-import AdminLogin from './components/Authentication/AdminLogin';
+import AdminLogin from './components/Admin/AdminLogin';
 import PublicRoute from './components/Common/PublicRoute';
 import ProtectedRoute from './components/Common/ProtectedRoute';
 

@@ -1,5 +1,5 @@
 import type { AuthResponse, LoginData, RegisterData } from '../Types/auth';
-import { axiosApi } from './api';
+import { axiosApi } from '../API/api';
 
 
 export const registerUser = async (data: RegisterData): Promise<AuthResponse> => {
