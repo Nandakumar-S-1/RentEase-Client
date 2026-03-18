@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import type { ApiError, RegisterData } from "../types/authTypes";
+import type {  RegisterData } from "../types/authTypes";
 import { registerUser } from "../services/authService";
 import { buildRoutes } from "../../../config/routes";
+import type { ApiError } from '../../../types/common';
 
 export const useRegister = () => {
   const navigate = useNavigate()

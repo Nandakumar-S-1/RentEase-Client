@@ -1,25 +1,23 @@
 import React, { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { registerUser } from '../../services/auth/authService'
 import { Eye, EyeOff, Mail, Phone, User } from 'lucide-react'
-import { Button, FormMessage, Input, Logo } from '../common';
-import { isLoggedIn, googleLogin } from '../../services/auth/authService';
-import { auth, googleProvider } from '../../config/firebase.config';
-import { signInWithPopup } from 'firebase/auth';
-import { ROUTES } from '../../config/env';
-import { buildRoutes } from '../../config/routes';
+import { Button, FormMessage, Input, Logo } from '../../../components/common';
+import { useRegister } from '../hooks/useRegister';
+import { useGoogleAuth } from '../hooks/useGoogleAuth';
+import { PAGE_ROUTES } from '../../../config/routes';
 
 const Register = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    if (isLoggedIn()) {
-      navigate(ROUTES.DASHBOARD, { replace: true });
-    }
-  }, [navigate]);
-
   const role = (searchParams.get('role') || 'TENANT') as 'TENANT' | 'OWNER';
+
+  const { register, isLoading: registerLoading, error: registerError, successMessage } = useRegister();
+  const { loginWithGoogle, isLoading: googleLoading, error: googleError } = useGoogleAuth();
+
+  const isLoading = registerLoading || googleLoading;
+  const message = successMessage || registerError || googleError || '';
+  const isError = !!(registerError || googleError);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -31,35 +29,10 @@ const Register = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [message, setMessage] = useState('');
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
   const handleGoogleLogin = async () => {
-    try {
-      setIsLoading(true);
-      setMessage('');
-      setIsError(false);
-      
-      const result = await signInWithPopup(auth, googleProvider);
-      const idToken = await result.user.getIdToken();
-      
-      const response = await googleLogin(idToken, role);
-      
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-
-      setMessage('Registration successful!');
-      setTimeout(() => navigate(ROUTES.DASHBOARD), 1000);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      console.error('Google register error:', error);
-      setIsError(true);
-      setMessage(error?.response?.data?.message || 'Google registration failed');
-    } finally {
-      setIsLoading(false);
-    }
+    await loginWithGoogle(role);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,43 +41,27 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage('');
-    setIsError(false);
+    setValidationError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setIsError(true);
-      setMessage('Passwords do not match');
+      setValidationError('Passwords do not match');
       return;
     }
 
-    try {
-      setIsLoading(true);
-      await registerUser({
-        email: formData.email,
-        fullname: formData.fullname,
-        password: formData.password,
-        phone: formData.phone,
-        role,
-      });
-
-      setMessage('Registration successful');
-      setTimeout(() => {
-        navigate(buildRoutes.verifyOtp(formData.email));
-      }, 1500);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      setIsError(true);
-      setMessage(error?.response?.data?.message || 'Registration failed');
-    } finally {
-      setIsLoading(false);
-    }
+    await register({
+      email: formData.email,
+      fullname: formData.fullname,
+      password: formData.password,
+      phone: formData.phone,
+      role,
+    });
   };
 
-  // const otherRole = role === 'OWNER' ? 'TENANT' : 'OWNER';
+  const displayMessage = validationError || message;
+  const displayIsError = !!validationError || isError;
 
   return (
     <div className="flex min-h-screen">
-      {/* Left Panel */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-linear-to-b from-[hsl(260,20%,18%)] to-[hsl(260,25%,12%)] p-12 text-white">
         <Logo size="md" />
         <p className="max-w-md text-lg leading-relaxed text-white/70">
@@ -114,8 +71,6 @@ const Register = () => {
         </p>
         <div />
       </div>
-
-      {/* Right Panel */}
       <div className="flex flex-1 flex-col items-center overflow-y-auto bg-card px-6 py-10">
         <div className="w-full max-w-md">
           <div className="mb-8 flex lg:hidden justify-center">
@@ -124,7 +79,7 @@ const Register = () => {
 
           <h1 className="mb-1 text-center text-2xl font-bold">Create your account</h1>
 
-          <FormMessage message={message} isError={isError} />
+          <FormMessage message={displayMessage} isError={displayIsError} />
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
@@ -195,7 +150,7 @@ const Register = () => {
               required
             />
 
-            <Button type="submit" loading={isLoading} className="w-full"  size={'md'}>
+            <Button type="submit" loading={isLoading} className="w-full" size={'md'}>
               Create account
             </Button>
 
@@ -239,7 +194,7 @@ const Register = () => {
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{' '}
             <button
-              onClick={() => navigate(ROUTES.LOGIN)}
+              onClick={() => navigate(PAGE_ROUTES.LOGIN)}
               className="font-medium text-primary hover:underline"
             >
               Sign in
@@ -252,4 +207,3 @@ const Register = () => {
 };
 
 export default Register;
-

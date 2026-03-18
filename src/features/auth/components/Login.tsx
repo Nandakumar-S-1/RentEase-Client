@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Eye, EyeOff } from 'lucide-react';
-import { Input, Button, FormMessage, AuthLayout } from "../common"
-import { loginUser, googleLogin, isLoggedIn } from '../../services/auth/authService';
-import type { ApiError, LoginData } from '../../Types/auth';
-import { auth, googleProvider } from '../../config/firebase.config';
-import { signInWithPopup } from 'firebase/auth';
-import { ROUTES } from '../../config/env';
+import { Input, Button, FormMessage, AuthLayout } from "../../../components/common"
+import { useLogin } from '../hooks/useLogin';
+import { useGoogleAuth } from '../hooks/useGoogleAuth';
+import type { LoginData } from '../types/authTypes';
+import { PAGE_ROUTES } from '../../../config/routes';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login, isLoading: loginLoading, error: loginError, successMessage } = useLogin();
+  const { loginWithGoogle, isLoading: googleLoading, error: googleError } = useGoogleAuth();
 
-  useEffect(() => {
-    if (isLoggedIn()) {
-      navigate(ROUTES.LOGIN, { replace: true });
-    }
-  }, [navigate]);
+  const isLoading = loginLoading || googleLoading;
+  const message = successMessage || loginError || googleError || '';
+  const isError = !!(loginError || googleError);
 
   const [formData, setFormData] = useState<LoginData>({
     email: '',
@@ -23,9 +22,6 @@ const Login = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState('');
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -33,67 +29,19 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage('');
-    setIsError(false);
 
     if (!formData.email || !formData.password) {
-      setIsError(true);
-      setMessage('Email and password are required');
       return;
     }
 
-    try {
-      setIsLoading(true);
-
-      const response = await loginUser({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-
-      setMessage('Login successful!');
-
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1000);
-    } catch (error) {
-      setIsError(true);
-      const apiError = error as ApiError;
-      setMessage(
-        apiError?.response?.data?.message || 'Login failed. Please try again.'
-      );
-    } finally {
-      setIsLoading(false);
-    }
+    await login({
+      email: formData.email,
+      password: formData.password,
+    });
   };
 
   const handleGoogleLogin = async () => {
-    try {
-      setIsLoading(true);
-      setMessage('');
-      setIsError(false);
-
-      const result = await signInWithPopup(auth, googleProvider);
-      const idToken = await result.user.getIdToken();
-
-      const response = await googleLogin(idToken, 'TENANT');
-
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-
-      setMessage('Login successful!');
-      setTimeout(() => navigate(ROUTES.DASHBOARD), 1000);
-    } catch (error: any) {
-      console.error('Google login error:', error);
-      setIsError(true);
-      setMessage(error?.response?.data?.message || 'Google login failed');
-    } finally {
-      setIsLoading(false);
-    }
+    await loginWithGoogle('TENANT');
   };
 
   return (
@@ -195,7 +143,7 @@ const Login = () => {
       <p className="mt-6 text-center text-sm text-muted-foreground">
         Don't have an account?{' '}
         <button
-          onClick={() => navigate(ROUTES.HOME)}
+          onClick={() => navigate(PAGE_ROUTES.HOME)}
           className="font-medium text-primary hover:underline"
         >
           Sign up
@@ -206,4 +154,3 @@ const Login = () => {
 };
 
 export default Login;
-

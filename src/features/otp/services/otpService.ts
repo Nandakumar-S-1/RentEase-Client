@@ -1,26 +1,27 @@
 import { API_ROUTES } from "../../../config/routes"
 import { axiosApi } from "../../../services/api/axiosInstance"
+import type { VerifyOtpResponse,ResendOtpResponse } from "../types/otpTypes"
 
-export interface VerifyOtpResponse {
-    success: boolean
-    message: string,
-    data: {
-        user: {
-            id: string
-            email: string
-            fullname: string
-            phone: string
-            role: 'TENANT' | 'OWNER'
-        }
-        accessToken: string
-        refreshToken: string
-    }
-}
+// export interface VerifyOtpResponse {
+//     success: boolean
+//     message: string,
+//     data: {
+//         user: {
+//             id: string
+//             email: string
+//             fullname: string
+//             phone: string
+//             role: 'TENANT' | 'OWNER'
+//         }
+//         accessToken: string
+//         refreshToken: string
+//     }
+// }
 
-export interface ResendOtpResponse {
-    success: boolean,
-    message: string
-}
+// export interface ResendOtpResponse {
+//     success: boolean,
+//     message: string
+// }
 
 export const verifyOtp = async (email: string, otp: string): Promise<VerifyOtpResponse> => {
     const response = await axiosApi.post(API_ROUTES.VERIFY_OTP, {

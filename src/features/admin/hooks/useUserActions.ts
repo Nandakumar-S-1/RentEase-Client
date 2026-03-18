@@ -4,6 +4,7 @@ import {
   activateUser,
   deactivateUser,
 } from "../services/adminService";
+import type { ApiError } from "../../../types/common";
 
 export const useUserActions = (onSuccess?: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,9 +31,10 @@ export const useUserActions = (onSuccess?: () => void) => {
       }
 
       onSuccess?.();
-    } catch (err: any) {
-      setError(err?.response?.data?.message || `Failed to ${action} user.`);
-    } finally {
+    } catch (error) {
+  const apiError = error as ApiError;
+  setError(apiError?.response?.data?.message || 'fallback message');
+}finally {
       setIsLoading(false);
     }
   };

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { logout } from "../../../app/store/slices/AuthSlice";
+import { logout } from "../slices/AuthSlice";
 import { PAGE_ROUTES } from "../../../config/routes";
 
 export const useLogout = () => {

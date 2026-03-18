@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "../../../hooks/useAppDispatch"
-import type { ApiError, LoginData } from "../types/authTypes"
+import type {  LoginData } from "../types/authTypes"
 import { loginUser } from "../services/authService"
-import { setCredentials } from "../../../app/store/slices/AuthSlice"
+import { setCredentials } from "../slices/AuthSlice"
 import { PAGE_ROUTES } from "../../../config/routes"
 import { useState } from "react"
+import type { ApiError } from '../../../types/common';
 
 export const useLogin = () => {
     const navigate = useNavigate()
@@ -16,7 +17,7 @@ export const useLogin = () => {
 
     const login = async (data: LoginData) => {
         try {
-            setIsLoading(false)
+            setIsLoading(true)
             setError(null)
             setSuccessMessage(null)
 

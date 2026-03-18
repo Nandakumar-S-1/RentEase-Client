@@ -1,10 +1,3 @@
-// export const ROUTES = {
-//   HOME: "/",
-//   LOGIN: "/login",
-//   REGISTER: "/register",
-//   VERIFY_OTP: "/verify-otp",
-// };
-
 export const buildRoutes = {
   register: (role: string) => `/register?role=${role}`,
   verifyOtp: (email: string) => `/verify-otp?email=${email}`,

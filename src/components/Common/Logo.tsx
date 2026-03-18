@@ -1,7 +1,7 @@
 import { Home } from "lucide-react";
 import type { LogoProps } from "../../types/common/LogoProps";
 
-export const Logo: React.FC<LogoProps> = ({ size = 'md', showText = true }) => {
+export const Logo: React.FC<LogoProps> = ({ size = 'md', showText = true, className = '' }) => {
   const sizes = {
     sm: { icon: 'h-8 w-8', text: 'text-lg' },
     md: { icon: 'h-10 w-10', text: 'text-xl' },
@@ -9,7 +9,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showText = true }) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className={`flex items-center gap-2 ${className}`}>
       <div className={`flex items-center justify-center rounded-full bg-primary/20 ${sizes[size].icon}`}>
         <Home className={`${sizes[size].icon} text-primary`} />
       </div>

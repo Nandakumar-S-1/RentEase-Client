@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import DashboardLayout from '../common/DashboardLayout';
 import OwnerDashboard from './OwnerDashboard';
 import TenantDashboard from './TenantDashboard';
 import AdminDashboard from '../../features/admin/components/AdminDashboard';
-import AdminUserManagement from '../admin/AdminUserManagement';
+import AdminUserManagement from '../../features/admin/components/AdminUserManagement';
 import { useLocation } from 'react-router-dom';
 
 function Dashboard() {
   const location = useLocation();
-  const [user, setUser] = useState<{ fullname: string; role: 'ADMIN' | 'OWNER' | 'TENANT' } | null>(null);
-
-  useEffect(() => {
-
+  const user = useMemo<{ fullname: string; role: 'ADMIN' | 'OWNER' | 'TENANT' } | null>(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    return storedUser ? JSON.parse(storedUser) : null;
   }, []);
 
   if (!user) return <div className="flex items-center justify-center h-screen font-bold text-primary">Loading RentEase...</div>;

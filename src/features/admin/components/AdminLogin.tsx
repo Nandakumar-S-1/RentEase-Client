@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Eye, EyeOff, ShieldCheck } from 'lucide-react';
-import { Input, Button, FormMessage, AuthLayout } from "../common";
-import { loginAdmin } from '../../services/auth/authService';
-import type { ApiError, LoginData } from '../../Types/auth';
-import { ROUTES } from '../../config/env';
-
+import { Input, Button, FormMessage, AuthLayout } from "../../../components/common";
+import { loginAdmin } from '../../auth/services/authService'; 
+import type { LoginData } from '../../auth/types/authTypes';
+import { PAGE_ROUTES } from '../../../config/routes';
+import type { ApiError } from '../../../types/common';
 const AdminLogin = () => {
     const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ const AdminLogin = () => {
             setMessage('Admin access granted!');
 
             setTimeout(() => {
-                navigate(ROUTES.DASHBOARD);
+                navigate(PAGE_ROUTES.DASHBOARD);
             }, 1000);
         } catch (error) {
             setIsError(true);

@@ -4,17 +4,17 @@ import { axiosApi } from '../../../services/api/axiosInstance';
 
 
 export const registerUser = async (data: RegisterData): Promise<AuthResponse> => {
-    const response = await axiosApi.post('/users/register', data);
+    const response = await axiosApi.post(API_ROUTES.REGISTER, data);
     return response.data;
 };
 
 export const loginUser = async (data: LoginData): Promise<AuthResponse> => {
-    const response = await axiosApi.post('/users/login', data)
+    const response = await axiosApi.post(API_ROUTES.LOGIN, data)
     return response.data
 }
 
 export const loginAdmin = async (data: LoginData): Promise<AuthResponse> => {
-    const response = await axiosApi.post('/admin/login', data);
+    const response = await axiosApi.post(API_ROUTES.ADMIN_LOGIN, data);
     return response.data;
 }
 
@@ -41,33 +41,3 @@ export const getAccesToken = (): null | string => {
 export const isLoggedIn = (): boolean => {
     return !!localStorage.getItem('accessToken')
 }
-
-
-// export interface RegisterData {
-//     email: string;
-//     fullname: string;
-//     password: string;
-//     phone: string;
-//     role: 'TENANT' | 'OWNER';
-// }
-
-// export interface LoginData {
-//     email:string,
-//     password:string
-// }
-
-// export interface AuthenticationResponse{
-//     success:boolean,
-//     message:string,
-//     data:{
-//         user:{
-//             id:string,
-//             email:string,
-//             fullname:string,
-//             phone:string,
-//             role: 'TENANT' | 'OWNER';
-//         },
-//         accessToken:string,
-//         refreshToken:string
-//     }
-// }

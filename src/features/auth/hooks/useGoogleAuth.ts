@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { setCredentials } from "../../../app/store/slices/AuthSlice";
+import { setCredentials } from "../slices/AuthSlice";
 import { googleLogin } from "../services/authService";
 import { auth, googleProvider } from "../../../config/firebase.config";
 import { PAGE_ROUTES } from "../../../config/routes";
+import type { ApiError } from "../../../types/common";
 
 export const useGoogleAuth = () => {
   const navigate = useNavigate();
@@ -32,10 +33,10 @@ export const useGoogleAuth = () => {
       );
 
       setTimeout(() => navigate(PAGE_ROUTES.DASHBOARD), 1000);
-    } catch (err: any) {
-      console.error("Google auth error:", err);
-      setError(err?.response?.data?.message || "Google login failed");
-    } finally {
+    } catch (error) {
+  const apiError = error as ApiError;
+  setError(apiError?.response?.data?.message || 'Google login failed. Please try again.');
+} finally {
       setIsLoading(false);
     }
   };

@@ -1,18 +1,9 @@
-import { initializeApp } from "firebase/app";
-import { axiosApi } from "../../../services/api/axiosInstance"; 
-import { firebaseConfiguration } from "../../../config/firebase.config";
-
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import type { AuthResponse } from "../types/authTypes"; 
-
-const app = initializeApp(firebaseConfiguration)
-const authentication =  getAuth(app)
-
-const googleProvider = new GoogleAuthProvider()
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../../../config/firebase.config";
 
 export const signinWithGoogle = async ()=>{
     try {
-        const result = await signInWithPopup(authentication,googleProvider)
+        const result = await signInWithPopup(auth,googleProvider)
         const idToken = await result.user.getIdToken()
 
         return {
@@ -22,32 +13,14 @@ export const signinWithGoogle = async ()=>{
                 displayName:result.user.displayName || 'google user',
             }
         }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error:any) {
-        console.error('google sigin in error',error)
-        throw new Error(error.message || 'Google signin failed')        
-    }
+    } catch (error) {
+  const message = error instanceof Error ? error.message : 'Google signin failed';
+  console.error('google sign in error', error);
+  throw new Error(message);
 }
 
-// export const GoogleAuthenticate =  async(
-//     idToken:string,
-//     role:'TENANT' | 'OWNER'
-// ):Promise<AuthResponse>=>{
-//     try {
-//         const response = await axiosApi.post('/users/google-auth',{
-//             idToken,
-//             role
-//         })
-//         return response.data
-//     } catch (error) {
-//         console.error('-----------google authenticate eroro',error)
-//         throw error        
-//     }
-// }
-
-// export const handleGoogleAuth =  async(
-//      role:'TENANT' | 'OWNER',
-// ):Promise<AuthResponse>=>{
-//     const googleAuth =await signinWithGoogle()
-//     return GoogleAuthenticate(googleAuth.idToken,role)
-// }
+    // catch (error) {
+    //     console.error('google sigin in error',error)
+    //     throw new Error(error.message || 'Google signin failed')        
+    // }
+}

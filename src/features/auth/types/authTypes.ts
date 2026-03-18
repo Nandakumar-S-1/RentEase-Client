@@ -30,10 +30,10 @@ export interface LoginData{
     password:string
 }
 
-export interface ApiError{
-    response?:{
-        data?:{
-            message?:string
-        }
-    }
-}
+// export interface ApiError{
+//     response?:{
+//         data?:{
+//             message?:string
+//         }
+//     }
+// }

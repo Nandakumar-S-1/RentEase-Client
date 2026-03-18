@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Building2, UserRound, Home } from 'lucide-react';
-import { ROUTES } from '../../config/env';
-import { buildRoutes } from '../../config/routes';
+import { buildRoutes } from '../../../config/routes';
 
 const RoleSelection = () => {
   const navigate = useNavigate();

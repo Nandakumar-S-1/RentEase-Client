@@ -1,24 +1,12 @@
 import { API_ROUTES } from "../../../config/routes";
 import { axiosApi } from "../../../services/api/axiosInstance";
 
-export interface UserResponse {
-  id: string;
-  email: string;
-  fullname: string;
-  phone: string;
-  role: "ADMIN" | "OWNER" | "TENANT";
-  isEmailVerified: boolean;
-  isActive: boolean;
-  isSuspended: boolean;
-  createdAt: string;
-}
-
 export const getAllUsers = async (
   page = 1,
   limit = 10,
   role?: "OWNER" | "TENANT",
 ) => {
-  const params: any = { page, limit };
+  const params: Record<string ,string|number> = { page, limit };
   if (role) {
     params.role = role;
   }
