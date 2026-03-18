@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import DashboardLayout from '../Common/DashboardLayout';
+import DashboardLayout from '../common/DashboardLayout';
 import OwnerDashboard from './OwnerDashboard';
 import TenantDashboard from './TenantDashboard';
-import AdminDashboard from './AdminDashboard';
-import AdminUserManagement from './AdminUserManagement';
+import AdminDashboard from '../../features/admin/components/AdminDashboard';
+import AdminUserManagement from '../admin/AdminUserManagement';
 import { useLocation } from 'react-router-dom';
 
 function Dashboard() {

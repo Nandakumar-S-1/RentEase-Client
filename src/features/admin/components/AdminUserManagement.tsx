@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Eye, Download, UserCheck, UserX, Users } from 'lucide-react';
-import { getAllUsers, suspendUser, activateUser, type UserResponse } from '../../services/adminService';
+import { getAllUsers, suspendUser, activateUser, type UserResponse } from '../../services/admin/adminService';
 
 type UserType = 'OWNERS' | 'TENANTS';
 

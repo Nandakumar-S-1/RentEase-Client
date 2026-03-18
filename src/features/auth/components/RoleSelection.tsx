@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Building2, UserRound, Home } from 'lucide-react';
+import { ROUTES } from '../../config/env';
+import { buildRoutes } from '../../config/routes';
 
 const RoleSelection = () => {
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const RoleSelection = () => {
 
         <div className="flex gap-6 justify-center">
           <div
-            onClick={() => navigate('/register?role=OWNER')}
+            onClick={() => navigate(buildRoutes.register('OWNER'))}
             className="flex w-44 cursor-pointer flex-col items-center gap-3 rounded-xl bg-secondary p-6 transition-all hover:scale-105 hover:shadow-md"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/20">

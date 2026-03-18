@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RotateCcw, ArrowLeft, Clock } from 'lucide-react';
-import { verifyOtp, resendOtp } from '../../services/otpService';
+import { verifyOtp, resendOtp } from '../../services/otp/otpService';
 import type { ApiError } from '../../Types/auth';
-import { Button, FormMessage } from '../Common';
-import { AuthLayout } from '../Common/AuthLayout';
+import { Button, FormMessage } from '../common';
+import { AuthLayout } from '../common/AuthLayout';
+import { ROUTES } from '../../config/env';
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const VerifyOtp = () => {
 
   useEffect(() => {
     if (!email) {
-      navigate('/login');
+      navigate(ROUTES.LOGIN);
     }
   }, [email, navigate]);
 

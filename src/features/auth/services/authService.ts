@@ -1,5 +1,6 @@
-import type { AuthResponse, LoginData, RegisterData } from '../Types/auth';
-import { axiosApi } from '../API/api';
+import { API_ROUTES } from '../../../config/routes';
+import type { AuthResponse, LoginData, RegisterData } from '../types/authTypes'
+import { axiosApi } from '../../../services/api/axiosInstance';
 
 
 export const registerUser = async (data: RegisterData): Promise<AuthResponse> => {
@@ -18,7 +19,7 @@ export const loginAdmin = async (data: LoginData): Promise<AuthResponse> => {
 }
 
 export const googleLogin = async (idToken: string, role: string): Promise<AuthResponse> => {
-    const response = await axiosApi.post('/users/google-auth', { idToken, role });
+    const response = await axiosApi.post(API_ROUTES.GOOGLE_AUTH, { idToken, role });
     return response.data;
 }
 

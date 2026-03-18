@@ -1,5 +1,5 @@
 import { Home } from "lucide-react";
-import type { LogoProps } from "../../Interfaces/LogoProps";
+import type { LogoProps } from "../../types/common/LogoProps";
 
 export const Logo: React.FC<LogoProps> = ({ size = 'md', showText = true }) => {
   const sizes = {

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, ArrowLeft } from 'lucide-react';
-import { Button, FormMessage, Input, AuthLayout } from '../Common';
-import { axiosApi } from '../../API/api';
+import { Button, FormMessage, Input, AuthLayout } from '../common';
+import { axiosApi } from '../../../services/api/axiosInstance';
+import { PAGE_ROUTES } from '../../../config/routes';
 // import type { ApiError } from '@/types/auth';
 
 const ForgotPassword = () => {
@@ -97,7 +98,7 @@ const ForgotPassword = () => {
 
       setMessage('Password reset successful!');
       setTimeout(() => {
-        navigate('/login');
+        navigate(ROUTES.FORGOT_PASSWORD);
       }, 2000);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -256,7 +257,7 @@ const ForgotPassword = () => {
       )}
 
       <button
-        onClick={() => navigate('/login')}
+        onClick={() => navigate(ROUTES.LOGIN)}
         className="mt-8 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-primary"
       >
         <ArrowLeft className="h-4 w-4" />

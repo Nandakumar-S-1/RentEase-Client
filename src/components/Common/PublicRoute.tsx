@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { isLoggedIn } from '../../services/authService';
+import { isLoggedIn } from '../../features/auth/services/authService';
 
 interface PublicRouteProps {
     children: React.ReactNode;

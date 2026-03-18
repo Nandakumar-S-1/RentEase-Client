@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Eye, EyeOff } from 'lucide-react';
-import { Input, Button, FormMessage, AuthLayout } from "../Common"
-import { loginUser, googleLogin, isLoggedIn } from '../../services/authService';
+import { Input, Button, FormMessage, AuthLayout } from "../common"
+import { loginUser, googleLogin, isLoggedIn } from '../../services/auth/authService';
 import type { ApiError, LoginData } from '../../Types/auth';
-import { auth, googleProvider } from '../../Config/firebase.config';
+import { auth, googleProvider } from '../../config/firebase.config';
 import { signInWithPopup } from 'firebase/auth';
+import { ROUTES } from '../../config/env';
 
 const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoggedIn()) {
-      navigate('/dashboard', { replace: true });
+      navigate(ROUTES.LOGIN, { replace: true });
     }
   }, [navigate]);
 
@@ -85,7 +86,7 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(response.data.user));
 
       setMessage('Login successful!');
-      setTimeout(() => navigate('/dashboard'), 1000);
+      setTimeout(() => navigate(ROUTES.DASHBOARD), 1000);
     } catch (error: any) {
       console.error('Google login error:', error);
       setIsError(true);
@@ -194,7 +195,7 @@ const Login = () => {
       <p className="mt-6 text-center text-sm text-muted-foreground">
         Don't have an account?{' '}
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate(ROUTES.HOME)}
           className="font-medium text-primary hover:underline"
         >
           Sign up

@@ -1,9 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { axiosApi } from "../API/api";
-import { firebaseConfiguration } from "../Config/firebase.config";
-// import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth/web-extension";
+import { axiosApi } from "../../../services/api/axiosInstance"; 
+import { firebaseConfiguration } from "../../../config/firebase.config";
+
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import type { AuthResponse } from "../Types/auth";
+import type { AuthResponse } from "../types/authTypes"; 
 
 const app = initializeApp(firebaseConfiguration)
 const authentication =  getAuth(app)
@@ -29,25 +29,25 @@ export const signinWithGoogle = async ()=>{
     }
 }
 
-export const GoogleAuthenticate =  async(
-    idToken:string,
-    role:'TENANT' | 'OWNER'
-):Promise<AuthResponse>=>{
-    try {
-        const response = await axiosApi.post('/users/google-auth',{
-            idToken,
-            role
-        })
-        return response.data
-    } catch (error) {
-        console.error('-----------google authenticate eroro',error)
-        throw error        
-    }
-}
+// export const GoogleAuthenticate =  async(
+//     idToken:string,
+//     role:'TENANT' | 'OWNER'
+// ):Promise<AuthResponse>=>{
+//     try {
+//         const response = await axiosApi.post('/users/google-auth',{
+//             idToken,
+//             role
+//         })
+//         return response.data
+//     } catch (error) {
+//         console.error('-----------google authenticate eroro',error)
+//         throw error        
+//     }
+// }
 
-export const handleGoogleAuth =  async(
-     role:'TENANT' | 'OWNER',
-):Promise<AuthResponse>=>{
-    const googleAuth =await signinWithGoogle()
-    return GoogleAuthenticate(googleAuth.idToken,role)
-}
+// export const handleGoogleAuth =  async(
+//      role:'TENANT' | 'OWNER',
+// ):Promise<AuthResponse>=>{
+//     const googleAuth =await signinWithGoogle()
+//     return GoogleAuthenticate(googleAuth.idToken,role)
+// }
