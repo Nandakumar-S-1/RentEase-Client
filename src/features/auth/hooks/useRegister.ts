@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import type {  RegisterData } from "../types/authTypes";
 import { registerUser } from "../services/authService";
 import { buildRoutes } from "../../../config/routes";
-import type { ApiError } from '../../../types/common';
+import { getApiErrorMessage } from '../../../types/common';
 
 export const useRegister = () => {
   const navigate = useNavigate()
@@ -19,14 +19,11 @@ export const useRegister = () => {
       setSuccessMessage(null);
       await registerUser(data)
 
-      setSuccessMessage('Registration Succesful')
+      setSuccessMessage('Registration Successful')
       setTimeout(() => navigate(buildRoutes.verifyOtp(data.email)), 1500)
 
-    } catch (error) {
-      const apiError = error as ApiError
-      setError(
-        apiError?.response?.data?.message || 'registration failed'
-      )
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Registration failed'))
     } finally {
       setIsLoading(false)
     }

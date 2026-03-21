@@ -278,13 +278,8 @@ export default ForgotPassword;
 
 
 
-// // ForgotPassword.tsx
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { Mail, ArrowLeft } from 'lucide-react';
-// import { Button, FormMessage, Input, AuthLayout } from '../../../components/common';
-// import { PAGE_ROUTES } from '../../../config/routes';
-// import { useForgotPassword } from '../hooks/useForgotPassword';
+
+
 
 // const ForgotPassword = () => {
 //   const navigate = useNavigate();

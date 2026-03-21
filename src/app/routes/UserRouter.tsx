@@ -9,6 +9,7 @@ import Login from "../../features/auth/components/Login";
 import VerifyOtp from "../../features/otp/components/VerifyOtp";
 import ForgotPassword from "../../features/auth/components/ForgotPassword";
 import Dashboard from "../../components/pages/Dashboard";
+import OwnerVerification from "../../features/verification/components/OwnerVerification";
 
 export const UserRouter = () => {
   return (
@@ -36,6 +37,10 @@ export const UserRouter = () => {
       <Route
         path={PAGE_ROUTES.DASHBOARD}
         element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+      />
+      <Route 
+        path={PAGE_ROUTES.OWNER_VERIFICATION}
+        element={<ProtectedRoute><OwnerVerification /></ProtectedRoute>}
       />
     </Routes>
   );

@@ -30,4 +30,11 @@ export const API_ROUTES = {
   ADMIN_SUSPEND_USER: (userId: string) => `/admin/users/suspend/${userId}`,
   ADMIN_ACTIVATE_USER: (userId: string) => `/admin/users/activate/${userId}`,
   ADMIN_DEACTIVATE_USER: (userId: string) => `/admin/users/deactivate/${userId}`,
+
+  SUBMIT_VERIFICATION: '/owner/submit-verification',
+  VERIFICATION_STATUS: '/owner/verification-status',  
+  ADMIN_PENDING_OWNERS: '/admin/owners/pending',
+  ADMIN_VERIFY_OWNER: (id: string) => `/admin/owners/${id}/verify`,
+  ADMIN_REJECT_OWNER: (id: string) => `/admin/owners/${id}/reject`,
+
 } as const;

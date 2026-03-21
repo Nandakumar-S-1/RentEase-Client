@@ -1,6 +1,10 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import { Bell, Search, Settings } from 'lucide-react';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { logout } from '../../features/auth/slices/AuthSlice';
+import { useNavigate } from 'react-router-dom';
+import { PAGE_ROUTES } from '../../config/routes';
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -9,11 +13,12 @@ interface DashboardLayoutProps {
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role, userName }) => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     const handleLogout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
+        dispatch(logout());
+        navigate(PAGE_ROUTES.LOGIN, { replace: true });
     };
 
     return (

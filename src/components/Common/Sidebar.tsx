@@ -12,6 +12,7 @@ import {
   Flag,
   BarChart3,
   Bookmark,
+  ShieldCheck,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "./Logo";
@@ -111,6 +112,11 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
         icon: <Users size={20} />,
         label: "User Management",
         path: "/admin/users",
+      },
+      {
+        icon: <ShieldCheck size={20} />,
+        label: "Owner Verification",
+        path: "/admin/owners",
       },
       {
         icon: <Building2 size={20} />,

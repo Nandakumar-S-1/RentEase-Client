@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { getAllUsers, type UserResponse } from "../services/adminService";
+import { getAllUsers } from "../services/adminService";
+import type { UserResponse } from "../types/adminTypes";
 import type { ApiError } from "../../../types/common";
 
 export const useGetUsers = (

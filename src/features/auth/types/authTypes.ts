@@ -4,6 +4,7 @@ export interface User {
   fullname: string;
   phone: string;
   role: 'TENANT' | 'OWNER';
+  verificationStatus?: 'PENDING' | 'SUBMITTED' | 'VERIFIED' | 'REJECTED';
 }
 
 export interface AuthResponse {
