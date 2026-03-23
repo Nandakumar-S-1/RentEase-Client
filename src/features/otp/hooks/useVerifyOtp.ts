@@ -30,7 +30,11 @@ export const useVerifyOtp = () => {
       );
 
       setSuccessMessage("OTP verified successfully!");
-      setTimeout(() => navigate(PAGE_ROUTES.DASHBOARD), 1000);
+      const destination = response.data.user.role === 'OWNER' 
+        ? PAGE_ROUTES.OWNER_VERIFICATION 
+        : PAGE_ROUTES.DASHBOARD;
+      setTimeout(() => navigate(destination), 1000);
+
     } catch (err) {
       const apiError = err as ApiError;
       setError(apiError?.response?.data?.message || "OTP verification failed.");

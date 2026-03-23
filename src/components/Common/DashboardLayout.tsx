@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Bell, Search, Settings } from 'lucide-react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { logout } from '../../features/auth/slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import { PAGE_ROUTES } from '../../config/routes';
+import { checkSession } from '../../features/auth/services/authService';
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -20,6 +21,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role, userN
         dispatch(logout());
         navigate(PAGE_ROUTES.LOGIN, { replace: true });
     };
+
+    useEffect(() => {
+        checkSession().catch(() => { });
+        const intervalId = setInterval(() => {
+            checkSession().catch(() => { });
+        }, 30000);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     return (
         <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">

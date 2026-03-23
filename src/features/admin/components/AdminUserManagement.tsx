@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Search, Filter, Eye, Download, UserCheck, UserX, Users } from 'lucide-react';
 import { getAllUsers, suspendUser, activateUser } from '../services/adminService'
 import type { UserResponse } from '../types/adminTypes';
+import { Modal, Toast } from '../../../components/common';
 
 type UserType = 'OWNERS' | 'TENANTS';
 
@@ -11,6 +12,13 @@ const AdminUserManagement = () => {
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, pages: 1 });
     const [searchTerm, setSearchTerm] = useState('');
+    const [confirmModal, setConfirmModal] = useState<{
+        isOpen: boolean;
+        userId: string | null;
+        action: 'SUSPEND' | 'ACTIVATE' | null;
+    }>({ isOpen: false, userId: null, action: null });
+    const [actionLoading, setActionLoading] = useState(false);
+    const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
 
     const fetchUsers = useCallback(async (page = 1, role: 'OWNER' | 'TENANT') => {
         try {
@@ -32,18 +40,31 @@ const AdminUserManagement = () => {
         fetchUsers(1, role);
     }, [userType, fetchUsers]);
 
-    const handleSuspend = async (userId: string) => {
-        if (confirm('Are you sure you want to suspend this user?')) {
-            await suspendUser(userId);
+    const handleConfirmAction = async () => {
+        if (!confirmModal.userId || !confirmModal.action) return;
+        
+        try {
+            setActionLoading(true);
+            if (confirmModal.action === 'SUSPEND') {
+                await suspendUser(confirmModal.userId);
+                setToast({ message: 'User suspended successfully.', type: 'success' });
+            } else {
+                await activateUser(confirmModal.userId);
+                setToast({ message: 'User reactivated successfully.', type: 'success' });
+            }
             const role = userType === 'OWNERS' ? 'OWNER' : 'TENANT';
             fetchUsers(pagination.page, role);
+            setConfirmModal({ isOpen: false, userId: null, action: null });
+        } catch (error) {
+            console.error('Action failed:', error);
+            setToast({ message: 'Failed to update user status.', type: 'error' });
+        } finally {
+            setActionLoading(false);
         }
     };
 
-    const handleActivate = async (userId: string) => {
-        await activateUser(userId);
-        const role = userType === 'OWNERS' ? 'OWNER' : 'TENANT';
-        fetchUsers(pagination.page, role);
+    const openConfirmModal = (userId: string, action: 'SUSPEND' | 'ACTIVATE') => {
+        setConfirmModal({ isOpen: true, userId, action });
     };
 
     const handlePageChange = (newPage: number) => {
@@ -217,7 +238,7 @@ const AdminUserManagement = () => {
                                                 </button>
                                                 {user.isSuspended ? (
                                                     <button
-                                                        onClick={() => handleActivate(user.id)}
+                                                        onClick={() => openConfirmModal(user.id, 'ACTIVATE')}
                                                         className="p-1.5 hover:bg-green-50 rounded-lg text-green-600 transition-colors"
                                                         title="Activate User"
                                                     >
@@ -225,7 +246,7 @@ const AdminUserManagement = () => {
                                                     </button>
                                                 ) : (
                                                     <button
-                                                        onClick={() => handleSuspend(user.id)}
+                                                        onClick={() => openConfirmModal(user.id, 'SUSPEND')}
                                                         className="p-1.5 hover:bg-red-50 rounded-lg text-red-600 transition-colors"
                                                         title="Suspend User"
                                                     >
@@ -276,6 +297,31 @@ const AdminUserManagement = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Confirmation Modal */}
+            <Modal
+                isOpen={confirmModal.isOpen}
+                onClose={() => !actionLoading && setConfirmModal({ isOpen: false, userId: null, action: null })}
+                onConfirm={handleConfirmAction}
+                title={confirmModal.action === 'SUSPEND' ? 'Suspend User' : 'Activate User'}
+                description={
+                    confirmModal.action === 'SUSPEND'
+                        ? 'Are you sure you want to suspend this user? They will be immediately logged out and unable to access the platform.'
+                        : 'Are you sure you want to reactivate this user? They will regain full access to the platform.'
+                }
+                confirmText={confirmModal.action === 'SUSPEND' ? 'Suspend' : 'Activate'}
+                isDestructive={confirmModal.action === 'SUSPEND'}
+                isLoading={actionLoading}
+            />
+
+            {/* Toast Notification */}
+            {toast && (
+                <Toast 
+                    message={toast.message} 
+                    type={toast.type} 
+                    onClose={() => setToast(null)} 
+                />
+            )}
         </div>
     );
 };

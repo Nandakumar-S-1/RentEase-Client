@@ -18,9 +18,9 @@ const OwnerVerification = () => {
 
     useEffect(() => {
         fetchStatus();
+        const interval = setInterval(fetchStatus, 30000);
+        return () => clearInterval(interval);
     }, []);
-
-    // If already verified, redirect to dashboard
     useEffect(() => {
         if (status === "VERIFIED") {
             navigate(PAGE_ROUTES.DASHBOARD, { replace: true });
@@ -39,7 +39,7 @@ const OwnerVerification = () => {
         }
     };
 
-    // Show "Under Review" state
+
     if (status === "SUBMITTED") {
         return (
             <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">

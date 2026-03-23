@@ -5,6 +5,7 @@ export interface PendingOwner {
     id: string;
     ownerId: string;
     documentType: string;
+    documentUrl: string | null;
     status: string;
 }
 

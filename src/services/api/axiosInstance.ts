@@ -62,6 +62,14 @@ axiosApi.interceptors.response.use(
         const status = error.response?.status
 
         if (status === 401) {
+            const errorCode = (error.response?.data as { code?: string })?.code;
+            if (errorCode === 'ACCOUNT_SUSPENDED' || errorCode === 'ACCOUNT_DEACTIVATED') {
+                if (!originalRequest.url?.includes('/login')) {
+                    clearAuthAndRedirect();
+                }
+                return Promise.reject(error);
+            }
+
             if (originalRequest.url?.includes('/login') ||
                 originalRequest.url?.includes('/refresh-token')) {
                 if (originalRequest.url?.includes('/refresh-token')) {

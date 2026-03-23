@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   LayoutDashboard,
   Building2,
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "./Logo";
+import { Modal } from "./index";
 
 interface SidebarProps {
   role: "ADMIN" | "OWNER" | "TENANT";
@@ -26,6 +27,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const menuItems = {
     OWNER: [
@@ -204,13 +206,26 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
             </p>
           </div>
           <button
-            onClick={onLogout}
+            onClick={() => setIsLogoutModalOpen(true)}
             className="p-1.5 hover:bg-gray-800 rounded-lg transition-colors"
           >
             <LogOut size={18} />
           </button>
         </div>
       </div>
+
+      <Modal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={() => {
+          setIsLogoutModalOpen(false);
+          onLogout();
+        }}
+        title="Confirm Logout"
+        description="Are you sure you want to log out of your account?"
+        confirmText="Log Out"
+        isDestructive={true}
+      />
     </div>
   );
 };

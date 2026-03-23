@@ -7,10 +7,6 @@ export interface ApiError {
     };
 }
 
-/**
- * Extract a user-friendly error message from an API error response.
- * If field-level validation errors exist, joins them into a single string.
- */
 export const getApiErrorMessage = (error: unknown, fallback: string): string => {
     const apiError = error as ApiError;
     const fieldErrors = apiError?.response?.data?.errors;

@@ -5,7 +5,7 @@ import { loginUser } from "../services/authService"
 import { setCredentials } from "../slices/AuthSlice"
 import { PAGE_ROUTES } from "../../../config/routes"
 import { useState } from "react"
-import type { ApiError } from '../../../types/common';
+import { getApiErrorMessage } from '../../../types/common';
 
 export const useLogin = () => {
     const navigate = useNavigate()
@@ -32,10 +32,7 @@ export const useLogin = () => {
             setSuccessMessage('Login Successful')
             setTimeout(() => navigate(PAGE_ROUTES.DASHBOARD), 1000)
         } catch (error) {
-            const apiError = error as ApiError
-            setError(
-                apiError?.response?.data?.message || 'Login failed, Please try again'
-            )
+            setError(getApiErrorMessage(error, 'Login failed, Please try again'))
         } finally {
             setIsLoading(false)
         }

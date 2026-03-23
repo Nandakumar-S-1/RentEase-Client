@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ShieldCheck, Check, X, Clock, FileText } from "lucide-react";
+import { ShieldCheck, Check, X, Clock, FileText, ExternalLink } from "lucide-react";
 import { useOwnerVerification } from "../hooks/useOwnerVerification";
 import { Button, FormMessage } from "../../../components/common";
 
@@ -84,10 +84,23 @@ const AdminOwnerVerification = () => {
                                         </td>
 
                                         <td className="px-6 py-4 text-center">
-                                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600">
-                                                <FileText size={12} />
-                                                {owner.documentType}
-                                            </span>
+                                            {owner.documentUrl ? (
+                                                <a
+                                                    href={owner.documentUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors cursor-pointer"
+                                                >
+                                                    <FileText size={12} />
+                                                    {owner.documentType}
+                                                    <ExternalLink size={10} />
+                                                </a>
+                                            ) : (
+                                                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600">
+                                                    <FileText size={12} />
+                                                    {owner.documentType}
+                                                </span>
+                                            )}
                                         </td>
 
                                         <td className="px-6 py-4 text-center">

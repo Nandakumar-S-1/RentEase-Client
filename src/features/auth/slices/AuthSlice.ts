@@ -59,6 +59,16 @@ const authSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+
+    updateVerificationStatus: (
+      state,
+      action: PayloadAction<'PENDING' | 'SUBMITTED' | 'VERIFIED' | 'REJECTED'>,
+    ) => {
+      if (state.user) {
+        state.user.verificationStatus = action.payload;
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
+    },
   },
   // reducers: {
   //   setLoading: (state, action: PayloadAction<boolean>) => {
@@ -73,6 +83,6 @@ const authSlice = createSlice({
   // },
 });
 
-export const { setCredentials, updateAccessToken, logout, setLoading } =
+export const { setCredentials, updateAccessToken, logout, setLoading, updateVerificationStatus } =
   authSlice.actions;
 export default authSlice.reducer;

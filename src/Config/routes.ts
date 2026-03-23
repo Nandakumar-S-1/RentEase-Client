@@ -24,6 +24,7 @@ export const API_ROUTES = {
   RESEND_OTP: '/users/resend-otp',
   FORGOT_PASSWORD: '/users/forgot-password',
   REFRESH_TOKEN: '/users/refresh-token',
+  ME: '/users/me',
 
   ADMIN_LOGIN: '/admin/login',
   ADMIN_USERS: "/admin/users",
