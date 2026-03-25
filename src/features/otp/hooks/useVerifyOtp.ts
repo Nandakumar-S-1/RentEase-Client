@@ -25,7 +25,6 @@ export const useVerifyOtp = () => {
         setCredentials({
           user: response.data.user,
           accessToken: response.data.accessToken,
-          refreshToken: response.data.refreshToken,
         })
       );
 

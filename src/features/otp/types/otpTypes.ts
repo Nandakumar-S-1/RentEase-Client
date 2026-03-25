@@ -10,7 +10,7 @@ export interface VerifyOtpResponse {
       role: "TENANT" | "OWNER";
     };
     accessToken: string;
-    refreshToken: string;
+    refreshToken?: string;
   };
 }
 

@@ -26,7 +26,6 @@ export const useLogin = () => {
                 setCredentials({
                     user: response.data.user,
                     accessToken: response.data.accessToken,
-                    refreshToken: response.data.refreshToken
                 })
             )
             setSuccessMessage('Login Successful')

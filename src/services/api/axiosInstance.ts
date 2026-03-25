@@ -35,10 +35,13 @@ const processQueue = (error: unknown): void => {
 const clearAuthAndRedirect = (): void => {
     localStorage.removeItem('user')
     localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('refreshToken') // Just in case any old ones exist
     window.location.href = PAGE_ROUTES.LOGIN
 }
-//for request
+//for request 
+//pulls the accessToken from localStorage and attaches it to the 
+// authorization bearer <token> header for every api call.
+
 axiosApi.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem("accessToken");
@@ -52,6 +55,8 @@ axiosApi.interceptors.request.use(
 );
 
 //for response
+// this listens for 401 unauthorized errors. If the token is expired, it calls the /refresh-token endpoint,
+//  updates localStorage, and retries the original failed request.
 axiosApi.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
@@ -92,6 +97,7 @@ axiosApi.interceptors.response.use(
                 isItRefreshing = true
 
                 try {
+                    // Silent refresh call - automatically includes the refreshToken cookie
                     const refreshResponse = await axiosApi.post(
                         API_ROUTES.REFRESH_TOKEN
                     );

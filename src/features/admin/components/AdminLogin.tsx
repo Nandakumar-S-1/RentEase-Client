@@ -48,7 +48,6 @@ const AdminLogin = () => {
             dispatch(setCredentials({
                 user: response.data.user,
                 accessToken: response.data.accessToken,
-                refreshToken: response.data.refreshToken,
             }));
 
             setMessage('Admin access granted!');
