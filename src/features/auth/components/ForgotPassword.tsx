@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Mail, ArrowLeft } from 'lucide-react';
 import { Button, FormMessage, Input, AuthLayout } from '../../../components/common';
 import { axiosApi } from '../../../services/api/axiosInstance';
-import { PAGE_ROUTES } from '../../../config/routes';
+import { API_ROUTES, PAGE_ROUTES } from '../../../config/routes';
 import type { ApiError } from '../../../types/common';
 
 const ForgotPassword = () => {
@@ -35,7 +35,7 @@ const ForgotPassword = () => {
 
     try {
       setIsLoading(true);
-      await axiosApi.post('/users/forgot-password', { email });
+      await axiosApi.post(API_ROUTES.FORGOT_PASSWORD, { email });
       setMessage('OTP sent to your email');
       setStep('otp');
     } catch (error) {

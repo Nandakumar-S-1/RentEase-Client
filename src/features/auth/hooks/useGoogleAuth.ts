@@ -7,6 +7,7 @@ import { googleLogin } from "../services/authService";
 import { auth, googleProvider } from "../../../config/firebase.config";
 import { PAGE_ROUTES } from "../../../config/routes";
 import type { ApiError } from "../../../types/common";
+import type { RoleType } from "../../../types/Constants/role.constant";
 
 export const useGoogleAuth = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export const useGoogleAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const loginWithGoogle = async (role: "TENANT" | "OWNER") => {
+  const loginWithGoogle = async (role: RoleType) => {
     try {
       setIsLoading(true);
       setError(null);

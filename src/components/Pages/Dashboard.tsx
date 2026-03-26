@@ -5,10 +5,12 @@ import TenantDashboard from './TenantDashboard';
 import AdminDashboard from '../../features/admin/components/AdminDashboard';
 import AdminUserManagement from '../../features/admin/components/AdminUserManagement';
 import { useLocation } from 'react-router-dom';
+import { RoleTypes, type RoleType } from '../../types/Constants/role.constant';
+import { API_ROUTES } from '../../config/routes';
 
 function Dashboard() {
   const location = useLocation();
-  const user = useMemo<{ fullname: string; role: 'ADMIN' | 'OWNER' | 'TENANT' } | null>(() => {
+  const user = useMemo<{ fullname: string; role: RoleType } | null>(() => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   }, []);
@@ -16,7 +18,7 @@ function Dashboard() {
   if (!user) return <div className="flex items-center justify-center h-screen font-bold text-primary">Loading RentEase...</div>;
 
   const renderContent = () => {
-    if (location.pathname === '/admin/users' && user.role === 'ADMIN') {
+    if (location.pathname === API_ROUTES.ADMIN_USERS && user.role === RoleTypes.ADMIN_USER) {
       return <AdminUserManagement />;
     }
 

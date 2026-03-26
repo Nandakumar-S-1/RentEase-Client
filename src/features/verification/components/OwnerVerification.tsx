@@ -4,6 +4,7 @@ import { Upload, FileCheck, Clock, AlertCircle, CheckCircle } from "lucide-react
 import { useSubmitVerification } from "../hooks/useSubmitVerification";
 import { Button, FormMessage } from "../../../components/common";
 import { PAGE_ROUTES } from "../../../config/routes";
+import { VerificationStatus } from "../../../types/Constants/ownerVerification.constant";
 
 const OwnerVerification = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const OwnerVerification = () => {
         return () => clearInterval(interval);
     }, []);
     useEffect(() => {
-        if (status === "VERIFIED") {
+        if (status === VerificationStatus.VERIFIED) {
             navigate(PAGE_ROUTES.DASHBOARD, { replace: true });
         }
     }, [status, navigate]);
@@ -40,7 +41,7 @@ const OwnerVerification = () => {
     };
 
 
-    if (status === "SUBMITTED") {
+    if (status === VerificationStatus.SUBMITTED) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
                 <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg text-center">
@@ -62,17 +63,17 @@ const OwnerVerification = () => {
             <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
                 <div className="mb-6 text-center">
                     <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                        {status === "REJECTED" ? (
+                        {status === VerificationStatus.REJECTED ? (
                             <AlertCircle className="h-8 w-8 text-red-500" />
                         ) : (
                             <FileCheck className="h-8 w-8 text-primary" />
                         )}
                     </div>
                     <h1 className="mb-2 text-2xl font-bold text-gray-900">
-                        {status === "REJECTED" ? "Verification Rejected" : "Verify Your Identity"}
+                        {status === VerificationStatus.REJECTED ? "Verification Rejected" : "Verify Your Identity"}
                     </h1>
                     <p className="text-gray-500">
-                        {status === "REJECTED"
+                        {status === VerificationStatus.REJECTED
                             ? "Your previous submission was rejected. Please upload a new document."
                             : "Upload a government-issued ID to start listing properties."}
                     </p>

@@ -1,10 +1,11 @@
 import { API_ROUTES } from "../../../config/routes";
 import { axiosApi } from "../../../services/api/axiosInstance";
+import type { RoleType } from "../../../types/Constants/role.constant";
 
 export const getAllUsers = async (
   page = 1,
   limit = 10,
-  role?: "OWNER" | "TENANT",
+  role?: RoleType,
 ) => {
   const params: Record<string ,string|number> = { page, limit };
   if (role) {

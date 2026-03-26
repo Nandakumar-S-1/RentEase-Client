@@ -1,10 +1,13 @@
+import type { RoleType } from "../../../types/Constants/role.constant";
+import type { VerificationStatus } from "../../verification/types/verificationType";
+
 export interface User {
   id: string;
   email: string;
   fullname: string;
   phone: string;
-  role: 'TENANT' | 'OWNER';
-  verificationStatus?: 'PENDING' | 'SUBMITTED' | 'VERIFIED' | 'REJECTED';
+  role: RoleType
+  verificationStatus?: VerificationStatus
 }
 
 export interface AuthResponse {
@@ -18,12 +21,14 @@ export interface AuthResponse {
 }
 
 
+
+
 export interface RegisterData{
     email:string,
     fullname:string,
     password:string,
     phone:string,
-    role: 'TENANT'|'OWNER'
+    role: RoleType
 }
 
 export interface LoginData{

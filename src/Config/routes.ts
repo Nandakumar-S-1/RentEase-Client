@@ -39,3 +39,11 @@ export const API_ROUTES = {
   ADMIN_REJECT_OWNER: (id: string) => `/admin/owners/${id}/reject`,
 
 } as const;
+
+
+export const PATH_ROUTES = {
+  PATH_LOGIN:'/login',
+  PATH_USERS:'/users',
+  PATH_DASHBOARD:'/dashboard',
+  PATH_OWNERS:'/owners'
+}

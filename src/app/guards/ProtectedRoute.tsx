@@ -2,6 +2,8 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { PAGE_ROUTES } from "../../config/routes";
+import { RoleTypes } from "../../types/Constants/role.constant";
+import { VerificationStatus } from "../../features/auth/types/verification.types";
 //This is used for pages that require the user to be logged in.
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -19,8 +21,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const isOnVerifyPage = location.pathname === PAGE_ROUTES.OWNER_VERIFICATION;
   if (
     !isOnVerifyPage &&
-    user?.role === "OWNER" &&
-    user?.verificationStatus !== "VERIFIED"
+    user?.role === RoleTypes.OWNER_USER &&
+    user?.verificationStatus !== VerificationStatus.STATUS_VERIFIED
   ) {
     return <Navigate to={PAGE_ROUTES.OWNER_VERIFICATION} replace />;
   }

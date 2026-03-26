@@ -1,3 +1,5 @@
+import type { RoleType } from "../../../types/Constants/role.constant";
+
 export interface VerifyOtpResponse {
   success: boolean;
   message: string;
@@ -7,7 +9,7 @@ export interface VerifyOtpResponse {
       email: string;
       fullname: string;
       phone: string;
-      role: "TENANT" | "OWNER";
+      role: RoleType;
     };
     accessToken: string;
     refreshToken?: string;

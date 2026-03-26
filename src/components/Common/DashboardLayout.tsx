@@ -6,10 +6,11 @@ import { logout } from '../../features/auth/slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import { PAGE_ROUTES } from '../../config/routes';
 import { checkSession } from '../../features/auth/services/authService';
+import type { RoleType } from '../../types/Constants/role.constant';
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
-    role: 'ADMIN' | 'OWNER' | 'TENANT';
+    role: RoleType
     userName: string;
 }
 

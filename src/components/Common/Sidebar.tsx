@@ -17,9 +17,11 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import { Modal } from "./index";
+import { RoleTypes } from "../../types/Constants/role.constant";
+import type { RoleType } from "../../types/Constants/role.constant";
 
 interface SidebarProps {
-  role: "ADMIN" | "OWNER" | "TENANT";
+  role: RoleType
   userName: string;
   onLogout: () => void;
 }
@@ -29,8 +31,8 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
   const location = useLocation();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-  const menuItems = {
-    OWNER: [
+  const menuItems: Record<RoleType, any[]> = {
+    [RoleTypes.OWNER_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
         label: "Dashboard",
@@ -67,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
         path: "/owner/subscription",
       },
     ],
-    TENANT: [
+    [RoleTypes.TENANT_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
         label: "Dashboard",
@@ -104,7 +106,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
         path: "/tenant/wishlist",
       },
     ],
-    ADMIN: [
+    [RoleTypes.ADMIN_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
         label: "Dashboard",

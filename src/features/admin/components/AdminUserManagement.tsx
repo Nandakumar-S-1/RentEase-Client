@@ -3,8 +3,8 @@ import { Search, Filter, Eye, Download, UserCheck, UserX, Users } from 'lucide-r
 import { getAllUsers, suspendUser, activateUser } from '../services/adminService'
 import type { UserResponse } from '../types/adminTypes';
 import { Modal, Toast } from '../../../components/common';
-
-type UserType = 'OWNERS' | 'TENANTS';
+import { RoleTypes } from '../../../types/Constants/role.constant';
+import type { UserType, RoleType } from '../../../types/Constants/role.constant'; 
 
 const AdminUserManagement = () => {
     const [allUsers, setAllUsers] = useState<UserResponse[]>([]);
@@ -20,7 +20,7 @@ const AdminUserManagement = () => {
     const [actionLoading, setActionLoading] = useState(false);
     const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
 
-    const fetchUsers = useCallback(async (page = 1, role: 'OWNER' | 'TENANT') => {
+    const fetchUsers = useCallback(async (page = 1, role: RoleType) => {
         try {
             setLoading(true);
             const response = await getAllUsers(page, pagination.limit, role);
@@ -36,7 +36,7 @@ const AdminUserManagement = () => {
     }, [pagination.limit]);
 
     useEffect(() => {
-        const role = userType === 'OWNERS' ? 'OWNER' : 'TENANT';
+        const role = userType === 'OWNERS' ? RoleTypes.OWNER_USER : RoleTypes.TENANT_USER;
         fetchUsers(1, role);
     }, [userType, fetchUsers]);
 
@@ -52,7 +52,7 @@ const AdminUserManagement = () => {
                 await activateUser(confirmModal.userId);
                 setToast({ message: 'User reactivated successfully.', type: 'success' });
             }
-            const role = userType === 'OWNERS' ? 'OWNER' : 'TENANT';
+            const role = userType === 'OWNERS' ? RoleTypes.OWNER_USER : RoleTypes.TENANT_USER;
             fetchUsers(pagination.page, role);
             setConfirmModal({ isOpen: false, userId: null, action: null });
         } catch (error) {
@@ -68,7 +68,7 @@ const AdminUserManagement = () => {
     };
 
     const handlePageChange = (newPage: number) => {
-        const role = userType === 'OWNERS' ? 'OWNER' : 'TENANT';
+        const role = userType === 'OWNERS' ? RoleTypes.OWNER_USER : RoleTypes.TENANT_USER;
         fetchUsers(newPage, role);
     };
 
