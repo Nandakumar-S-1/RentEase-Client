@@ -1,0 +1,6 @@
+export const VerificationStatus ={
+    STATUS_PENDING:'PENDING' ,
+    STATUS_SUBMITTED: 'SUBMITTED',
+    STATUS_VERIFIED : 'VERIFIED' ,
+    STATUS_REJECTED: 'REJECTED'
+} 

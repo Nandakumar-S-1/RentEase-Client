@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   LayoutDashboard,
   Building2,
@@ -12,12 +12,16 @@ import {
   Flag,
   BarChart3,
   Bookmark,
+  ShieldCheck,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "./Logo";
+import { Modal } from "./index";
+import { RoleTypes } from "../../types/Constants/role.constant";
+import type { RoleType } from "../../types/Constants/role.constant";
 
 interface SidebarProps {
-  role: "ADMIN" | "OWNER" | "TENANT";
+  role: RoleType
   userName: string;
   onLogout: () => void;
 }
@@ -25,9 +29,10 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-  const menuItems = {
-    OWNER: [
+  const menuItems: Record<RoleType, any[]> = {
+    [RoleTypes.OWNER_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
         label: "Dashboard",
@@ -64,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
         path: "/owner/subscription",
       },
     ],
-    TENANT: [
+    [RoleTypes.TENANT_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
         label: "Dashboard",
@@ -101,7 +106,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
         path: "/tenant/wishlist",
       },
     ],
-    ADMIN: [
+    [RoleTypes.ADMIN_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
         label: "Dashboard",
@@ -111,6 +116,11 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
         icon: <Users size={20} />,
         label: "User Management",
         path: "/admin/users",
+      },
+      {
+        icon: <ShieldCheck size={20} />,
+        label: "Owner Verification",
+        path: "/admin/owners",
       },
       {
         icon: <Building2 size={20} />,
@@ -198,13 +208,26 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
             </p>
           </div>
           <button
-            onClick={onLogout}
+            onClick={() => setIsLogoutModalOpen(true)}
             className="p-1.5 hover:bg-gray-800 rounded-lg transition-colors"
           >
             <LogOut size={18} />
           </button>
         </div>
       </div>
+
+      <Modal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={() => {
+          setIsLogoutModalOpen(false);
+          onLogout();
+        }}
+        title="Confirm Logout"
+        description="Are you sure you want to log out of your account?"
+        confirmText="Log Out"
+        isDestructive={true}
+      />
     </div>
   );
 };

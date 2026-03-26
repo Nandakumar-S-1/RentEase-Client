@@ -1,5 +1,5 @@
 import { AlertCircle, CheckCircle } from "lucide-react";
-import type { FormMessageProps } from "../../Interfaces/FormMessageProps";
+import type { FormMessageProps } from "../../types/common/FormMessageProps";
 
 export const FormMessage: React.FC<FormMessageProps> = ({
   message,

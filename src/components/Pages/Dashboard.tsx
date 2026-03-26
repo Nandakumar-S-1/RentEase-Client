@@ -1,27 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import DashboardLayout from '../Common/DashboardLayout';
+import { useMemo } from 'react';
+import DashboardLayout from '../common/DashboardLayout';
 import OwnerDashboard from './OwnerDashboard';
 import TenantDashboard from './TenantDashboard';
-import AdminDashboard from './AdminDashboard';
-import AdminUserManagement from './AdminUserManagement';
+import AdminDashboard from '../../features/admin/components/AdminDashboard';
+import AdminUserManagement from '../../features/admin/components/AdminUserManagement';
 import { useLocation } from 'react-router-dom';
+import { RoleTypes, type RoleType } from '../../types/Constants/role.constant';
+import { API_ROUTES } from '../../config/routes';
 
 function Dashboard() {
   const location = useLocation();
-  const [user, setUser] = useState<{ fullname: string; role: 'ADMIN' | 'OWNER' | 'TENANT' } | null>(null);
-
-  useEffect(() => {
-
+  const user = useMemo<{ fullname: string; role: RoleType } | null>(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    return storedUser ? JSON.parse(storedUser) : null;
   }, []);
 
   if (!user) return <div className="flex items-center justify-center h-screen font-bold text-primary">Loading RentEase...</div>;
 
   const renderContent = () => {
-    if (location.pathname === '/admin/users' && user.role === 'ADMIN') {
+    if (location.pathname === API_ROUTES.ADMIN_USERS && user.role === RoleTypes.ADMIN_USER) {
       return <AdminUserManagement />;
     }
 
