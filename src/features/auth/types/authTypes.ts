@@ -6,34 +6,31 @@ export interface User {
   email: string;
   fullname: string;
   phone: string;
-  role: RoleType
-  verificationStatus?: VerificationStatus
+  role: RoleType;
+  verificationStatus?: VerificationStatus;
 }
 
 export interface AuthResponse {
-    success: boolean,
-    message: string,
-    data: {
-        user: User
-        accessToken: string;
-        refreshToken?: string;
-    };
+  success: boolean;
+  message: string;
+  data: {
+    user: User;
+    accessToken: string;
+    refreshToken?: string;
+  };
 }
 
-
-
-
-export interface RegisterData{
-    email:string,
-    fullname:string,
-    password:string,
-    phone:string,
-    role: RoleType
+export interface RegisterData {
+  email: string;
+  fullname: string;
+  password: string;
+  phone: string;
+  role: RoleType;
 }
 
-export interface LoginData{
-    email:string,
-    password:string
+export interface LoginData {
+  email: string;
+  password: string;
 }
 
 // export interface ApiError{

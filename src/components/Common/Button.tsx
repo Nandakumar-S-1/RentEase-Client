@@ -1,36 +1,33 @@
-import React from 'react'
-import type { ButtonProps } from '../../types/common/ButtonProps'
+import React from "react";
+import type { ButtonProps } from "../../types/common/ButtonProps";
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
       onClick,
-      type = 'button',
+      type = "button",
       disabled = false,
       loading = false,
-      variant = 'primary',
-      size = 'md',
-      className = '',
+      variant = "primary",
+      size = "md",
+      className = "",
       icon,
-      iconPosition = 'left'
+      iconPosition = "left",
     },
-    ref
+    ref,
   ) => {
     const variantStyles = {
-      primary:
-        'bg-primary text-white hover:bg-primary/90 disabled:opacity-50',
-      secondary:
-        'bg-secondary text-secondary-foreground hover:bg-secondary/90',
-      outline:
-        'border border-primary text-primary hover:bg-primary/5',
-    }
+      primary: "bg-primary text-white hover:bg-primary/90 disabled:opacity-50",
+      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+      outline: "border border-primary text-primary hover:bg-primary/5",
+    };
 
     const sizeStyles = {
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-4 py-2 text-base',
-      lg: 'px-6 py-3 text-lg',
-    }
+      sm: "px-3 py-1.5 text-sm",
+      md: "px-4 py-2 text-base",
+      lg: "px-6 py-3 text-lg",
+    };
 
     return (
       <button
@@ -54,14 +51,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </>
         ) : (
           <>
-            {icon && iconPosition === 'left' && icon}
+            {icon && iconPosition === "left" && icon}
             {children}
-            {icon && iconPosition === 'right' && icon}
+            {icon && iconPosition === "right" && icon}
           </>
         )}
       </button>
-    )
-  }
-)
+    );
+  },
+);
 
-Button.displayName = 'Button'
+Button.displayName = "Button";

@@ -12,5 +12,5 @@ export const UIMessages = {
     GOOGLE_AUTH_FAILED: "Google login failed. Please try again.",
     DOCUMENT_SUBMISSION_FAILED: "Failed to submit document. Please try again.",
     GENERIC: "An error occurred. Please try again.",
-  }
+  },
 } as const;

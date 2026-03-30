@@ -11,9 +11,7 @@ export const FormMessage: React.FC<FormMessageProps> = ({
   return (
     <div
       className={`mb-4 flex items-center gap-2 rounded-lg p-3 text-sm font-medium ${
-        isError
-          ? 'bg-red-50 text-red-700'
-          : 'bg-green-50 text-green-700'
+        isError ? "bg-red-50 text-red-700" : "bg-green-50 text-green-700"
       }`}
     >
       {isError ? (

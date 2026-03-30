@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"
-import type {  RegisterData } from "../types/authTypes";
+import { useNavigate } from "react-router-dom";
+import type { RegisterData } from "../types/authTypes";
 import { registerUser } from "../services/authService";
 import { buildRoutes } from "../../../config/routes";
-import { getApiErrorMessage } from '../../../types/common';
+import { getApiErrorMessage } from "../../../types/common";
 
 export const useRegister = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,16 +17,15 @@ export const useRegister = () => {
       setIsLoading(true);
       setError(null);
       setSuccessMessage(null);
-      await registerUser(data)
+      await registerUser(data);
 
-      setSuccessMessage('Registration Successful')
-      setTimeout(() => navigate(buildRoutes.verifyOtp(data.email)), 1500)
-
+      setSuccessMessage("Registration Successful");
+      setTimeout(() => navigate(buildRoutes.verifyOtp(data.email)), 1500);
     } catch (err) {
-      setError(getApiErrorMessage(err, 'Registration failed'))
+      setError(getApiErrorMessage(err, "Registration failed"));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
-  return { register, isLoading, error, successMessage }
-}
+  };
+  return { register, isLoading, error, successMessage };
+};

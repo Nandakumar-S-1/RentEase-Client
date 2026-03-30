@@ -29,14 +29,17 @@ export const useGoogleAuth = () => {
         setCredentials({
           user: response.data.user,
           accessToken: response.data.accessToken,
-        })
+        }),
       );
 
       setTimeout(() => navigate(PAGE_ROUTES.DASHBOARD), 1000);
     } catch (error) {
-  const apiError = error as ApiError;
-  setError(apiError?.response?.data?.message || 'Google login failed. Please try again.');
-} finally {
+      const apiError = error as ApiError;
+      setError(
+        apiError?.response?.data?.message ||
+          "Google login failed. Please try again.",
+      );
+    } finally {
       setIsLoading(false);
     }
   };

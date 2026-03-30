@@ -21,17 +21,23 @@ import { RoleTypes } from "../../types/Constants/role.constant";
 import type { RoleType } from "../../types/Constants/role.constant";
 
 interface SidebarProps {
-  role: RoleType
+  role: RoleType;
   userName: string;
   onLogout: () => void;
 }
+
+type SidebarMenuItem = {
+  icon: React.ReactNode;
+  label: string;
+  path: string;
+};
 
 const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-  const menuItems: Record<RoleType, any[]> = {
+  const menuItems: Record<RoleType, SidebarMenuItem[]> = {
     [RoleTypes.OWNER_USER]: [
       {
         icon: <LayoutDashboard size={20} />,

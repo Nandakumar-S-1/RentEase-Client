@@ -16,19 +16,35 @@ export const UserRouter = () => {
     <Routes>
       <Route
         path={PAGE_ROUTES.HOME}
-        element={<PublicRoute><RoleSelection /></PublicRoute>}
+        element={
+          <PublicRoute>
+            <RoleSelection />
+          </PublicRoute>
+        }
       />
       <Route
         path={PAGE_ROUTES.REGISTER}
-        element={<PublicRoute><Register /></PublicRoute>}
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
       />
       <Route
         path={PAGE_ROUTES.LOGIN}
-        element={<PublicRoute><Login /></PublicRoute>}
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
       />
       <Route
         path={PAGE_ROUTES.FORGOT_PASSWORD}
-        element={<PublicRoute><ForgotPassword /></PublicRoute>}
+        element={
+          <PublicRoute>
+            <ForgotPassword />
+          </PublicRoute>
+        }
       />
       {/* partially protected means needs email or something */}
       <Route path={PAGE_ROUTES.VERIFY_OTP} element={<VerifyOtp />} />
@@ -36,11 +52,19 @@ export const UserRouter = () => {
       {/* Protected ocne */}
       <Route
         path={PAGE_ROUTES.DASHBOARD}
-        element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
       />
-      <Route 
+      <Route
         path={PAGE_ROUTES.OWNER_VERIFICATION}
-        element={<ProtectedRoute><OwnerVerification /></ProtectedRoute>}
+        element={
+          <ProtectedRoute>
+            <OwnerVerification />
+          </ProtectedRoute>
+        }
       />
     </Routes>
   );

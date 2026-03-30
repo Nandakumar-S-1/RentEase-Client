@@ -4,11 +4,7 @@ import type { UserResponse } from "../types/adminTypes";
 import type { ApiError } from "../../../types/common";
 import type { RoleType } from "../../../types/Constants/role.constant";
 
-export const useGetUsers = (
-  page = 1,
-  limit = 10,
-  role?: RoleType
-) => {
+export const useGetUsers = (page = 1, limit = 10, role?: RoleType) => {
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +19,7 @@ export const useGetUsers = (
       setTotalPages(response.data?.totalPages || 0);
     } catch (error) {
       const apiError = error as ApiError;
-      setError(apiError?.response?.data?.message || 'fallback message');
+      setError(apiError?.response?.data?.message || "fallback message");
     } finally {
       setIsLoading(false);
     }

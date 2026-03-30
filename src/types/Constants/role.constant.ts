@@ -6,5 +6,4 @@ export const RoleTypes = {
 
 export type RoleType = (typeof RoleTypes)[keyof typeof RoleTypes];
 
-
-export type UserType = 'OWNERS' | 'TENANTS';
+export type UserType = "OWNERS" | "TENANTS";

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Logo } from './Logo';
+import React from "react";
+import { Logo } from "./Logo";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -29,7 +29,9 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
           <div />
         </div>
       )}
-      <div className={`flex flex-1 flex-col items-center overflow-y-auto bg-card px-6 py-10 ${!showLeftPanel ? 'justify-center' : ''}`}>
+      <div
+        className={`flex flex-1 flex-col items-center overflow-y-auto bg-card px-6 py-10 ${!showLeftPanel ? "justify-center" : ""}`}
+      >
         <div className="w-full max-w-md">
           <div className="mb-8 flex lg:hidden justify-center">
             <Logo size="lg" />
@@ -37,11 +39,9 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
           <h1 className="mb-1 text-center text-2xl font-bold text-card-foreground">
             {title}
           </h1>
-          
+
           {subtitle && (
-            <p className="mb-6 text-center text-sm text-primary">
-              {subtitle}
-            </p>
+            <p className="mb-6 text-center text-sm text-primary">{subtitle}</p>
           )}
           {children}
         </div>

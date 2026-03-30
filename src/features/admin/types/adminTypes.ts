@@ -5,7 +5,7 @@ export interface UserResponse {
   email: string;
   fullname: string;
   phone: string;
-  role: RoleType
+  role: RoleType;
   isEmailVerified: boolean;
   isActive: boolean;
   isSuspended: boolean;

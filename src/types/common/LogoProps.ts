@@ -1,5 +1,5 @@
 export interface LogoProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   showText?: boolean;
   className?: string;
 }

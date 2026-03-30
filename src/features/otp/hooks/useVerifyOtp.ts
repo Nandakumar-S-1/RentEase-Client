@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../hooks/useAppDispatch"; 
-import { setCredentials } from "../../auth/slices/AuthSlice"; 
-import { verifyOtp } from "../services/otpService"; 
-import { PAGE_ROUTES } from "../../../config/routes"; 
-import type { ApiError } from '../../../types/common';
+import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { setCredentials } from "../../auth/slices/AuthSlice";
+import { verifyOtp } from "../services/otpService";
+import { PAGE_ROUTES } from "../../../config/routes";
+import type { ApiError } from "../../../types/common";
 import { UIMessages } from "../../../types/Constants/messages.constant";
 import { RoleTypes } from "../../../types/Constants/role.constant";
 
@@ -27,18 +27,20 @@ export const useVerifyOtp = () => {
         setCredentials({
           user: response.data.user,
           accessToken: response.data.accessToken,
-        })
+        }),
       );
 
       setSuccessMessage(UIMessages.SUCCESS.OTP_VERIFIED);
-      const destination = response.data.user.role === RoleTypes.OWNER_USER 
-        ? PAGE_ROUTES.OWNER_VERIFICATION 
-        : PAGE_ROUTES.DASHBOARD;
+      const destination =
+        response.data.user.role === RoleTypes.OWNER_USER
+          ? PAGE_ROUTES.OWNER_VERIFICATION
+          : PAGE_ROUTES.DASHBOARD;
       setTimeout(() => navigate(destination), 1000);
-
     } catch (err) {
       const apiError = err as ApiError;
-      setError(apiError?.response?.data?.message || UIMessages.ERROR.OTP_FAILED);
+      setError(
+        apiError?.response?.data?.message || UIMessages.ERROR.OTP_FAILED,
+      );
     } finally {
       setIsLoading(false);
     }
