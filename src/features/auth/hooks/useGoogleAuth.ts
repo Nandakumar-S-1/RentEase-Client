@@ -7,7 +7,7 @@ import { googleLogin } from "../services/authService";
 import { auth, googleProvider } from "../../../config/firebase.config";
 import { PAGE_ROUTES } from "../../../config/routes";
 import type { ApiError } from "../../../types/common";
-import type { RoleType } from "../../../types/Constants/role.constant";
+import type { RoleType } from "../../../types/constants/role.constant";
 
 export const useGoogleAuth = () => {
   const navigate = useNavigate();
@@ -29,14 +29,17 @@ export const useGoogleAuth = () => {
         setCredentials({
           user: response.data.user,
           accessToken: response.data.accessToken,
-        })
+        }),
       );
 
       setTimeout(() => navigate(PAGE_ROUTES.DASHBOARD), 1000);
     } catch (error) {
-  const apiError = error as ApiError;
-  setError(apiError?.response?.data?.message || 'Google login failed. Please try again.');
-} finally {
+      const apiError = error as ApiError;
+      setError(
+        apiError?.response?.data?.message ||
+          "Google login failed. Please try again.",
+      );
+    } finally {
       setIsLoading(false);
     }
   };

@@ -1,24 +1,38 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Mail, Eye, EyeOff } from 'lucide-react';
-import { Input, Button, FormMessage, AuthLayout } from "../../../components/common"
-import { useLogin } from '../hooks/useLogin';
-import { useGoogleAuth } from '../hooks/useGoogleAuth';
-import type { LoginData } from '../types/authTypes';
-import { PAGE_ROUTES } from '../../../config/routes';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Mail, Eye, EyeOff } from "lucide-react";
+import {
+  Input,
+  Button,
+  FormMessage,
+  AuthLayout,
+} from "../../../components/common";
+import { useLogin } from "../hooks/useLogin";
+import { useGoogleAuth } from "../hooks/useGoogleAuth";
+import type { LoginData } from "../types/authTypes";
+import { PAGE_ROUTES } from "../../../config/routes";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, isLoading: loginLoading, error: loginError, successMessage } = useLogin();
-  const { loginWithGoogle, isLoading: googleLoading, error: googleError } = useGoogleAuth();
+  const {
+    login,
+    isLoading: loginLoading,
+    error: loginError,
+    successMessage,
+  } = useLogin();
+  const {
+    loginWithGoogle,
+    isLoading: googleLoading,
+    error: googleError,
+  } = useGoogleAuth();
 
   const isLoading = loginLoading || googleLoading;
-  const message = successMessage || loginError || googleError || '';
+  const message = successMessage || loginError || googleError || "";
   const isError = !!(loginError || googleError);
 
   const [formData, setFormData] = useState<LoginData>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +55,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    await loginWithGoogle('TENANT');
+    await loginWithGoogle("TENANT");
   };
 
   return (
@@ -66,7 +80,7 @@ const Login = () => {
 
         <Input
           name="password"
-          type={showPassword ? 'text' : 'password'}
+          type={showPassword ? "text" : "password"}
           placeholder="Enter your password"
           label="Password"
           value={formData.password}
@@ -94,7 +108,10 @@ const Login = () => {
               Remember me for 30 days
             </span>
           </label>
-          <a href="/forgot-password" className="text-sm text-primary hover:underline">
+          <a
+            href="/forgot-password"
+            className="text-sm text-primary hover:underline"
+          >
             Forgot password?
           </a>
         </div>
@@ -108,7 +125,9 @@ const Login = () => {
             <span className="w-full border-t border-gray-200" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
+            <span className="bg-white px-2 text-muted-foreground">
+              Or continue with
+            </span>
           </div>
         </div>
 
@@ -141,7 +160,7 @@ const Login = () => {
       </form>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        Don't have an account?{' '}
+        Don't have an account?{" "}
         <button
           onClick={() => navigate(PAGE_ROUTES.HOME)}
           className="font-medium text-primary hover:underline"

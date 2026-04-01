@@ -1,75 +1,76 @@
-
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Mail, ArrowLeft } from 'lucide-react';
-import { Button, FormMessage, Input, AuthLayout } from '../../../components/common';
-import { axiosApi } from '../../../services/api/axiosInstance';
-import { API_ROUTES, PAGE_ROUTES } from '../../../config/routes';
-import type { ApiError } from '../../../types/common';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Mail, ArrowLeft } from "lucide-react";
+import {
+  Button,
+  FormMessage,
+  Input,
+  AuthLayout,
+} from "../../../components/common";
+import { axiosApi } from "../../../services/api/axiosInstance";
+import { API_ROUTES, PAGE_ROUTES } from "../../../config/routes";
+import type { ApiError } from "../../../types/common";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
-  const [step, setStep] = useState<'email' | 'otp' | 'reset'>('email');
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [step, setStep] = useState<"email" | "otp" | "reset">("email");
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage('');
+    setMessage("");
     setIsError(false);
 
     if (!email) {
       setIsError(true);
-      setMessage('Email is required');
+      setMessage("Email is required");
       return;
     }
 
     try {
       setIsLoading(true);
       await axiosApi.post(API_ROUTES.FORGOT_PASSWORD, { email });
-      setMessage('OTP sent to your email');
-      setStep('otp');
+      setMessage("OTP sent to your email");
+      setStep("otp");
     } catch (error) {
       setIsError(true);
       const apiError = error as ApiError;
-      setMessage(apiError?.response?.data?.message || 'Failed to send OTP');
+      setMessage(apiError?.response?.data?.message || "Failed to send OTP");
     } finally {
       setIsLoading(false);
     }
   };
 
-
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage('');
+    setMessage("");
     setIsError(false);
 
-    const otpString = otp.join('');
+    const otpString = otp.join("");
     if (otpString.length !== 6) {
       setIsError(true);
-      setMessage('Please enter all 6 digits');
+      setMessage("Please enter all 6 digits");
       return;
     }
 
     try {
       setIsLoading(true);
-      await axiosApi.post('/users/verify-reset-otp', { email, otp: otpString });
-      setMessage('OTP verified');
-      setStep('reset');
-
+      await axiosApi.post("/users/verify-reset-otp", { email, otp: otpString });
+      setMessage("OTP verified");
+      setStep("reset");
     } catch (error) {
       setIsError(true);
       const apiError = error as ApiError;
-      setMessage(apiError?.response?.data?.message || 'Invalid OTP');
+      setMessage(apiError?.response?.data?.message || "Invalid OTP");
     } finally {
       setIsLoading(false);
     }
@@ -77,37 +78,38 @@ const ForgotPassword = () => {
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage('');
+    setMessage("");
     setIsError(false);
 
     if (newPassword.length < 8) {
       setIsError(true);
-      setMessage('Password must be at least 8 characters');
+      setMessage("Password must be at least 8 characters");
       return;
     }
 
     if (newPassword !== confirmPassword) {
       setIsError(true);
-      setMessage('Passwords do not match');
+      setMessage("Passwords do not match");
       return;
     }
 
     try {
       setIsLoading(true);
-      await axiosApi.post('/users/reset-password', {
+      await axiosApi.post("/users/reset-password", {
         email,
         newPassword,
       });
 
-      setMessage('Password reset successful!');
+      setMessage("Password reset successful!");
       setTimeout(() => {
         navigate(PAGE_ROUTES.LOGIN);
       }, 2000);
-
     } catch (error) {
       setIsError(true);
       const apiError = error as ApiError;
-      setMessage(apiError?.response?.data?.message || 'Failed to reset password');
+      setMessage(
+        apiError?.response?.data?.message || "Failed to reset password",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -123,18 +125,20 @@ const ForgotPassword = () => {
       newOtp[index] = value.substring(value.length - 1);
       setOtp(newOtp);
 
-
-      if (index < 5 && value !== '') {
+      if (index < 5 && value !== "") {
         otpRefs.current[index + 1]?.focus();
       }
     } else {
-      newOtp[index] = '';
+      newOtp[index] = "";
       setOtp(newOtp);
     }
   };
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       otpRefs.current[index - 1]?.focus();
     }
   };
@@ -142,24 +146,24 @@ const ForgotPassword = () => {
   return (
     <AuthLayout
       title={
-        step === 'email'
-          ? 'Forgot Password'
-          : step === 'otp'
-            ? 'Enter Reset Code'
-            : 'Reset Password'
+        step === "email"
+          ? "Forgot Password"
+          : step === "otp"
+            ? "Enter Reset Code"
+            : "Reset Password"
       }
       subtitle={
-        step === 'email'
-          ? 'Enter your email to receive a reset code'
-          : step === 'otp'
-            ? 'Enter the 6-digit code sent to your email'
-            : 'Create a new password'
+        step === "email"
+          ? "Enter your email to receive a reset code"
+          : step === "otp"
+            ? "Enter the 6-digit code sent to your email"
+            : "Create a new password"
       }
       showLeftPanel={false}
     >
       <FormMessage message={message} isError={isError} />
 
-      {step === 'email' && (
+      {step === "email" && (
         <form onSubmit={handleSendOtp} className="space-y-4">
           <Input
             name="email"
@@ -178,13 +182,15 @@ const ForgotPassword = () => {
         </form>
       )}
 
-      {step === 'otp' && (
+      {step === "otp" && (
         <form onSubmit={handleVerifyOtp} className="space-y-6">
           <div className="flex gap-2 justify-center">
             {otp.map((digit, index) => (
               <input
                 key={index}
-                ref={(el) => { otpRefs.current[index] = el; }}
+                ref={(el) => {
+                  otpRefs.current[index] = el;
+                }}
                 type="text"
                 inputMode="numeric"
                 maxLength={1}
@@ -200,7 +206,7 @@ const ForgotPassword = () => {
           <Button
             type="submit"
             loading={isLoading}
-            disabled={otp.join('').length !== 6}
+            disabled={otp.join("").length !== 6}
             className="w-full"
           >
             Verify Code
@@ -209,9 +215,9 @@ const ForgotPassword = () => {
           <button
             type="button"
             onClick={() => {
-              setStep('email');
-              setOtp(['', '', '', '', '', '']);
-              setMessage('');
+              setStep("email");
+              setOtp(["", "", "", "", "", ""]);
+              setMessage("");
             }}
             className="w-full text-sm text-primary hover:underline"
           >
@@ -220,11 +226,11 @@ const ForgotPassword = () => {
         </form>
       )}
 
-      {step === 'reset' && (
+      {step === "reset" && (
         <form onSubmit={handleResetPassword} className="space-y-4">
           <Input
             name="newPassword"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             placeholder="New password (min 8 characters)"
             label="New Password"
             value={newPassword}
@@ -234,7 +240,7 @@ const ForgotPassword = () => {
 
           <Input
             name="confirmPassword"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             placeholder="Confirm password"
             label="Confirm Password"
             value={confirmPassword}
@@ -270,16 +276,6 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
-
-
-
-
-
-
-
-
-
-
 
 // const ForgotPassword = () => {
 //   const navigate = useNavigate();
@@ -407,9 +403,3 @@ export default ForgotPassword;
 // };
 
 // export default ForgotPassword;
-
-
-
-
-
-

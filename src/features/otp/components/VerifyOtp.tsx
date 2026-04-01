@@ -1,25 +1,36 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { RotateCcw, ArrowLeft, Clock } from 'lucide-react';
-import { useVerifyOtp } from '../hooks/useVerifyOtp';
-import { useResendOtp } from '../hooks/useResendOtp';
-import { Button, FormMessage, AuthLayout } from '../../../components/common';
-import { PAGE_ROUTES } from '../../../config/routes';
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { RotateCcw, ArrowLeft, Clock } from "lucide-react";
+import { useVerifyOtp } from "../hooks/useVerifyOtp";
+import { useResendOtp } from "../hooks/useResendOtp";
+import { Button, FormMessage, AuthLayout } from "../../../components/common";
+import { PAGE_ROUTES } from "../../../config/routes";
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const email = searchParams.get('email') || '';
+  const email = searchParams.get("email") || "";
 
-  const { verify, isLoading, error: verifyError, successMessage } = useVerifyOtp();
-  const { resend, isLoading: resendLoading, error: resendError, successMessage: resendSuccess } = useResendOtp();
+  const {
+    verify,
+    isLoading,
+    error: verifyError,
+    successMessage,
+  } = useVerifyOtp();
+  const {
+    resend,
+    isLoading: resendLoading,
+    error: resendError,
+    successMessage: resendSuccess,
+  } = useResendOtp();
 
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [resendCooldown, setResendCooldown] = useState(0);
 
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const message = successMessage || resendSuccess || verifyError || resendError || '';
+  const message =
+    successMessage || resendSuccess || verifyError || resendError || "";
   const isError = !!(verifyError || resendError);
 
   useEffect(() => {
@@ -58,16 +69,16 @@ const VerifyOtp = () => {
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       otpRefs.current[index - 1]?.focus();
     }
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
-    const pasted = e.clipboardData.getData('text').trim();
+    const pasted = e.clipboardData.getData("text").trim();
     if (!/^\d{6}$/.test(pasted)) return;
 
-    const newOtp = pasted.split('');
+    const newOtp = pasted.split("");
     setOtp(newOtp);
     otpRefs.current[5]?.focus();
   };
@@ -75,21 +86,21 @@ const VerifyOtp = () => {
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const otpString = otp.join('');
+    const otpString = otp.join("");
     if (otpString.length !== 6) return;
 
     await verify(email, otpString);
 
     // If verification failed, reset OTP inputs
     if (verifyError) {
-      setOtp(['', '', '', '', '', '']);
+      setOtp(["", "", "", "", "", ""]);
       otpRefs.current[0]?.focus();
     }
   };
 
   const handleResendOtp = async () => {
     await resend(email);
-    setOtp(['', '', '', '', '', '']);
+    setOtp(["", "", "", "", "", ""]);
     otpRefs.current[0]?.focus();
     setResendCooldown(60);
   };
@@ -103,10 +114,7 @@ const VerifyOtp = () => {
       <FormMessage message={message} isError={isError} />
 
       <form onSubmit={handleVerifyOtp} className="space-y-6">
-        <div
-          className="flex gap-2 justify-center"
-          onPaste={handlePaste}
-        >
+        <div className="flex gap-2 justify-center" onPaste={handlePaste}>
           {otp.map((digit, index) => (
             <input
               key={index}
@@ -117,9 +125,7 @@ const VerifyOtp = () => {
               inputMode="numeric"
               maxLength={1}
               value={digit}
-              onChange={(e) =>
-                handleOtpChange(index, e.target.value)
-              }
+              onChange={(e) => handleOtpChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               className="h-12 w-12 rounded-lg border-2 border-gray-200 text-center text-lg font-bold focus:border-primary focus:outline-none transition"
               placeholder="•"
@@ -130,7 +136,7 @@ const VerifyOtp = () => {
         <Button
           type="submit"
           loading={isLoading}
-          disabled={otp.join('').length !== 6 || isLoading}
+          disabled={otp.join("").length !== 6 || isLoading}
           className="w-full"
         >
           Verify Email
@@ -156,9 +162,7 @@ const VerifyOtp = () => {
             )
           }
         >
-          {resendCooldown > 0
-            ? `Retry in ${resendCooldown}s`
-            : 'Resend code'}
+          {resendCooldown > 0 ? `Retry in ${resendCooldown}s` : "Resend code"}
         </Button>
       </div>
 

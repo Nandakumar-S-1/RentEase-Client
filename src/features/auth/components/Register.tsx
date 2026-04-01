@@ -1,35 +1,44 @@
-import React, { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Eye, EyeOff, Mail, Phone, User } from 'lucide-react'
-import { Button, FormMessage, Input, Logo } from '../../../components/common';
-import { useRegister } from '../hooks/useRegister';
-import { useGoogleAuth } from '../hooks/useGoogleAuth';
-import { PAGE_ROUTES } from '../../../config/routes';
+import React, { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Eye, EyeOff, Mail, Phone, User } from "lucide-react";
+import { Button, FormMessage, Input, Logo } from "../../../components/common";
+import { useRegister } from "../hooks/useRegister";
+import { useGoogleAuth } from "../hooks/useGoogleAuth";
+import { PAGE_ROUTES } from "../../../config/routes";
 
 const Register = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const role = (searchParams.get('role') || 'TENANT') as 'TENANT' | 'OWNER';
+  const role = (searchParams.get("role") || "TENANT") as "TENANT" | "OWNER";
 
-  const { register, isLoading: registerLoading, error: registerError, successMessage } = useRegister();
-  const { loginWithGoogle, isLoading: googleLoading, error: googleError } = useGoogleAuth();
+  const {
+    register,
+    isLoading: registerLoading,
+    error: registerError,
+    successMessage,
+  } = useRegister();
+  const {
+    loginWithGoogle,
+    isLoading: googleLoading,
+    error: googleError,
+  } = useGoogleAuth();
 
   const isLoading = registerLoading || googleLoading;
-  const message = successMessage || registerError || googleError || '';
+  const message = successMessage || registerError || googleError || "";
   const isError = !!(registerError || googleError);
 
   const [formData, setFormData] = useState({
-    email: '',
-    fullname: '',
-    password: '',
-    confirmPassword: '',
-    phone: '',
+    email: "",
+    fullname: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [validationError, setValidationError] = useState('');
+  const [validationError, setValidationError] = useState("");
 
   const handleGoogleLogin = async () => {
     await loginWithGoogle(role);
@@ -41,10 +50,10 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setValidationError('');
+    setValidationError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setValidationError('Passwords do not match');
+      setValidationError("Passwords do not match");
       return;
     }
 
@@ -65,9 +74,9 @@ const Register = () => {
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-linear-to-b from-[hsl(260,20%,18%)] to-[hsl(260,25%,12%)] p-12 text-white">
         <Logo size="md" />
         <p className="max-w-md text-lg leading-relaxed text-white/70">
-          {role === 'OWNER'
-            ? 'Manage your rental properties effortlessly...'
-            : 'Find your perfect rental home...'}
+          {role === "OWNER"
+            ? "Manage your rental properties effortlessly..."
+            : "Find your perfect rental home..."}
         </p>
         <div />
       </div>
@@ -77,7 +86,9 @@ const Register = () => {
             <Logo size="lg" />
           </div>
 
-          <h1 className="mb-1 text-center text-2xl font-bold">Create your account</h1>
+          <h1 className="mb-1 text-center text-2xl font-bold">
+            Create your account
+          </h1>
 
           <FormMessage message={displayMessage} isError={displayIsError} />
 
@@ -116,7 +127,7 @@ const Register = () => {
 
             <Input
               name="password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Create a strong password"
               label="Password"
               value={formData.password}
@@ -126,7 +137,11 @@ const Register = () => {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               }
               required
@@ -134,7 +149,7 @@ const Register = () => {
 
             <Input
               name="confirmPassword"
-              type={showConfirm ? 'text' : 'password'}
+              type={showConfirm ? "text" : "password"}
               placeholder="Confirm password"
               label="Confirm Password"
               value={formData.confirmPassword}
@@ -144,13 +159,22 @@ const Register = () => {
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
                 >
-                  {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showConfirm ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               }
               required
             />
 
-            <Button type="submit" loading={isLoading} className="w-full" size={'md'}>
+            <Button
+              type="submit"
+              loading={isLoading}
+              className="w-full"
+              size={"md"}
+            >
               Create account
             </Button>
 
@@ -159,7 +183,9 @@ const Register = () => {
                 <span className="w-full border-t border-gray-200" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or sign up with</span>
+                <span className="bg-card px-2 text-muted-foreground">
+                  Or sign up with
+                </span>
               </div>
             </div>
 
@@ -192,7 +218,7 @@ const Register = () => {
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <button
               onClick={() => navigate(PAGE_ROUTES.LOGIN)}
               className="font-medium text-primary hover:underline"

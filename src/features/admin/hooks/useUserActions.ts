@@ -12,7 +12,7 @@ export const useUserActions = (onSuccess?: () => void) => {
 
   const performAction = async (
     action: "suspend" | "activate" | "deactivate",
-    userId: string
+    userId: string,
   ) => {
     try {
       setIsLoading(true);
@@ -32,9 +32,9 @@ export const useUserActions = (onSuccess?: () => void) => {
 
       onSuccess?.();
     } catch (error) {
-  const apiError = error as ApiError;
-  setError(apiError?.response?.data?.message || 'fallback message');
-}finally {
+      const apiError = error as ApiError;
+      setError(apiError?.response?.data?.message || "fallback message");
+    } finally {
       setIsLoading(false);
     }
   };

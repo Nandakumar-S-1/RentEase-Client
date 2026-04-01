@@ -1,13 +1,9 @@
 import { API_ROUTES } from "../../../config/routes";
 import { axiosApi } from "../../../services/api/axiosInstance";
-import type { RoleType } from "../../../types/Constants/role.constant";
+import type { RoleType } from "../../../types/constants/role.constant";
 
-export const getAllUsers = async (
-  page = 1,
-  limit = 10,
-  role?: RoleType,
-) => {
-  const params: Record<string ,string|number> = { page, limit };
+export const getAllUsers = async (page = 1, limit = 10, role?: RoleType) => {
+  const params: Record<string, string | number> = { page, limit };
   if (role) {
     params.role = role;
   }
@@ -28,6 +24,8 @@ export const activateUser = async (userId: string) => {
 };
 
 export const deactivateUser = async (userId: string) => {
-  const response = await axiosApi.patch( API_ROUTES.ADMIN_DEACTIVATE_USER(userId));
+  const response = await axiosApi.patch(
+    API_ROUTES.ADMIN_DEACTIVATE_USER(userId),
+  );
   return response.data;
 };

@@ -5,4 +5,5 @@ export const VerificationStatus = {
   REJECTED: "REJECTED",
 } as const;
 
-export type VerificationStatusType = (typeof VerificationStatus)[keyof typeof VerificationStatus];
+export type VerificationStatusType =
+  (typeof VerificationStatus)[keyof typeof VerificationStatus];

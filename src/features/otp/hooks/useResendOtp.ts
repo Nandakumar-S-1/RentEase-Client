@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { resendOtp } from "../services/otpService"; 
-import type { ApiError } from '../../../types/common';
+import { resendOtp } from "../services/otpService";
+import type { ApiError } from "../../../types/common";
 
 export const useResendOtp = () => {
   const [isLoading, setIsLoading] = useState(false);
