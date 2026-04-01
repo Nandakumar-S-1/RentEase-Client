@@ -17,8 +17,8 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import { Modal } from "./index";
-import { RoleTypes } from "../../types/Constants/role.constant";
-import type { RoleType } from "../../types/Constants/role.constant";
+import { RoleTypes, type RoleType } from "../../types/constants/role.constant";
+import { PAGE_ROUTES } from "../../config/routes";
 
 interface SidebarProps {
   role: RoleType;
@@ -164,12 +164,12 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
   const currentMenu = menuItems[role] || [];
 
   return (
-    <div className="flex flex-col h-screen w-64 bg-[#1e2235] text-gray-400 p-4">
+    <div className="flex flex-col h-full w-64 shrink-0 bg-[color:var(--color-surface)] text-gray-600 dark:text-gray-300 p-4 border border-[color:var(--color-border)] rounded-2xl">
       <div className="mb-8 pl-2">
-        <Logo className="text-white" />
+        <Logo className="text-gray-900 dark:text-white" />
       </div>
 
-      <div className="px-2 mb-6 text-xs font-semibold uppercase tracking-wider text-gray-500">
+      <div className="px-2 mb-6 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-500">
         {role ? role.charAt(0) + role.slice(1).toLowerCase() : ""} Dashboard
       </div>
 
@@ -183,7 +183,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors ${
                 isActive
                   ? "bg-primary text-white"
-                  : "hover:bg-gray-800 hover:text-white"
+                  : "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-white/10 dark:hover:text-white"
               }`}
             >
               <div className="flex items-center gap-3">
@@ -195,27 +195,32 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
         })}
       </nav>
 
-      <div className="mt-auto border-t border-gray-800 pt-4">
+      <div className="mt-auto border-t border-[color:var(--color-border)] pt-4">
         <div className="flex items-center gap-3 px-3 py-2 mb-2">
-          <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#4338ca] text-white font-bold text-sm">
-            {userName
-              ? userName
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-              : "??"}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">
-              {userName}
-            </p>
-            <p className="text-xs text-gray-500 truncate">
-              {role ? role.toLowerCase() : ""}
-            </p>
-          </div>
+          <button
+            onClick={() => navigate(PAGE_ROUTES.PROFILE)}
+            className="flex items-center gap-3 flex-1 min-w-0 text-left hover:bg-gray-100 dark:hover:bg-white/10 p-1 rounded-lg transition-colors group"
+          >
+            <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#4338ca] text-white font-bold text-sm group-hover:scale-105 transition-transform">
+              {userName
+                ? userName
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                : "??"}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                {userName}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {role ? role.toLowerCase() : ""}
+              </p>
+            </div>
+          </button>
           <button
             onClick={() => setIsLogoutModalOpen(true)}
-            className="p-1.5 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition-colors"
           >
             <LogOut size={18} />
           </button>

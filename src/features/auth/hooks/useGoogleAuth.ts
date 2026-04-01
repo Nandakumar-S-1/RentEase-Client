@@ -7,7 +7,7 @@ import { googleLogin } from "../services/authService";
 import { auth, googleProvider } from "../../../config/firebase.config";
 import { PAGE_ROUTES } from "../../../config/routes";
 import type { ApiError } from "../../../types/common";
-import type { RoleType } from "../../../types/Constants/role.constant";
+import type { RoleType } from "../../../types/constants/role.constant";
 
 export const useGoogleAuth = () => {
   const navigate = useNavigate();

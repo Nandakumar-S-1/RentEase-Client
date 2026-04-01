@@ -1,5 +1,6 @@
 import React from "react";
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -30,8 +31,11 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
         </div>
       )}
       <div
-        className={`flex flex-1 flex-col items-center overflow-y-auto bg-card px-6 py-10 ${!showLeftPanel ? "justify-center" : ""}`}
+        className={`relative flex flex-1 flex-col items-center overflow-y-auto bg-card px-6 py-10 ${!showLeftPanel ? "justify-center" : ""}`}
       >
+        <div className="absolute top-4 right-4">
+          <ThemeToggle />
+        </div>
         <div className="w-full max-w-md">
           <div className="mb-8 flex lg:hidden justify-center">
             <Logo size="lg" />

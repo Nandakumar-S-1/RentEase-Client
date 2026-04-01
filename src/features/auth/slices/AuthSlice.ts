@@ -8,8 +8,20 @@ interface AuthState {
   isLoading: boolean;
 }
 
+function parseStoredUser(): User | null {
+  const rawUser = localStorage.getItem("user");
+  if (!rawUser) return null;
+
+  try {
+    return JSON.parse(rawUser) as User;
+  } catch {
+    localStorage.removeItem("user");
+    return null;
+  }
+}
+
 const initialState: AuthState = {
-  user: JSON.parse(localStorage.getItem("user") || "null"),
+  user: parseStoredUser(),
   accessToken: localStorage.getItem("accessToken"),
   isAuthenticated: !!localStorage.getItem("accessToken"),
   isLoading: false,
@@ -64,17 +76,6 @@ const authSlice = createSlice({
       }
     },
   },
-  // reducers: {
-  //   setLoading: (state, action: PayloadAction<boolean>) => {
-  //     state.loading = action.payload;
-  //   },
-  //   setUser: (state, action: PayloadAction<User | null>) => {
-  //     state.user = action.payload;
-  //   },
-  //   setError: (state, action: PayloadAction<string | null>) => {
-  //     state.error = action.payload;
-  //   },
-  // },
 });
 
 export const {

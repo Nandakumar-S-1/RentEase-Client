@@ -5,3 +5,4 @@ export { Logo } from "./Logo";
 export { AuthLayout } from "./AuthLayout";
 export { Modal } from "./Modal";
 export { Toast } from "./Toast";
+export { ThemeToggle } from "./ThemeToggle";

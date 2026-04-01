@@ -6,7 +6,7 @@ export const AppRouter = () => {
   return (
     <Routes>
       <Route path="/admin/*" element={<AdminRouter />} />
-      <Route path="/*" element={<UserRouter />} />
+      <Route path="*" element={<UserRouter />} />
     </Routes>
   );
 };

@@ -6,9 +6,42 @@
   --color-accent: #ede9fe;
   --color-card: #ffffff;
   --color-muted: #9ca3af;
+  --color-background: #f3f5f9;
+  --color-foreground: #111827;
+  --color-surface: #ffffff;
+  --color-border: rgba(17, 24, 39, 0.1);
 
   --color-muted-foreground: #6b7280;
   --color-card-foreground: #111827;
   --color-secondary-foreground: #4c1d95;
   --color-accent-foreground: #4c1d95;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --color-background: #0a0f1c;
+    --color-surface: #0f172a;
+    --color-card: #111c2e;
+    --color-foreground: #e5e7eb;
+    --color-border: rgba(255, 255, 255, 0.08);
+
+    --color-muted: #94a3b8;
+    --color-muted-foreground: #94a3b8;
+    --color-card-foreground: #e5e7eb;
+
+    --color-secondary: #1f2937;
+    --color-accent: #111827;
+    --color-secondary-foreground: #e5e7eb;
+    --color-accent-foreground: #e5e7eb;
+  }
+
+  body {
+    @apply bg-[color:var(--color-background)] text-[color:var(--color-foreground)];
+  }
 }

@@ -5,8 +5,8 @@ import { setCredentials } from "../../auth/slices/AuthSlice";
 import { verifyOtp } from "../services/otpService";
 import { PAGE_ROUTES } from "../../../config/routes";
 import type { ApiError } from "../../../types/common";
-import { UIMessages } from "../../../types/Constants/messages.constant";
-import { RoleTypes } from "../../../types/Constants/role.constant";
+import { UIMessages } from "../../../types/constants/messages.constant";
+import { RoleTypes } from "../../../types/constants/role.constant";
 
 export const useVerifyOtp = () => {
   const navigate = useNavigate();

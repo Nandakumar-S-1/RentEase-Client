@@ -12,6 +12,7 @@ export const PAGE_ROUTES = {
   RESEND_OTP: "/resend-otp",
   VERIFY_OTP: "/verify-otp",
   DASHBOARD: "/dashboard",
+  PROFILE: "/profile",
   ADMIN_USERS: "/admin/users",
   OWNER_VERIFICATION: "/owner/verify",
 } as const;
@@ -40,6 +41,9 @@ export const API_ROUTES = {
   ADMIN_OWNER_DETAILS: (id: string) => `/admin/owners/${id}`,
   ADMIN_VERIFY_OWNER: (id: string) => `/admin/owners/${id}/verify`,
   ADMIN_REJECT_OWNER: (id: string) => `/admin/owners/${id}/reject`,
+
+  PROFILE: "/profile",
+  UPDATE_PROFILE: "/profile",
 } as const;
 
 export const PATH_ROUTES = {

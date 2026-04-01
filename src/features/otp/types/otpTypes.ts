@@ -1,4 +1,4 @@
-import type { RoleType } from "../../../types/Constants/role.constant";
+import type { RoleType } from "../../../types/constants/role.constant";
 
 export interface VerifyOtpResponse {
   success: boolean;

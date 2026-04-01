@@ -1,4 +1,4 @@
-import type { RoleType } from "../../../types/Constants/role.constant";
+import type { RoleType } from "../../../types/constants/role.constant";
 import type { VerificationStatus } from "../../verification/types/verificationType";
 
 export interface User {

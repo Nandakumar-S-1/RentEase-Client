@@ -15,11 +15,11 @@ import {
 } from "../services/adminService";
 import type { UserResponse } from "../types/adminTypes";
 import { Modal, Toast } from "../../../components/common";
-import { RoleTypes } from "../../../types/Constants/role.constant";
+import { RoleTypes } from "../../../types/constants/role.constant";
 import type {
   UserType,
   RoleType,
-} from "../../../types/Constants/role.constant";
+} from "../../../types/constants/role.constant";
 import {
   getOwnerVerificationDetails,
   type OwnerVerificationDetails,

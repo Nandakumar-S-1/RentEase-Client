@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { PAGE_ROUTES } from "../../config/routes";
-import { RoleTypes } from "../../types/Constants/role.constant";
+import { RoleTypes } from "../../types/constants/role.constant";
 import { VerificationStatus } from "../../features/auth/types/verification.types";
 //This is used for pages that require the user to be logged in.
 interface ProtectedRouteProps {

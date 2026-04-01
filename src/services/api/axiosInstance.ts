@@ -1,6 +1,7 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { ENV } from "../../config/env";
 import { API_ROUTES, PAGE_ROUTES } from "../../config/routes";
+import { ErrorCodes } from "../../types/constants/error.constant";
 
 export const axiosApi = axios.create({
   baseURL: ENV.API_BASE_URL,
@@ -32,7 +33,7 @@ const processQueue = (error: unknown): void => {
 const clearAuthAndRedirect = (): void => {
   localStorage.removeItem("user");
   localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken"); // Just in case any old ones exist
+  localStorage.removeItem("refreshToken");
   window.location.href = PAGE_ROUTES.LOGIN;
 };
 //for request
@@ -67,8 +68,8 @@ axiosApi.interceptors.response.use(
     if (status === 401) {
       const errorCode = (error.response?.data as { code?: string })?.code;
       if (
-        errorCode === "ACCOUNT_SUSPENDED" ||
-        errorCode === "ACCOUNT_DEACTIVATED"
+        errorCode === ErrorCodes.ACCOUNT_SUSPENDED ||
+        errorCode === ErrorCodes.ACCOUNT_DEACTIVATED
       ) {
         if (!originalRequest.url?.includes("/login")) {
           clearAuthAndRedirect();
@@ -121,6 +122,11 @@ axiosApi.interceptors.response.use(
       clearAuthAndRedirect();
       return Promise.reject(error);
     }
+
+    if (status && status >= 500) {
+      console.error(`🔴 Server Error [${status}]:`, error.message);
+    }
+
     return Promise.reject(error);
   },
 );

@@ -10,7 +10,8 @@ import {
 import { useSubmitVerification } from "../hooks/useSubmitVerification";
 import { Button, FormMessage } from "../../../components/common";
 import { PAGE_ROUTES } from "../../../config/routes";
-import { VerificationStatus } from "../../../types/Constants/ownerVerification.constant";
+import { VerificationStatus } from "../../../types/constants/ownerVerification.constant";
+import { DocumentTypes } from "../../../types/constants/document.constant";
 
 const OwnerVerification = () => {
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ const OwnerVerification = () => {
   } = useSubmitVerification();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [documentType, setDocumentType] = useState<"PAN" | "AADHAAR">(
-    "AADHAAR",
+  const [documentType, setDocumentType] = useState<DocumentTypes>(
+    DocumentTypes.AADHAAR,
   );
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -110,12 +111,12 @@ const OwnerVerification = () => {
             <select
               value={documentType}
               onChange={(e) =>
-                setDocumentType(e.target.value as "PAN" | "AADHAAR")
+                setDocumentType(e.target.value as DocumentTypes)
               }
               className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             >
-              <option value="AADHAAR">Aadhaar Card</option>
-              <option value="PAN">PAN Card</option>
+              <option value={DocumentTypes.AADHAAR}>Aadhaar Card</option>
+              <option value={DocumentTypes.PAN}>PAN Card</option>
             </select>
           </div>
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { getAllUsers } from "../services/adminService";
 import type { UserResponse } from "../types/adminTypes";
 import type { ApiError } from "../../../types/common";
-import type { RoleType } from "../../../types/Constants/role.constant";
+import type { RoleType } from "../../../types/constants/role.constant";
 
 export const useGetUsers = (page = 1, limit = 10, role?: RoleType) => {
   const [users, setUsers] = useState<UserResponse[]>([]);

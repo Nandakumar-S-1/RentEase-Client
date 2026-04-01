@@ -8,14 +8,26 @@ import AdminLogin from "../../features/admin/components/AdminLogin";
 import AdminDashboard from "../../features/admin/components/AdminDashboard";
 import AdminUserManagement from "../../features/admin/components/AdminUserManagement";
 import AdminOwnerVerification from "../../features/admin/components/AdminOwnerVerification";
-import { RoleTypes } from "../../types/Constants/role.constant";
-import type { RoleType } from "../../types/Constants/role.constant";
+import { RoleTypes } from "../../types/constants/role.constant";
+import type { RoleType } from "../../types/constants/role.constant";
 import { PATH_ROUTES } from "../../config/routes";
+import NotFound from "../../components/common/NotFound";
+
+function parseStoredUser() {
+  const storedUser = localStorage.getItem("user");
+  if (!storedUser) return null;
+
+  try {
+    return JSON.parse(storedUser) as { fullname: string; role: RoleType };
+  } catch {
+    localStorage.removeItem("user");
+    return null;
+  }
+}
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const user = useMemo<{ fullname: string; role: RoleType } | null>(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    return parseStoredUser();
   }, []);
 
   if (!user)
@@ -73,6 +85,7 @@ export const AdminRouter = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

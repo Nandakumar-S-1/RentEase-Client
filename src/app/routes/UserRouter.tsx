@@ -10,6 +10,8 @@ import VerifyOtp from "../../features/otp/components/VerifyOtp";
 import ForgotPassword from "../../features/auth/components/ForgotPassword";
 import Dashboard from "../../components/pages/Dashboard";
 import OwnerVerification from "../../features/verification/components/OwnerVerification";
+import ProfilePage from "../../features/profile/components/ProfilePage";
+import NotFound from "../../components/common/NotFound";
 
 export const UserRouter = () => {
   return (
@@ -66,6 +68,15 @@ export const UserRouter = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path={PAGE_ROUTES.PROFILE}
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
