@@ -9,5 +9,6 @@ export interface UserResponse {
   isEmailVerified: boolean;
   isActive: boolean;
   isSuspended: boolean;
+  avatarUrl?: string | null;
   createdAt: string;
 }

@@ -6,3 +6,4 @@ export { AuthLayout } from "./AuthLayout";
 export { Modal } from "./Modal";
 export { Toast } from "./Toast";
 export { ThemeToggle } from "./ThemeToggle";
+export { LoadingOverlay } from "./LoadingOverlay";

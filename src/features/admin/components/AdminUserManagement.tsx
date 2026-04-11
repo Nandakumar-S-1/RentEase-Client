@@ -1,31 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
-import {
-  Search,
-  Filter,
-  Eye,
-  Download,
-  UserCheck,
-  UserX,
-  Users,
-} from "lucide-react";
-import {
-  getAllUsers,
-  suspendUser,
-  activateUser,
-} from "../services/adminService";
+import { Search, Filter, Eye, Download, UserCheck, UserX, Users } from "lucide-react";
+import { getAllUsers, suspendUser, activateUser } from "../services/adminService";
 import type { UserResponse } from "../types/adminTypes";
 import { Modal, Toast } from "../../../components/common";
 import { RoleTypes } from "../../../types/constants/role.constant";
-import type {
-  UserType,
-  RoleType,
-} from "../../../types/constants/role.constant";
-import {
-  getOwnerVerificationDetails,
-  type OwnerVerificationDetails,
-} from "../services/adminVerificationService";
+import type { UserType, RoleType } from "../../../types/constants/role.constant";
+import { useNavigate } from "react-router-dom";
+import { PAGE_ROUTES } from "../../../config/routes";
 
 const AdminUserManagement = () => {
+  const navigate = useNavigate();
   const [allUsers, setAllUsers] = useState<UserResponse[]>([]);
   const [userType, setUserType] = useState<UserType>("OWNERS");
   const [loading, setLoading] = useState(true);
@@ -46,9 +30,6 @@ const AdminUserManagement = () => {
     message: string;
     type: "success" | "error";
   } | null>(null);
-  const [detailsLoading, setDetailsLoading] = useState(false);
-  const [ownerDetails, setOwnerDetails] =
-    useState<OwnerVerificationDetails | null>(null);
 
   const fetchUsers = useCallback(
     async (page = 1, role: RoleType) => {
@@ -111,23 +92,8 @@ const AdminUserManagement = () => {
     fetchUsers(newPage, role);
   };
 
-  const handleViewDetails = async (user: UserResponse) => {
-    if (user.role !== RoleTypes.OWNER_USER) {
-      return;
-    }
-    try {
-      setDetailsLoading(true);
-      const response = await getOwnerVerificationDetails(user.id);
-      setOwnerDetails(response.data);
-    } catch (error) {
-      console.error("Error fetching owner verification details:", error);
-      setToast({
-        message: "Failed to fetch owner verification details.",
-        type: "error",
-      });
-    } finally {
-      setDetailsLoading(false);
-    }
+  const handleViewDetails = (user: UserResponse) => {
+    navigate(PAGE_ROUTES.ADMIN_USER_DETAIL.replace(":id", user.id));
   };
 
   const filteredUsers = allUsers.filter(
@@ -177,22 +143,20 @@ const AdminUserManagement = () => {
       <div className="flex gap-2 border-b border-gray-200">
         <button
           onClick={() => setUserType("OWNERS")}
-          className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all ${
-            userType === "OWNERS"
+          className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all ${userType === "OWNERS"
               ? "text-primary border-primary"
               : "text-gray-600 border-transparent hover:text-gray-900"
-          }`}
+            }`}
         >
           <Users size={18} />
           Owners
         </button>
         <button
           onClick={() => setUserType("TENANTS")}
-          className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all ${
-            userType === "TENANTS"
+          className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all ${userType === "TENANTS"
               ? "text-primary border-primary"
               : "text-gray-600 border-transparent hover:text-gray-900"
-          }`}
+            }`}
         >
           <Users size={18} />
           Tenants
@@ -260,16 +224,19 @@ const AdminUserManagement = () => {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white ${
-                            userType === "OWNERS"
+                          className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white overflow-hidden ${userType === "OWNERS"
                               ? "bg-primary"
                               : "bg-purple-600"
-                          }`}
+                            }`}
                         >
-                          {user.fullname
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
+                          {user.avatarUrl ? (
+                            <img src={user.avatarUrl} alt={user.fullname} className="w-full h-full object-cover" />
+                          ) : (
+                            user.fullname
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                          )}
                         </div>
                         <div>
                           <p className="text-sm font-bold text-gray-900">
@@ -289,11 +256,10 @@ const AdminUserManagement = () => {
 
                     <td className="px-6 py-4 text-center">
                       <span
-                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${
-                          userType === "OWNERS"
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${userType === "OWNERS"
                             ? "bg-primary/10 text-primary"
                             : "bg-purple-50 text-purple-600"
-                        }`}
+                          }`}
                       >
                         {user.role}
                       </span>
@@ -368,11 +334,10 @@ const AdminUserManagement = () => {
               <button
                 key={i}
                 onClick={() => handlePageChange(i + 1)}
-                className={`w-8 h-8 flex items-center justify-center text-xs font-bold border rounded-lg transition-all ${
-                  pagination.page === i + 1
+                className={`w-8 h-8 flex items-center justify-center text-xs font-bold border rounded-lg transition-all ${pagination.page === i + 1
                     ? "bg-primary text-white border-primary"
                     : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
-                }`}
+                  }`}
               >
                 {i + 1}
               </button>
@@ -388,57 +353,6 @@ const AdminUserManagement = () => {
         </div>
       </div>
 
-      {ownerDetails && (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Owner Verification Details
-            </h2>
-            {detailsLoading && (
-              <span className="text-xs text-gray-500">Loading...</span>
-            )}
-          </div>
-          <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-            <p>
-              <span className="font-semibold">Owner ID:</span>{" "}
-              {ownerDetails.ownerId}
-            </p>
-            <p>
-              <span className="font-semibold">Status:</span>{" "}
-              {ownerDetails.status}
-            </p>
-            <p>
-              <span className="font-semibold">Document Type:</span>{" "}
-              {ownerDetails.documentType ?? "N/A"}
-            </p>
-            <p>
-              <span className="font-semibold">Submitted At:</span>{" "}
-              {new Date(ownerDetails.submittedAt).toLocaleString()}
-            </p>
-            <p className="md:col-span-2">
-              <span className="font-semibold">Uploaded Document:</span>{" "}
-              {ownerDetails.documentUrl ? (
-                <a
-                  href={ownerDetails.documentUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  View document
-                </a>
-              ) : (
-                "N/A"
-              )}
-            </p>
-            <p className="md:col-span-2">
-              <span className="font-semibold">Rejection Reason:</span>{" "}
-              {ownerDetails.rejectionReason ?? "N/A"}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Confirmation Modal */}
       <Modal
         isOpen={confirmModal.isOpen}
         onClose={() =>

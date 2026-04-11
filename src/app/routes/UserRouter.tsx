@@ -11,6 +11,7 @@ import ForgotPassword from "../../features/auth/components/ForgotPassword";
 import Dashboard from "../../components/pages/Dashboard";
 import OwnerVerification from "../../features/verification/components/OwnerVerification";
 import ProfilePage from "../../features/profile/components/ProfilePage";
+import ChatPage from "../../features/chat/components/ChatPage";
 import NotFound from "../../components/common/NotFound";
 
 export const UserRouter = () => {
@@ -73,6 +74,14 @@ export const UserRouter = () => {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PAGE_ROUTES.MESSAGES}
+        element={
+          <ProtectedRoute>
+            <ChatPage />
           </ProtectedRoute>
         }
       />

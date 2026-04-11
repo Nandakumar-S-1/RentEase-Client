@@ -44,4 +44,30 @@
   body {
     @apply bg-[color:var(--color-background)] text-[color:var(--color-foreground)];
   }
+
+  /* Shimmer effect for skeleton loaders */
+  @keyframes shimmer {
+    0% { background-position: -468px 0; }
+    100% { background-position: 468px 0; }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      to right,
+      rgba(var(--color-primary), 0.1) 8%,
+      rgba(var(--color-primary), 0.2) 18%,
+      rgba(var(--color-primary), 0.1) 33%
+    );
+    background-size: 800px 104px;
+    animation: shimmer 1.5s linear infinite;
+  }
+
+  @keyframes pulseHouse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  .animate-pulse-house {
+    animation: pulseHouse 2s ease-in-out infinite;
+  }
 }

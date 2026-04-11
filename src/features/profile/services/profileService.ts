@@ -17,3 +17,15 @@ export const updateProfile = async (
   const response = await axiosApi.put(API_ROUTES.UPDATE_PROFILE, data);
   return response.data;
 };
+
+export const uploadAvatar = async (file: File): Promise<{ success: boolean; data: { avatarUrl: string } }> => {
+  const formData = new FormData();
+  formData.append("avatar", file);
+
+  const response = await axiosApi.post(API_ROUTES.UPLOAD_AVATAR, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};

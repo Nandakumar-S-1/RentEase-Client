@@ -14,7 +14,9 @@ export const PAGE_ROUTES = {
   DASHBOARD: "/dashboard",
   PROFILE: "/profile",
   ADMIN_USERS: "/admin/users",
+  ADMIN_USER_DETAIL: "/admin/users/:id",
   OWNER_VERIFICATION: "/owner/verify",
+  MESSAGES: "/messages",
 } as const;
 
 export const API_ROUTES = {
@@ -34,6 +36,7 @@ export const API_ROUTES = {
   ADMIN_ACTIVATE_USER: (userId: string) => `/admin/users/activate/${userId}`,
   ADMIN_DEACTIVATE_USER: (userId: string) =>
     `/admin/users/deactivate/${userId}`,
+  ADMIN_USER_DETAILS: (userId: string) => `/admin/users/${userId}`,
 
   SUBMIT_VERIFICATION: "/owner/submit-verification",
   VERIFICATION_STATUS: "/owner/verification-status",
@@ -44,6 +47,7 @@ export const API_ROUTES = {
 
   PROFILE: "/profile",
   UPDATE_PROFILE: "/profile",
+  UPLOAD_AVATAR: "/profile/avatar",
 } as const;
 
 export const PATH_ROUTES = {

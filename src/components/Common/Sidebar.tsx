@@ -23,6 +23,7 @@ import { PAGE_ROUTES } from "../../config/routes";
 interface SidebarProps {
   role: RoleType;
   userName: string;
+  avatarUrl?: string | null;
   onLogout: () => void;
 }
 
@@ -32,7 +33,7 @@ type SidebarMenuItem = {
   path: string;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
+const Sidebar: React.FC<SidebarProps> = ({ role, userName, avatarUrl, onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -67,7 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
       {
         icon: <MessageSquare size={20} />,
         label: "Messages",
-        path: "/owner/messages",
+        path: PAGE_ROUTES.MESSAGES,
       },
       {
         icon: <Bookmark size={20} />,
@@ -104,7 +105,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
       {
         icon: <MessageSquare size={20} />,
         label: "Messages",
-        path: "/tenant/messages",
+        path: PAGE_ROUTES.MESSAGES,
       },
       {
         icon: <Bookmark size={20} />,
@@ -201,13 +202,17 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, onLogout }) => {
             onClick={() => navigate(PAGE_ROUTES.PROFILE)}
             className="flex items-center gap-3 flex-1 min-w-0 text-left hover:bg-gray-100 dark:hover:bg-white/10 p-1 rounded-lg transition-colors group"
           >
-            <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#4338ca] text-white font-bold text-sm group-hover:scale-105 transition-transform">
-              {userName
-                ? userName
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")
-                : "??"}
+            <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#4338ca] text-white font-bold text-sm overflow-hidden group-hover:scale-105 transition-transform">
+              {avatarUrl ? (
+                <img src={avatarUrl} alt={userName} className="w-full h-full object-cover" />
+              ) : (
+                userName
+                  ? userName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                  : "??"
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
