@@ -17,6 +17,7 @@ export const PAGE_ROUTES = {
   ADMIN_USER_DETAIL: "/admin/users/:id",
   OWNER_VERIFICATION: "/owner/verify",
   MESSAGES: "/messages",
+  OWNER_PROPERTIES: "/owner/properties",
 } as const;
 
 export const API_ROUTES = {
@@ -27,6 +28,7 @@ export const API_ROUTES = {
   RESEND_OTP: "/users/resend-otp",
   FORGOT_PASSWORD: "/users/forgot-password",
   REFRESH_TOKEN: "/users/refresh-token",
+  LOGOUT: "/users/logout",
   ME: "/users/me",
 
   ADMIN_LOGIN: "/admin/login",
@@ -48,6 +50,7 @@ export const API_ROUTES = {
   PROFILE: "/profile",
   UPDATE_PROFILE: "/profile",
   UPLOAD_AVATAR: "/profile/avatar",
+  GET_OWNER_PROPERTIES: "/properties/owner",
 } as const;
 
 export const PATH_ROUTES = {

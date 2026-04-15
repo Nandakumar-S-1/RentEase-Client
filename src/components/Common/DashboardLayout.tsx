@@ -7,7 +7,7 @@ import { logout } from "../../features/auth/slices/AuthSlice";
 import { RoleTypes } from "../../types/constants/role.constant";
 import { useNavigate } from "react-router-dom";
 import { PAGE_ROUTES } from "../../config/routes";
-import { checkSession } from "../../features/auth/services/authService";
+import { checkSession, logoutSession } from "../../features/auth/services/authService";
 import type { RoleType } from "../../types/constants/role.constant";
 import { ThemeToggle } from "./ThemeToggle";
 import type { RootState } from "../../app/store/store";
@@ -27,7 +27,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const navigate = useNavigate();
   const { user } = useAppSelector((state: RootState) => state.auth);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logoutSession();
+    } catch {
+      // Continue with local logout
+    }
     dispatch(logout());
     const loginPath = role === RoleTypes.ADMIN_USER ? PAGE_ROUTES.ADMIN_LOGIN : PAGE_ROUTES.LOGIN;
     navigate(loginPath, { replace: true });

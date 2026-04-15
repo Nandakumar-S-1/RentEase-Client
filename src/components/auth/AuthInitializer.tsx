@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { axiosApi } from "../../services/api/axiosInstance";
 import { API_ROUTES, PAGE_ROUTES } from "../../config/routes";
-import { updateIsAuthenticated, updateAccessToken } from "../../features/auth/slices/AuthSlice";
+import {
+  updateIsAuthenticated,
+  updateAccessToken,
+  setCredentials,
+} from "../../features/auth/slices/AuthSlice";
 import { useDispatch } from "react-redux";
 
 interface AuthInitializerProps {
@@ -35,6 +39,15 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
           // updateAccessToken saves to both Redux AND localStorage via the reducer
           dispatch(updateAccessToken(accessToken));
           dispatch(updateIsAuthenticated());
+
+          try {
+            const meRes = await axiosApi.get(API_ROUTES.ME);
+            const user = meRes.data?.data?.user;
+            if (user) {
+              dispatch(setCredentials({ user, accessToken }));
+            }
+          } catch {
+          }
 
           const isAuthPage =
             intendedPath === PAGE_ROUTES.LOGIN ||

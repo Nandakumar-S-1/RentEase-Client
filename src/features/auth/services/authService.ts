@@ -68,3 +68,7 @@ export const checkSession = async (): Promise<AuthResponse> => {
   const response = await axiosApi.get(API_ROUTES.ME);
   return response.data;
 };
+
+export const logoutSession = async (): Promise<void> => {
+  await axiosApi.post(API_ROUTES.LOGOUT, {});
+};
