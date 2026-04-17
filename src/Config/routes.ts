@@ -18,6 +18,7 @@ export const PAGE_ROUTES = {
   OWNER_VERIFICATION: "/owner/verify",
   MESSAGES: "/messages",
   OWNER_PROPERTIES: "/owner/properties",
+  OWNER_ADD_PROPERTY: "/owner/properties/add",
 } as const;
 
 export const API_ROUTES = {
@@ -51,6 +52,8 @@ export const API_ROUTES = {
   UPDATE_PROFILE: "/profile",
   UPLOAD_AVATAR: "/profile/avatar",
   GET_OWNER_PROPERTIES: "/properties/owner",
+  CREATE_PROPERTY: "/properties",
+  UPLOAD_PROPERTY_PHOTOS_URLS: "/properties/photos/upload-urls",
 } as const;
 
 export const PATH_ROUTES = {

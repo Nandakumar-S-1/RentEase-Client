@@ -12,7 +12,6 @@ export const useLogout = () => {
     try {
       await logoutSession();
     } catch {
-      // Still clear client state if the server is unreachable
     }
     dispatch(logout());
     navigate(PAGE_ROUTES.LOGIN, { replace: true });

@@ -6,6 +6,7 @@ import {
   updateIsAuthenticated,
   updateAccessToken,
   setCredentials,
+  logout,
 } from "../../features/auth/slices/AuthSlice";
 import { useDispatch } from "react-redux";
 
@@ -62,7 +63,7 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
         }
       } catch (err) {
         console.log(" No valid session found:", err);
-        localStorage.removeItem("accessToken"); 
+        dispatch(logout());
       } finally {
         setTimeout(() => setLoading(false), 1500);
       }

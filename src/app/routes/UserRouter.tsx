@@ -13,6 +13,7 @@ import OwnerVerification from "../../features/verification/components/OwnerVerif
 import ProfilePage from "../../features/profile/components/ProfilePage";
 import ChatPage from "../../features/chat/components/ChatPage";
 import PropertyPage from "../../features/property/components/PropertyPage";
+import AddProperty from "../../features/property/components/AddProperty";
 import NotFound from "../../components/common/NotFound";
 
 export const UserRouter = () => {
@@ -91,6 +92,14 @@ export const UserRouter = () => {
         element={
           <ProtectedRoute>
             <PropertyPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PAGE_ROUTES.OWNER_ADD_PROPERTY}
+        element={
+          <ProtectedRoute>
+            <AddProperty />
           </ProtectedRoute>
         }
       />

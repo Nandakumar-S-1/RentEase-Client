@@ -28,3 +28,42 @@ export interface PaginatedPropertyResponse {
     limit: number;
   };
 }
+
+export interface CreatePropertyData {
+  title: string;
+  description: string;
+  propertyType: string;
+
+  locationDistrict: string;
+  locationCity: string;
+  locationPinCode: string;
+  fullAddress: string;
+
+  monthlyRent: number;
+  depositAmount: number;
+
+  photos?: string[];
+  primaryPhotoIndex?: number;
+}
+
+export interface PropertyPhotoUpload {
+  key: string;
+  uploadUrl: string;
+  publicUrl: string;
+}
+
+export interface UploadPropertyPhotosUrlsResponse {
+  success: boolean;
+  data: {
+    uploads: PropertyPhotoUpload[];
+  };
+}
+
+export interface CreatePropertyResponse {
+  success: boolean;
+  data: {
+    id: string;
+    title: string;
+    status: string;
+  };
+}

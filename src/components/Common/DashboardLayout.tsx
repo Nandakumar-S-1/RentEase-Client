@@ -39,9 +39,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
 
   useEffect(() => {
-    // Proactive session validation on dashboard load/refresh
     checkSession().catch(() => {
-      // Interceptor handles the redirect, but we catch to prevent unhandled promise warnings
     });
   }, []);
 

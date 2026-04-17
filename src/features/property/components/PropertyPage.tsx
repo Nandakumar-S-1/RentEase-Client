@@ -7,8 +7,11 @@ import { Search, Grid, List, Plus, ChevronLeft, ChevronRight, Filter, Home } fro
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import type { RootState } from "../../../app/store/store";
 import type { RoleType } from "../../../types/constants/role.constant";
+import { useNavigate } from "react-router-dom";
+import { PAGE_ROUTES } from "../../../config/routes";
 
 const PropertyPage: React.FC = () => {
+    const navigate = useNavigate();
     const {
         properties,
         loading,
@@ -48,7 +51,10 @@ const PropertyPage: React.FC = () => {
                         <p className="text-gray-500">Manage all your rental properties</p>
                     </div>
 
-                    <button className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+                    <button
+                        onClick={() => navigate(PAGE_ROUTES.OWNER_ADD_PROPERTY)}
+                        className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-all"
+                    >
                         <Plus size={20} />
                         <span>Add New Property</span>
                     </button>

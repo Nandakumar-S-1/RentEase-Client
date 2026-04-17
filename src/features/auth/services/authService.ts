@@ -41,7 +41,6 @@ export const googleLogin = async (
 
 export const logoutUser = (): void => {
   localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
   localStorage.removeItem("user");
 };
 
