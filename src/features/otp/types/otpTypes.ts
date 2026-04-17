@@ -12,7 +12,6 @@ export interface VerifyOtpResponse {
       role: RoleType;
     };
     accessToken: string;
-    refreshToken?: string;
   };
 }
 

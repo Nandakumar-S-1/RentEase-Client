@@ -2,12 +2,15 @@ import React, { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import { Bell, Search, Settings } from "lucide-react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { useAppSelector } from "../../hooks/useAppSelector";
 import { logout } from "../../features/auth/slices/AuthSlice";
+import { RoleTypes } from "../../types/constants/role.constant";
 import { useNavigate } from "react-router-dom";
 import { PAGE_ROUTES } from "../../config/routes";
-import { checkSession } from "../../features/auth/services/authService";
+import { checkSession, logoutSession } from "../../features/auth/services/authService";
 import type { RoleType } from "../../types/constants/role.constant";
 import { ThemeToggle } from "./ThemeToggle";
+import type { RootState } from "../../app/store/store";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -22,19 +25,32 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logoutSession();
+    } catch {
+      // Continue with local logout
+    }
     dispatch(logout());
-    navigate(PAGE_ROUTES.LOGIN, { replace: true });
+    const loginPath = role === RoleTypes.ADMIN_USER ? PAGE_ROUTES.ADMIN_LOGIN : PAGE_ROUTES.LOGIN;
+    navigate(loginPath, { replace: true });
   };
 
   useEffect(() => {
-    checkSession().catch(() => {});
+    checkSession().catch(() => {
+    });
   }, []);
 
   return (
     <div className="flex h-screen bg-[color:var(--color-background)] overflow-hidden font-sans p-4 gap-4">
-      <Sidebar role={role} userName={userName} onLogout={handleLogout} />
+      <Sidebar 
+        role={role} 
+        userName={userName} 
+        avatarUrl={user?.avatarUrl}
+        onLogout={handleLogout} 
+      />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header className="h-16 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] flex items-center justify-between px-6 shrink-0 rounded-2xl">

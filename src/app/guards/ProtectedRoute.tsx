@@ -15,7 +15,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to={PAGE_ROUTES.LOGIN} replace />;
+    const isAdminPath = location.pathname.startsWith("/admin");
+    return <Navigate to={isAdminPath ? PAGE_ROUTES.ADMIN_LOGIN : PAGE_ROUTES.LOGIN} replace />;
   }
 
   const isOnVerifyPage = location.pathname === PAGE_ROUTES.OWNER_VERIFICATION;

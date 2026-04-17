@@ -23,6 +23,11 @@ export const activateUser = async (userId: string) => {
   return response.data;
 };
 
+export const getUserById = async (userId: string) => {
+  const response = await axiosApi.get(API_ROUTES.ADMIN_USER_DETAILS(userId));
+  return response.data;
+};
+
 export const deactivateUser = async (userId: string) => {
   const response = await axiosApi.patch(
     API_ROUTES.ADMIN_DEACTIVATE_USER(userId),

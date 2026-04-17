@@ -14,7 +14,11 @@ export const PAGE_ROUTES = {
   DASHBOARD: "/dashboard",
   PROFILE: "/profile",
   ADMIN_USERS: "/admin/users",
+  ADMIN_USER_DETAIL: "/admin/users/:id",
   OWNER_VERIFICATION: "/owner/verify",
+  MESSAGES: "/messages",
+  OWNER_PROPERTIES: "/owner/properties",
+  OWNER_ADD_PROPERTY: "/owner/properties/add",
 } as const;
 
 export const API_ROUTES = {
@@ -25,6 +29,7 @@ export const API_ROUTES = {
   RESEND_OTP: "/users/resend-otp",
   FORGOT_PASSWORD: "/users/forgot-password",
   REFRESH_TOKEN: "/users/refresh-token",
+  LOGOUT: "/users/logout",
   ME: "/users/me",
 
   ADMIN_LOGIN: "/admin/login",
@@ -34,6 +39,7 @@ export const API_ROUTES = {
   ADMIN_ACTIVATE_USER: (userId: string) => `/admin/users/activate/${userId}`,
   ADMIN_DEACTIVATE_USER: (userId: string) =>
     `/admin/users/deactivate/${userId}`,
+  ADMIN_USER_DETAILS: (userId: string) => `/admin/users/${userId}`,
 
   SUBMIT_VERIFICATION: "/owner/submit-verification",
   VERIFICATION_STATUS: "/owner/verification-status",
@@ -44,6 +50,10 @@ export const API_ROUTES = {
 
   PROFILE: "/profile",
   UPDATE_PROFILE: "/profile",
+  UPLOAD_AVATAR: "/profile/avatar",
+  GET_OWNER_PROPERTIES: "/properties/owner",
+  CREATE_PROPERTY: "/properties",
+  UPLOAD_PROPERTY_PHOTOS_URLS: "/properties/photos/upload-urls",
 } as const;
 
 export const PATH_ROUTES = {

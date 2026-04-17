@@ -9,6 +9,7 @@ export interface ProfileData {
   createdAt: string;
   bio?: string | null;
   occupation?: string | null;
+  avatarUrl?: string | null;
   // owner-specific
   verificationStatus?: VerificationStatus;
   documentType?: string | null;

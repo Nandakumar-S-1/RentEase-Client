@@ -41,7 +41,6 @@ export const googleLogin = async (
 
 export const logoutUser = (): void => {
   localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
   localStorage.removeItem("user");
 };
 
@@ -64,8 +63,11 @@ export const getAccesToken = (): null | string => {
 export const isLoggedIn = (): boolean => {
   return !!localStorage.getItem("accessToken");
 };
-
 export const checkSession = async (): Promise<AuthResponse> => {
   const response = await axiosApi.get(API_ROUTES.ME);
   return response.data;
+};
+
+export const logoutSession = async (): Promise<void> => {
+  await axiosApi.post(API_ROUTES.LOGOUT, {});
 };

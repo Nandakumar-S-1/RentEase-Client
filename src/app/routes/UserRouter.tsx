@@ -11,6 +11,9 @@ import ForgotPassword from "../../features/auth/components/ForgotPassword";
 import Dashboard from "../../components/pages/Dashboard";
 import OwnerVerification from "../../features/verification/components/OwnerVerification";
 import ProfilePage from "../../features/profile/components/ProfilePage";
+import ChatPage from "../../features/chat/components/ChatPage";
+import PropertyPage from "../../features/property/components/PropertyPage";
+import AddProperty from "../../features/property/components/AddProperty";
 import NotFound from "../../components/common/NotFound";
 
 export const UserRouter = () => {
@@ -73,6 +76,30 @@ export const UserRouter = () => {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PAGE_ROUTES.MESSAGES}
+        element={
+          <ProtectedRoute>
+            <ChatPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PAGE_ROUTES.OWNER_PROPERTIES}
+        element={
+          <ProtectedRoute>
+            <PropertyPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PAGE_ROUTES.OWNER_ADD_PROPERTY}
+        element={
+          <ProtectedRoute>
+            <AddProperty />
           </ProtectedRoute>
         }
       />

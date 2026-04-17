@@ -6,7 +6,7 @@ import PersonalInfoForm from "./PersonalInfoForm";
 import type { RoleType } from "../../../types/constants/role.constant";
 
 const ProfilePage: React.FC = () => {
-  const { profile, loading, error } = useProfile();
+  const { profile, loading, updating, error, uploadAvatar } = useProfile();
   const [activeTab, setActiveTab] = useState("profile");
 
   const tabs = [
@@ -15,6 +15,7 @@ const ProfilePage: React.FC = () => {
     { id: "notifications", label: "Notifications" },
     { id: "security", label: "Security" },
   ];
+  
 
   if (loading) {
     return (
@@ -62,7 +63,11 @@ const ProfilePage: React.FC = () => {
         {activeTab === "profile" ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-4 sticky top-4">
-              <ProfileCard profile={profile} />
+              <ProfileCard 
+                profile={profile} 
+                onAvatarUpload={uploadAvatar} 
+                uploading={updating} 
+              />
             </div>
             <div className="lg:col-span-8">
               <PersonalInfoForm profile={profile} />

@@ -7,6 +7,7 @@ export interface User {
   fullname: string;
   phone: string;
   role: RoleType;
+  avatarUrl?: string | null;
   verificationStatus?: VerificationStatus;
 }
 
@@ -16,7 +17,6 @@ export interface AuthResponse {
   data: {
     user: User;
     accessToken: string;
-    refreshToken?: string;
   };
 }
 

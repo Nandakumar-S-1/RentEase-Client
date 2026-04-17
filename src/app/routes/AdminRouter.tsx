@@ -7,6 +7,7 @@ import DashboardLayout from "../../components/common/DashboardLayout";
 import AdminLogin from "../../features/admin/components/AdminLogin";
 import AdminDashboard from "../../features/admin/components/AdminDashboard";
 import AdminUserManagement from "../../features/admin/components/AdminUserManagement";
+import AdminUserDetail from "../../features/admin/components/AdminUserDetail";
 import AdminOwnerVerification from "../../features/admin/components/AdminOwnerVerification";
 import { RoleTypes } from "../../types/constants/role.constant";
 import type { RoleType } from "../../types/constants/role.constant";
@@ -61,6 +62,16 @@ export const AdminRouter = () => {
           <ProtectedRoute>
             <AdminLayout>
               <AdminUserManagement />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="users/:id"
+        element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminUserDetail />
             </AdminLayout>
           </ProtectedRoute>
         }
