@@ -26,7 +26,9 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
     const initializeAuth = async () => {
       try {
         const intendedPath = location.pathname;
-
+        //when the app loadas refresh token api is called , if valid token exist save AT and user is authenticated
+        // if not. user will be logged out andd state is cleared
+        //also loading screen
         const initialAuthResponse = await axiosApi.post(
           API_ROUTES.REFRESH_TOKEN,
           {},
@@ -37,7 +39,7 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
 
         
         if (accessToken) {
-          // updateAccessToken saves to both Redux AND localStorage via the reducer
+          // updateAccessToken saves to both Redux & localStorage trough reducer
           dispatch(updateAccessToken(accessToken));
           dispatch(updateIsAuthenticated());
 
@@ -47,8 +49,7 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
             if (user) {
               dispatch(setCredentials({ user, accessToken }));
             }
-          } catch {
-          }
+          } catch { /* empty */ }
 
           const isAuthPage =
             intendedPath === PAGE_ROUTES.LOGIN ||

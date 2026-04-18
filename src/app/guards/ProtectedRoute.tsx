@@ -16,12 +16,17 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (!isAuthenticated) {
     const isAdminPath = location.pathname.startsWith("/admin");
-    return <Navigate to={isAdminPath ? PAGE_ROUTES.ADMIN_LOGIN : PAGE_ROUTES.LOGIN} replace />;
+    return (
+      <Navigate
+        to={isAdminPath ? PAGE_ROUTES.ADMIN_LOGIN : PAGE_ROUTES.LOGIN}
+        replace
+      />
+    );
   }
 
-  const isOnVerifyPage = location.pathname === PAGE_ROUTES.OWNER_VERIFICATION;
+  const isAtVerifyPage = location.pathname === PAGE_ROUTES.OWNER_VERIFICATION;
   if (
-    !isOnVerifyPage &&
+    !isAtVerifyPage &&
     user?.role === RoleTypes.OWNER_USER &&
     user?.verificationStatus !== VerificationStatus.STATUS_VERIFIED
   ) {

@@ -67,7 +67,7 @@ export const AdminRouter = () => {
         }
       />
       <Route
-        path="users/:id"
+        path={PATH_ROUTES.PATH_DETAILS}
         element={
           <ProtectedRoute>
             <AdminLayout>

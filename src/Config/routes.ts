@@ -61,4 +61,5 @@ export const PATH_ROUTES = {
   PATH_USERS: "/users",
   PATH_DASHBOARD: "/dashboard",
   PATH_OWNERS: "/owners",
+  PATH_DETAILS:'users/:id'
 };
