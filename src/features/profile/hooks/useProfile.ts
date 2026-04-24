@@ -1,6 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import type { ProfileData, UpdateProfileData } from "../types/profileTypes";
-import { getProfile, updateProfile, uploadAvatar as uploadAvatarService } from "../services/profileService";
+import {
+  getProfile,
+  updateProfile,
+  uploadAvatar as uploadAvatarService,
+} from "../services/profileService";
 import { ProfileMessages } from "../../../types/constants/messages.constant";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../auth/slices/AuthSlice";
@@ -35,10 +39,12 @@ export const useProfile = () => {
       setError(null);
       const response = await updateProfile(data);
       if (response.success) {
-        dispatch(updateUser({
-          fullname: data.fullName,
-          phone: data.phone
-        }));
+        dispatch(
+          updateUser({
+            fullname: data.fullName,
+            phone: data.phone,
+          }),
+        );
         await fetchProfile();
       }
       return response;
@@ -63,7 +69,8 @@ export const useProfile = () => {
       }
       return response;
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to upload avatar";
+      const message =
+        err instanceof Error ? err.message : "Failed to upload avatar";
       setError(message);
       throw err;
     } finally {
@@ -75,5 +82,13 @@ export const useProfile = () => {
     fetchProfile();
   }, [fetchProfile]);
 
-  return { profile, loading, updating, error, saveProfile, fetchProfile, uploadAvatar };
+  return {
+    profile,
+    loading,
+    updating,
+    error,
+    saveProfile,
+    fetchProfile,
+    uploadAvatar,
+  };
 };

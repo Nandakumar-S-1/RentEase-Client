@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Building2, UserRound, Home } from "lucide-react";
+import { Building2, UserRound, Home, ArrowLeft } from "lucide-react";
 import { buildRoutes, PAGE_ROUTES } from "../../../config/routes";
 import { RoleTypes } from "../../../types/constants/role.constant";
 
@@ -15,9 +15,17 @@ const RoleSelection = () => {
         <span className="text-2xl font-bold text-primary">RentEase</span>
       </div>
 
+      <button
+        onClick={() => navigate(PAGE_ROUTES.HOME)}
+        className="mb-6 flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-primary transition-colors group"
+      >
+        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+        Back to Home
+      </button>
+
       <div className="w-full max-w-xl rounded-2xl bg-card p-8 shadow-lg">
         <h1 className="mb-2 text-center text-2xl font-bold text-primary">
-          Join Rent Ease
+          Join RentEase
         </h1>
         <p className="mb-8 text-center text-card-foreground">
           How would you like to use Rent Ease

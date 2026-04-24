@@ -5,9 +5,11 @@ interface LoadingOverlayProps {
   fullPage?: boolean;
 }
 
-export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ fullPage = true }) => {
+export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
+  fullPage = true,
+}) => {
   return (
-    <div 
+    <div
       className={`${
         fullPage ? "fixed inset-0 z-[9999]" : "absolute inset-0"
       } bg-[color:var(--color-surface)]/80 backdrop-blur-sm flex flex-col items-center justify-center transition-all duration-500`}
@@ -21,14 +23,21 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ fullPage = true 
             Finding your home
           </p>
           <div className="flex gap-1">
-             <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
-             <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "200ms" }}></div>
-             <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "400ms" }}></div>
+            <div
+              className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+              style={{ animationDelay: "0ms" }}
+            ></div>
+            <div
+              className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+              style={{ animationDelay: "200ms" }}
+            ></div>
+            <div
+              className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+              style={{ animationDelay: "400ms" }}
+            ></div>
           </div>
         </div>
       </div>
     </div>
   );
 };
-
-

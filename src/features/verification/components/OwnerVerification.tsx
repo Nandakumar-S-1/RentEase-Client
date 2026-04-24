@@ -38,7 +38,7 @@ const OwnerVerification = () => {
     fetchStatus();
     const interval = setInterval(fetchStatus, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchStatus]);
   useEffect(() => {
     if (status === VerificationStatus.VERIFIED) {
       navigate(PAGE_ROUTES.DASHBOARD, { replace: true });
@@ -59,61 +59,64 @@ const OwnerVerification = () => {
 
   if (status === VerificationStatus.SUBMITTED) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-        <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-50">
-            <Clock className="h-8 w-8 text-yellow-500" />
+      <div className="flex min-h-screen items-center justify-center bg-[color:var(--color-background)] px-4">
+        <div className="w-full max-w-md rounded-3xl bg-[color:var(--color-surface)] p-10 shadow-xl border border-[color:var(--color-border)] text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/10 transition-colors">
+            <Clock className="h-10 w-10 text-amber-500" />
           </div>
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">
+          <h1 className="mb-3 text-3xl font-black text-[color:var(--color-foreground)] tracking-tight">
             Verification Under Review
           </h1>
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
             Your document has been submitted and is currently being reviewed by
             our team. You'll be notified once the verification is complete.
           </p>
+          <div className="mt-8 pt-8 border-t border-[color:var(--color-border)]">
+             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-xl text-[10px] font-black text-primary uppercase tracking-widest">
+                Real-time Status Updates Enabled
+             </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <div className="mb-6 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+    <div className="flex min-h-screen items-center justify-center bg-[color:var(--color-background)] px-4">
+      <div className="w-full max-w-md rounded-[2.5rem] bg-[color:var(--color-surface)] p-10 shadow-xl border border-[color:var(--color-border)] animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="mb-8 text-center">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-primary/5">
             {status === VerificationStatus.REJECTED ? (
-              <AlertCircle className="h-8 w-8 text-red-500" />
+              <AlertCircle className="h-10 w-10 text-red-500" />
             ) : (
-              <FileCheck className="h-8 w-8 text-primary" />
+              <FileCheck className="h-10 w-10 text-primary" />
             )}
           </div>
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">
+          <h1 className="mb-2 text-3xl font-black text-[color:var(--color-foreground)] tracking-tight">
             {status === VerificationStatus.REJECTED
               ? "Verification Rejected"
-              : "Verify Your Identity"}
+              : "Verify Identity"}
           </h1>
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
             {status === VerificationStatus.REJECTED
               ? rejectionReason
-                ? `Your verification was rejected. Reason: ${rejectionReason}`
-                : "Your previous submission was rejected. Please upload a new document."
-              : "Upload a government-issued ID to start listing properties."}
+                ? `Reason: ${rejectionReason}`
+                : "Your submission was rejected. Please re-upload a valid document."
+              : "Upload a government-issued ID to activate your owner privileges."}
           </p>
         </div>
 
         <FormMessage message={message} isError={isError} />
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1.5 block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
               Document Type
             </label>
             <select
               value={documentType}
-              onChange={(e) =>
-                setDocumentType(e.target.value as DocumentTypes)
-              }
-              className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+              onChange={(e) => setDocumentType(e.target.value as DocumentTypes)}
+              className="w-full rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-background)] px-6 py-3.5 text-sm font-bold text-[color:var(--color-foreground)] focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all cursor-pointer"
             >
               <option value={DocumentTypes.AADHAAR}>Aadhaar Card</option>
               <option value={DocumentTypes.PAN}>PAN Card</option>
@@ -121,25 +124,27 @@ const OwnerVerification = () => {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1.5 block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
               Upload Document
             </label>
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 px-4 py-8 transition-colors hover:border-primary/50 hover:bg-primary/5"
+              className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[color:var(--color-border)] px-4 py-10 transition-all hover:border-primary/50 hover:bg-primary/5 group"
             >
               {selectedFile ? (
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span className="font-medium">{selectedFile.name}</span>
+                <div className="flex items-center gap-3 text-sm text-[color:var(--color-foreground)] font-black">
+                  <CheckCircle className="h-6 w-6 text-green-500" />
+                  <span className="truncate max-w-[200px]">{selectedFile.name}</span>
                 </div>
               ) : (
                 <>
-                  <Upload className="mb-2 h-8 w-8 text-gray-400" />
-                  <p className="text-sm font-medium text-gray-600">
-                    Click to upload your document
+                  <div className="mb-3 p-4 bg-gray-100 dark:bg-white/5 rounded-2xl text-gray-400 group-hover:text-primary transition-colors">
+                    <Upload className="h-8 w-8" />
+                  </div>
+                  <p className="text-sm font-black text-gray-600 dark:text-gray-300">
+                    Click to upload document
                   </p>
-                  <p className="mt-1 text-xs text-gray-400">
+                  <p className="mt-1 text-xs font-bold text-gray-400">
                     JPG, PNG or PDF (max 5MB)
                   </p>
                 </>
@@ -158,7 +163,7 @@ const OwnerVerification = () => {
             type="submit"
             loading={isLoading}
             disabled={!selectedFile || isLoading}
-            className="w-full"
+            className="w-full py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
           >
             Submit for Verification
           </Button>

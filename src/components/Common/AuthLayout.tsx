@@ -16,7 +16,6 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   title,
   subtitle,
   showLeftPanel = true,
-  // leftPanelTitle,
   leftPanelDescription,
 }) => {
   return (

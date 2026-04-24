@@ -9,6 +9,8 @@ import AdminDashboard from "../../features/admin/components/AdminDashboard";
 import AdminUserManagement from "../../features/admin/components/AdminUserManagement";
 import AdminUserDetail from "../../features/admin/components/AdminUserDetail";
 import AdminOwnerVerification from "../../features/admin/components/AdminOwnerVerification";
+import AdminProperties from "../../features/admin/components/AdminProperties";
+import AdminPropertyDetails from "../../features/admin/components/AdminPropertyDetails";
 import { RoleTypes } from "../../types/constants/role.constant";
 import type { RoleType } from "../../types/constants/role.constant";
 import { PATH_ROUTES } from "../../config/routes";
@@ -68,6 +70,7 @@ export const AdminRouter = () => {
       />
       <Route
         path={PATH_ROUTES.PATH_DETAILS}
+        path={PATH_ROUTES.PATH_USER_DETAILS}
         element={
           <ProtectedRoute>
             <AdminLayout>
@@ -92,6 +95,26 @@ export const AdminRouter = () => {
           <ProtectedRoute>
             <AdminLayout>
               <AdminOwnerVerification />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PATH_ROUTES.PATH_PROPERTIES}
+        element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminProperties />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PATH_ROUTES.PATH_PROPERTY_DETAILS}
+        element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminPropertyDetails />
             </AdminLayout>
           </ProtectedRoute>
         }

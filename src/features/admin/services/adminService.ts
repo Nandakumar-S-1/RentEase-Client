@@ -34,3 +34,10 @@ export const deactivateUser = async (userId: string) => {
   );
   return response.data;
 };
+
+export const getUserProperties = async (userId: string, page = 1, limit = 10) => {
+  const response = await axiosApi.get(`/admin/users/${userId}/properties`, {
+    params: { page, limit },
+  });
+  return response.data;
+};

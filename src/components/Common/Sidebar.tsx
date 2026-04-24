@@ -13,12 +13,14 @@ import {
   BarChart3,
   Bookmark,
   ShieldCheck,
+  Search,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import { Modal } from "./index";
 import { RoleTypes, type RoleType } from "../../types/constants/role.constant";
 import { PAGE_ROUTES } from "../../config/routes";
+import { LABELS } from "../../types/constants/label.constants";
 
 interface SidebarProps {
   role: RoleType;
@@ -33,7 +35,12 @@ type SidebarMenuItem = {
   path: string;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ role, userName, avatarUrl, onLogout }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  role,
+  userName,
+  avatarUrl,
+  onLogout,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -42,122 +49,128 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, avatarUrl, onLogout }
     [RoleTypes.OWNER_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
-        label: "Dashboard",
-        path: "/dashboard",
+        label: LABELS.DASHBOARD,
+        path: PAGE_ROUTES.DASHBOARD,
       },
       {
         icon: <Building2 size={20} />,
-        label: "My Properties",
-        path: "/owner/properties",
+        label: LABELS.MY_PROPERTIES,
+        path: PAGE_ROUTES.OWNER_PROPERTIES,
+      },
+      {
+        icon: <Search size={20} />,
+        label: LABELS.FIND_PROPERTY,
+        path: PAGE_ROUTES.SEARCH_PROPERTIES,
       },
       {
         icon: <FileText size={20} />,
-        label: "Agreements",
-        path: "/owner/agreements",
+        label: LABELS.AGREEMENTS,
+        path: PAGE_ROUTES.OWNER_AGREEMENTS,
       },
       {
         icon: <CreditCard size={20} />,
-        label: "Payments",
-        path: "/owner/payments",
+        label: LABELS.PAYMENTS,
+        path: PAGE_ROUTES.OWNER_PAYMENTS,
       },
       {
         icon: <Wrench size={20} />,
-        label: "Maintenance",
-        path: "/owner/maintenance",
+        label: LABELS.MAINTENANCE,
+        path: PAGE_ROUTES.OWNER_MAINTENANCE,
       },
       {
         icon: <MessageSquare size={20} />,
-        label: "Messages",
+        label: LABELS.MESSAGES,
         path: PAGE_ROUTES.MESSAGES,
       },
       {
         icon: <Bookmark size={20} />,
-        label: "Subscription",
-        path: "/owner/subscription",
+        label: LABELS.SUBSCRIPTION,
+        path: PAGE_ROUTES.OWNER_SUBSCRIPTION,
       },
     ],
     [RoleTypes.TENANT_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
-        label: "Dashboard",
-        path: "/dashboard",
+        label: LABELS.DASHBOARD,
+        path: PAGE_ROUTES.DASHBOARD,
       },
       {
         icon: <Building2 size={20} />,
-        label: "Find Property",
-        path: "/tenant/search",
+        label: LABELS.FIND_PROPERTY,
+        path: PAGE_ROUTES.SEARCH_PROPERTIES,
       },
       {
         icon: <FileText size={20} />,
-        label: "Agreement",
-        path: "/tenant/agreements",
+        label: LABELS.AGREEMENT,
+        path: PAGE_ROUTES.TENANT_AGREEMENTS,
       },
+
       {
         icon: <CreditCard size={20} />,
-        label: "Payments",
-        path: "/tenant/payments",
+        label: LABELS.PAYMENTS,
+        path: PAGE_ROUTES.TENANT_PAYMENTS,
       },
       {
         icon: <Wrench size={20} />,
-        label: "Maintenance",
-        path: "/tenant/maintenance",
+        label: LABELS.MAINTENANCE,
+        path: PAGE_ROUTES.TENANT_MAINTENANCE,
       },
       {
         icon: <MessageSquare size={20} />,
-        label: "Messages",
+        label: LABELS.MESSAGES,
         path: PAGE_ROUTES.MESSAGES,
       },
       {
         icon: <Bookmark size={20} />,
-        label: "Wishlist",
-        path: "/tenant/wishlist",
+        label: LABELS.WISHLIST,
+        path: PAGE_ROUTES.TENANT_WISHLIST,
       },
     ],
     [RoleTypes.ADMIN_USER]: [
       {
         icon: <LayoutDashboard size={20} />,
-        label: "Dashboard",
-        path: "/dashboard",
+        label: LABELS.DASHBOARD,
+        path: PAGE_ROUTES.DASHBOARD,
       },
       {
         icon: <Users size={20} />,
-        label: "User Management",
-        path: "/admin/users",
+        label: LABELS.USER_MANAGEMENT,
+        path: PAGE_ROUTES.ADMIN_USERS,
       },
       {
         icon: <ShieldCheck size={20} />,
-        label: "Owner Verification",
-        path: "/admin/owners",
+        label: LABELS.OWNER_VERIFICATION,
+        path: PAGE_ROUTES.ADMIN_OWNERS,
       },
       {
         icon: <Building2 size={20} />,
-        label: "Properties",
-        path: "/admin/properties",
+        label: LABELS.PROPERTIES,
+        path: PAGE_ROUTES.ADMIN_PROPERTIES,
       },
       {
         icon: <FileText size={20} />,
-        label: "Agreements",
-        path: "/admin/agreements",
+        label: LABELS.AGREEMENTS,
+        path: PAGE_ROUTES.ADMIN_AGREEMENTS,
       },
       {
         icon: <CreditCard size={20} />,
-        label: "Payments",
-        path: "/admin/payments",
+        label: LABELS.PAYMENTS,
+        path: PAGE_ROUTES.ADMIN_PAYMENTS,
       },
       {
         icon: <Flag size={20} />,
-        label: "Flagged Content",
-        path: "/admin/flagged",
+        label: LABELS.FLAGGED_CONTENT,
+        path: PAGE_ROUTES.ADMIN_FLAGGED,
       },
       {
         icon: <BarChart3 size={20} />,
-        label: "Analytics",
-        path: "/admin/analytics",
+        label: LABELS.ANALYTICS,
+        path: PAGE_ROUTES.ADMIN_ANALYTICS,
       },
       {
         icon: <Settings size={20} />,
-        label: "Settings",
-        path: "/admin/settings",
+        label: LABELS.SETTINGS,
+        path: PAGE_ROUTES.ADMIN_SETTINGS,
       },
     ],
   };
@@ -165,12 +178,12 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, avatarUrl, onLogout }
   const currentMenu = menuItems[role] || [];
 
   return (
-    <div className="flex flex-col h-full w-64 shrink-0 bg-[color:var(--color-surface)] text-gray-600 dark:text-gray-300 p-4 border border-[color:var(--color-border)] rounded-2xl">
+    <div className="flex flex-col h-full w-64 shrink-0 bg-[color:var(--color-surface)] text-slate-600 dark:text-gray-300 p-4 border border-[color:var(--color-border)] rounded-2xl transition-colors duration-300">
       <div className="mb-8 pl-2">
         <Logo className="text-gray-900 dark:text-white" />
       </div>
 
-      <div className="px-2 mb-6 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-500">
+      <div className="px-2 mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-gray-500">
         {role ? role.charAt(0) + role.slice(1).toLowerCase() : ""} Dashboard
       </div>
 
@@ -181,15 +194,17 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, avatarUrl, onLogout }
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors ${
+              className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 group/item ${
                 isActive
-                  ? "bg-primary text-white"
-                  : "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-white/10 dark:hover:text-white"
+                  ? "bg-primary text-white shadow-lg shadow-primary/20"
+                  : "hover:bg-slate-50 dark:hover:bg-white/5 text-slate-600 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white"
               }`}
             >
-              <div className="flex items-center gap-3">
-                {item.icon}
-                <span className="text-sm font-medium">{item.label}</span>
+              <div className="flex items-center gap-3.5">
+                <div className={`transition-transform duration-200 group-hover/item:scale-110 ${isActive ? "text-white" : "text-slate-400 group-hover/item:text-primary dark:text-gray-500"}`}>
+                  {item.icon}
+                </div>
+                <span className={`text-sm tracking-tight ${isActive ? "font-black" : "font-bold"}`}>{item.label}</span>
               </div>
             </button>
           );
@@ -204,21 +219,25 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, avatarUrl, onLogout }
           >
             <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#4338ca] text-white font-bold text-sm overflow-hidden group-hover:scale-105 transition-transform">
               {avatarUrl ? (
-                <img src={avatarUrl} alt={userName} className="w-full h-full object-cover" />
-              ) : (
+                <img
+                  src={avatarUrl}
+                  alt={userName}
+                  className="w-full h-full object-cover"
+                />
+              ) : userName ? (
                 userName
-                  ? userName
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                  : "??"
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+              ) : (
+                "??"
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+              <p className="text-sm font-black text-slate-900 dark:text-white truncate">
                 {userName}
               </p>
-              <p className="text-xs text-gray-500 truncate">
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-gray-500 truncate">
                 {role ? role.toLowerCase() : ""}
               </p>
             </div>
@@ -239,11 +258,12 @@ const Sidebar: React.FC<SidebarProps> = ({ role, userName, avatarUrl, onLogout }
           setIsLogoutModalOpen(false);
           onLogout();
         }}
-        title="Confirm Logout"
-        description="Are you sure you want to log out of your account?"
-        confirmText="Log Out"
+        title={LABELS.CONFIRM_LOGOUT}
+        description={LABELS.LOGOUT_DESCRIPTION}
+        confirmText={LABELS.LOGOUT}
         isDestructive={true}
       />
+
     </div>
   );
 };

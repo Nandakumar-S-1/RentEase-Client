@@ -18,8 +18,32 @@ export const PAGE_ROUTES = {
   OWNER_VERIFICATION: "/owner/verify",
   MESSAGES: "/messages",
   OWNER_PROPERTIES: "/owner/properties",
+  OWNER_AGREEMENTS: "/owner/agreements",
+  OWNER_PAYMENTS: "/owner/payments",
+  OWNER_MAINTENANCE: "/owner/maintenance",
+  OWNER_SUBSCRIPTION: "/owner/subscription",
   OWNER_ADD_PROPERTY: "/owner/properties/add",
+  OWNER_EDIT_PROPERTY: "/owner/properties/edit/:id",
+  OWNER_PROPERTY_DETAIL: "/owner/properties/:id",
+  OWNER_PROPERTY_SERVICE_PROVIDERS:
+    "/owner/properties/:propertyId/service-providers",
+  TENANT_AGREEMENTS: "/tenant/agreements",
+  TENANT_PAYMENTS: "/tenant/payments",
+  TENANT_MAINTENANCE: "/tenant/maintenance",
+  TENANT_WISHLIST: "/tenant/wishlist",
+  ADMIN_PROPERTIES: "/admin/properties",
+  ADMIN_PROPERTY_DETAIL: "/admin/properties/:id",
+  ADMIN_OWNERS: "/admin/owners",
+  ADMIN_AGREEMENTS: "/admin/agreements",
+  ADMIN_PAYMENTS: "/admin/payments",
+  ADMIN_FLAGGED: "/admin/flagged",
+  ADMIN_ANALYTICS: "/admin/analytics",
+  ADMIN_SETTINGS: "/admin/settings",
+  PROPERTY_DETAIL: "/properties/:id",
+  SEARCH_PROPERTIES: "/search",
+  ONBOARDING: "/onboarding",
 } as const;
+
 
 export const API_ROUTES = {
   REGISTER: "/users/register",
@@ -54,6 +78,15 @@ export const API_ROUTES = {
   GET_OWNER_PROPERTIES: "/properties/owner",
   CREATE_PROPERTY: "/properties",
   UPLOAD_PROPERTY_PHOTOS_URLS: "/properties/photos/upload-urls",
+  ADMIN_PENDING_PROPERTIES: "/admin/properties/pending",
+  ADMIN_VERIFY_PROPERTY: (id: string) => `/admin/properties/${id}/verify`,
+  ADMIN_REJECT_PROPERTY: (id: string) => `/admin/properties/${id}/reject`,
+  GET_PROPERTY_BY_ID: (id: string) => `/properties/${id}`,
+  SEARCH_PROPERTIES: "/properties",
+
+  WISHLIST: "/wishlist",
+  TOGGLE_WISHLIST: (propertyId: string) => `/wishlist/${propertyId}`,
+  CHECK_WISHLISTED: (propertyId: string) => `/wishlist/check/${propertyId}`,
 } as const;
 
 export const PATH_ROUTES = {
@@ -61,5 +94,11 @@ export const PATH_ROUTES = {
   PATH_USERS: "/users",
   PATH_DASHBOARD: "/dashboard",
   PATH_OWNERS: "/owners",
+<<<<<<< HEAD
   PATH_DETAILS:'users/:id'
+=======
+  PATH_PROPERTIES: 'properties',
+  PATH_PROPERTY_DETAILS: "/properties/:id",
+  PATH_USER_DETAILS: "/users/:id",
+>>>>>>> 8176578 (fix: remove mapbox token and use env variables)
 };

@@ -37,9 +37,7 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
 
         const accessToken = initialAuthResponse.data?.data?.accessToken;
 
-        
         if (accessToken) {
-          // updateAccessToken saves to both Redux & localStorage trough reducer
           dispatch(updateAccessToken(accessToken));
           dispatch(updateIsAuthenticated());
 
@@ -71,7 +69,7 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
     };
 
     initializeAuth();
-  }, []);
+  }, [dispatch, navigate]);
 
   if (loading) {
     return (

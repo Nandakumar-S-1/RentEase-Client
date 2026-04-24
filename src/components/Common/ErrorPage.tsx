@@ -29,7 +29,9 @@ const ErrorPage: React.FC<ErrorPageProps> = ({
       </div>
 
       <div className="max-w-md space-y-3">
-        <h1 className="text-3xl font-bold text-foreground">Something went wrong</h1>
+        <h1 className="text-3xl font-bold text-foreground">
+          Something went wrong
+        </h1>
         <p className="text-muted-foreground">
           {message}
           <br />
@@ -60,7 +62,8 @@ const ErrorPage: React.FC<ErrorPageProps> = ({
           <Bell size={20} />
         </div>
         <p className="text-xs text-muted-foreground text-left max-w-[200px]">
-          We've notified our engineering team. You can also check our status page for updates.
+          We've notified our engineering team. You can also check our status
+          page for updates.
         </p>
       </div>
     </div>

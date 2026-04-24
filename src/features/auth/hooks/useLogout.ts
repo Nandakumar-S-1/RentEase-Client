@@ -11,7 +11,8 @@ export const useLogout = () => {
   const handleLogout = async () => {
     try {
       await logoutSession();
-    } catch {
+    } catch (err) {
+      console.log(err);
     }
     dispatch(logout());
     navigate(PAGE_ROUTES.LOGIN, { replace: true });

@@ -4,11 +4,9 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import { PAGE_ROUTES } from "../../config/routes";
 import { RoleTypes } from "../../types/constants/role.constant";
 import { VerificationStatus } from "../../features/auth/types/verification.types";
-//This is used for pages that require the user to be logged in.
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
-
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const user = useAppSelector((state) => state.auth.user);
@@ -30,6 +28,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     user?.role === RoleTypes.OWNER_USER &&
     user?.verificationStatus !== VerificationStatus.STATUS_VERIFIED
   ) {
+    console.log("Redirecting unverified owner to verification page", {
+      status: user?.verificationStatus,
+      path: location.pathname,
+    });
     return <Navigate to={PAGE_ROUTES.OWNER_VERIFICATION} replace />;
   }
 
