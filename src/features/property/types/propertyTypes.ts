@@ -1,16 +1,40 @@
 export interface PropertyData {
   id: string;
+  ownerId: string;
   title: string;
   description: string;
   propertyType: string;
   locationCity: string;
   locationDistrict: string;
+  locationPincode: string;
+  fullAddress: string;
   monthlyRent: number;
   depositAmount: number;
   status: string;
   photos: string[];
   primaryPhotoIndex: number;
   createdAt: string;
+  areaSqft?: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  nearbyLandmarks?: string | null;
+  rejectionReason?: string | null;
+
+  // New detailed properties
+  bhk?: number | null;
+  bathrooms?: number | null;
+  floorNumber?: string | null;
+  propertyAge?: string | null;
+  facingDirection?: string | null;
+  furnishingStatus?: string | null;
+  amenities?: string[];
+  preferredTenantType?: string[];
+  maintenanceCharges?: number;
+  maintenanceIncluded?: boolean;
+  
+  // Analytics
+  viewsCount?: number;
+  wishlistCount?: number;
 }
 
 export interface GetPropertiesParams {
@@ -44,6 +68,25 @@ export interface CreatePropertyData {
 
   photos?: string[];
   primaryPhotoIndex?: number;
+
+  areaSqft?: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  nearbyLandmarks?: string | null;
+
+  bhk?: number | null;
+  bathrooms?: number | null;
+  floorNumber?: string | null;
+  totalFloors?: number | null;
+  propertyAge?: string | null;
+  facingDirection?: string | null;
+  furnishingStatus?: string | null;
+
+  amenities?: string[];
+  preferredTenantType?: string[];
+
+  maintenanceCharges?: number;
+  maintenanceIncluded?: boolean;
 }
 
 export interface PropertyPhotoUpload {

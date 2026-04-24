@@ -1,10 +1,25 @@
 import { useState, useEffect, useCallback } from "react";
-import { Search, Filter, Eye, Download, UserCheck, UserX, Users } from "lucide-react";
-import { getAllUsers, suspendUser, activateUser } from "../services/adminService";
+import {
+  Search,
+  Filter,
+  Eye,
+  Download,
+  UserCheck,
+  UserX,
+  Users,
+} from "lucide-react";
+import {
+  getAllUsers,
+  suspendUser,
+  activateUser,
+} from "../services/adminService";
 import type { UserResponse } from "../types/adminTypes";
-import { Modal, Toast } from "../../../components/common";
+import { Modal, Toast, Table } from "../../../components/common";
 import { RoleTypes } from "../../../types/constants/role.constant";
-import type { UserType, RoleType } from "../../../types/constants/role.constant";
+import type {
+  UserType,
+  RoleType,
+} from "../../../types/constants/role.constant";
 import { useNavigate } from "react-router-dom";
 import { PAGE_ROUTES } from "../../../config/routes";
 
@@ -124,39 +139,42 @@ const AdminUserManagement = () => {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">
-            User Management
-          </h1>
-          <p className="text-gray-500">
-            Manage all platform users and their permissions.
-          </p>
+    <div className="bg-[color:var(--color-surface)] rounded-[2.5rem] p-10 border border-[color:var(--color-border)] shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+          <div className="space-y-1">
+            <h1 className="text-4xl font-black text-[color:var(--color-foreground)] tracking-tight flex items-center gap-4">
+              User Management
+              <Users className="text-primary/40" size={32} />
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 font-medium tracking-wide">
+              Manage all platform users and their permissions.
+            </p>
+          </div>
+          <button className="flex items-center gap-2 px-8 py-4 bg-[color:var(--color-surface)] border-2 border-[color:var(--color-border)] text-[color:var(--color-foreground)] font-black rounded-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all text-sm group">
+             <Download size={18} className="group-hover:translate-y-0.5 transition-transform" />
+             Export Users
+          </button>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all shadow-sm">
-          <Download size={18} className="text-gray-400" />
-          Export Users
-        </button>
-      </div>
 
       <div className="flex gap-2 border-b border-gray-200">
         <button
           onClick={() => setUserType("OWNERS")}
-          className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all ${userType === "OWNERS"
+          className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all ${
+            userType === "OWNERS"
               ? "text-primary border-primary"
               : "text-gray-600 border-transparent hover:text-gray-900"
-            }`}
+          }`}
         >
           <Users size={18} />
           Owners
         </button>
         <button
           onClick={() => setUserType("TENANTS")}
-          className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all ${userType === "TENANTS"
+          className={`px-4 py-3 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all ${
+            userType === "TENANTS"
               ? "text-primary border-primary"
               : "text-gray-600 border-transparent hover:text-gray-900"
-            }`}
+          }`}
         >
           <Users size={18} />
           Tenants
@@ -183,139 +201,142 @@ const AdminUserManagement = () => {
           </button>
         </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-gray-50/50 uppercase text-[10px] font-black text-gray-400 tracking-wider">
-                <th className="px-6 py-4">User</th>
-                <th className="px-6 py-4">Contact</th>
-                <th className="px-6 py-4 text-center">Role</th>
-                <th className="px-6 py-4 text-center">Status</th>
-                <th className="px-6 py-4">Joined</th>
-                <th className="px-6 py-4 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {loading ? (
-                <tr>
-                  <td
-                    colSpan={6}
-                    className="px-6 py-10 text-center text-gray-400 text-sm"
+        <Table<UserResponse>
+          columns={[
+            {
+              header: "User",
+              key: "user",
+              render: (user) => (
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white overflow-hidden ${
+                      userType === "OWNERS" ? "bg-primary" : "bg-purple-600"
+                    }`}
                   >
-                    Loading {userType.toLowerCase()}...
-                  </td>
-                </tr>
-              ) : filteredUsers.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={6}
-                    className="px-6 py-10 text-center text-gray-400 text-sm"
+                    {user.avatarUrl ? (
+                      <img
+                        src={user.avatarUrl}
+                        alt={user.fullname}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      user.fullname
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-900">
+                      {user.fullname}
+                    </p>
+                    <p className="text-[10px] text-gray-400">
+                      ID: {user.id.slice(-6).toUpperCase()}
+                    </p>
+                  </div>
+                </div>
+              ),
+            },
+            {
+              header: "Contact",
+              key: "contact",
+              render: (user) => (
+                <div>
+                  <p className="text-xs text-gray-600">{user.email}</p>
+                  <p className="text-[10px] text-gray-400">{user.phone}</p>
+                </div>
+              ),
+            },
+            {
+              header: "Role",
+              key: "role",
+              render: (user) => (
+                <div className="text-center">
+                  <span
+                    className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${
+                      userType === "OWNERS"
+                        ? "bg-primary/10 text-primary"
+                        : "bg-purple-50 text-purple-600"
+                    }`}
                   >
-                    No {userType.toLowerCase()} found.
-                  </td>
-                </tr>
-              ) : (
-                filteredUsers.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-gray-50/50 transition-colors"
+                    {user.role}
+                  </span>
+                </div>
+              ),
+            },
+            {
+              header: "Status",
+              key: "status",
+              render: (user) => (
+                <div className="text-center">
+                  <span
+                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-bold ${getStatusStyles(
+                      user,
+                    )}`}
                   >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white overflow-hidden ${userType === "OWNERS"
-                              ? "bg-primary"
-                              : "bg-purple-600"
-                            }`}
-                        >
-                          {user.avatarUrl ? (
-                            <img src={user.avatarUrl} alt={user.fullname} className="w-full h-full object-cover" />
-                          ) : (
-                            user.fullname
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")
-                          )}
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-gray-900">
-                            {user.fullname}
-                          </p>
-                          <p className="text-[10px] text-gray-400">
-                            ID: {user.id.slice(-6).toUpperCase()}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <p className="text-xs text-gray-600">{user.email}</p>
-                      <p className="text-[10px] text-gray-400">{user.phone}</p>
-                    </td>
-
-                    <td className="px-6 py-4 text-center">
-                      <span
-                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${userType === "OWNERS"
-                            ? "bg-primary/10 text-primary"
-                            : "bg-purple-50 text-purple-600"
-                          }`}
-                      >
-                        {user.role}
-                      </span>
-                    </td>
-
-                    <td className="px-6 py-4 text-center">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-bold ${getStatusStyles(user)}`}
-                      >
-                        <div
-                          className={`w-1 h-1 rounded-full ${getStatusDot(user)}`}
-                        ></div>
-                        {getStatusLabel(user)}
-                      </span>
-                    </td>
-
-                    <td className="px-6 py-4 text-xs text-gray-500">
-                      {new Date(user.createdAt).toLocaleDateString()}
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-center gap-2">
-                        <button
-                          onClick={() => handleViewDetails(user)}
-                          className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors"
-                          title="View Details"
-                        >
-                          <Eye size={16} />
-                        </button>
-                        {user.isSuspended ? (
-                          <button
-                            onClick={() =>
-                              openConfirmModal(user.id, "ACTIVATE")
-                            }
-                            className="p-1.5 hover:bg-green-50 rounded-lg text-green-600 transition-colors"
-                            title="Activate User"
-                          >
-                            <UserCheck size={16} />
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => openConfirmModal(user.id, "SUSPEND")}
-                            className="p-1.5 hover:bg-red-50 rounded-lg text-red-600 transition-colors"
-                            title="Suspend User"
-                          >
-                            <UserX size={16} />
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                    <div
+                      className={`w-1 h-1 rounded-full ${getStatusDot(user)}`}
+                    ></div>
+                    {getStatusLabel(user)}
+                  </span>
+                </div>
+              ),
+            },
+            {
+              header: "Joined",
+              key: "createdAt",
+              render: (user) => (
+                <span className="text-xs text-gray-500">
+                  {new Date(user.createdAt).toLocaleDateString()}
+                </span>
+              ),
+            },
+            {
+              header: "Actions",
+              key: "actions",
+              render: (user) => (
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleViewDetails(user);
+                    }}
+                    className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors"
+                    title="View Details"
+                  >
+                    <Eye size={16} />
+                  </button>
+                  {user.isSuspended ? (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openConfirmModal(user.id, "ACTIVATE");
+                      }}
+                      className="p-1.5 hover:bg-green-50 rounded-lg text-green-600 transition-colors"
+                      title="Activate User"
+                    >
+                      <UserCheck size={16} />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openConfirmModal(user.id, "SUSPEND");
+                      }}
+                      className="p-1.5 hover:bg-red-50 rounded-lg text-red-600 transition-colors"
+                      title="Suspend User"
+                    >
+                      <UserX size={16} />
+                    </button>
+                  )}
+                </div>
+              ),
+            },
+          ]}
+          data={filteredUsers}
+          isLoading={loading}
+          emptyMessage={`No ${userType.toLowerCase()} found.`}
+        />
 
         <div className="p-6 bg-gray-50/50 flex items-center justify-between border-t border-gray-100">
           <p className="text-xs text-gray-400">
@@ -334,10 +355,11 @@ const AdminUserManagement = () => {
               <button
                 key={i}
                 onClick={() => handlePageChange(i + 1)}
-                className={`w-8 h-8 flex items-center justify-center text-xs font-bold border rounded-lg transition-all ${pagination.page === i + 1
+                className={`w-8 h-8 flex items-center justify-center text-xs font-bold border rounded-lg transition-all ${
+                  pagination.page === i + 1
                     ? "bg-primary text-white border-primary"
                     : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
-                  }`}
+                }`}
               >
                 {i + 1}
               </button>

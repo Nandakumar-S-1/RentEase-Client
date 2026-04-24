@@ -23,9 +23,12 @@ const NotFound: React.FC = () => {
       </div>
 
       <div className="max-w-md space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">Lost in the city?</h1>
+        <h1 className="text-4xl font-bold text-foreground">
+          Lost in the city?
+        </h1>
         <p className="text-lg text-muted-foreground">
-          We couldn't find the page you're looking for. It might have been moved or doesn't exist.
+          We couldn't find the page you're looking for. It might have been moved
+          or doesn't exist.
         </p>
       </div>
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   submitVerification,
   getVerificationStatus,
@@ -16,7 +16,7 @@ export const useSubmitVerification = () => {
   const [rejectionReason, setRejectionReason] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
-  const fetchStatus = async () => {
+  const fetchStatus = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -34,9 +34,9 @@ export const useSubmitVerification = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch]);
 
-  const submit = async (documentType: string, document: File) => {
+  const submit = useCallback(async (documentType: string, document: File) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -58,7 +58,7 @@ export const useSubmitVerification = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch]);
 
   return {
     submit,

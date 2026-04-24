@@ -8,4 +8,5 @@ export interface InputProps {
   label?: string;
   required?: boolean;
   disabled?: boolean;
+  className?: string;
 }

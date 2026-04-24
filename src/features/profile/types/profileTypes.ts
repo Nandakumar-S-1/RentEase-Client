@@ -15,6 +15,7 @@ export interface ProfileData {
   documentType?: string | null;
   documentUrl?: string | null;
   verifiedAt?: string | null;
+  listingsCount?: number;
 }
 
 export interface UpdateProfileData {

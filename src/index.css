@@ -2,18 +2,18 @@
 
 @theme {
   --color-primary: #7c3aed;
-  --color-secondary: #ddd6fe;
+  --color-secondary: #f1f5f9;
   --color-accent: #ede9fe;
   --color-card: #ffffff;
-  --color-muted: #9ca3af;
-  --color-background: #f3f5f9;
-  --color-foreground: #111827;
+  --color-muted: #64748b;
+  --color-background: #f8fafc;
+  --color-foreground: #0f172a;
   --color-surface: #ffffff;
-  --color-border: rgba(17, 24, 39, 0.1);
+  --color-border: #e2e8f0;
 
-  --color-muted-foreground: #6b7280;
-  --color-card-foreground: #111827;
-  --color-secondary-foreground: #4c1d95;
+  --color-muted-foreground: #64748b;
+  --color-card-foreground: #0f172a;
+  --color-secondary-foreground: #1e293b;
   --color-accent-foreground: #4c1d95;
 }
 
@@ -47,8 +47,12 @@
 
   /* Shimmer effect for skeleton loaders */
   @keyframes shimmer {
-    0% { background-position: -468px 0; }
-    100% { background-position: 468px 0; }
+    0% {
+      background-position: -468px 0;
+    }
+    100% {
+      background-position: 468px 0;
+    }
   }
 
   .animate-shimmer {
@@ -63,11 +67,33 @@
   }
 
   @keyframes pulseHouse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.1); opacity: 1; }
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
   }
 
   .animate-pulse-house {
     animation: pulseHouse 2s ease-in-out infinite;
   }
+}
+
+/* Custom Theme Transition Styles */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
 }

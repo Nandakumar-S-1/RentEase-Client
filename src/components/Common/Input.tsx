@@ -13,6 +13,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       label,
       required = false,
       disabled = false,
+      className: customClassName = "",
     },
     ref,
   ) => {
@@ -40,7 +41,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             disabled={disabled}
             className={`w-full py-2 rounded-lg border border-gray-200 focus:border-primary focus:outline-none transition ${
               icon ? "pl-10 pr-4" : "px-4"
-            } ${disabled ? "bg-gray-100 cursor-not-allowed" : ""}`}
+            } ${disabled ? "bg-gray-100 cursor-not-allowed" : ""} ${customClassName}`}
           />
         </div>
       </div>

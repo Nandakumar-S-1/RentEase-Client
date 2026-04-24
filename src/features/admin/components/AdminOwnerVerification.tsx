@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import {
-  ShieldCheck,
   Check,
   X,
   Clock,
   FileText,
   ExternalLink,
+  ShieldCheck,
 } from "lucide-react";
 import { useOwnerVerification } from "../hooks/useOwnerVerification";
-import { Button, FormMessage } from "../../../components/common";
+import { type PendingOwner } from "../services/adminVerificationService";
+import { Button, FormMessage, Table } from "../../../components/common";
 
 const AdminOwnerVerification = () => {
   const {
@@ -39,160 +40,151 @@ const AdminOwnerVerification = () => {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">
-            Owner Verification
-          </h1>
-          <p className="text-gray-500">
-            Review and verify owner identity documents.
-          </p>
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-[2.5rem] p-10 shadow-xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+          <div className="space-y-1">
+            <h1 className="text-4xl font-black text-[color:var(--color-foreground)] tracking-tight flex items-center gap-4">
+              Pending Verifications
+              <ShieldCheck className="text-primary/40" size={32} />
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 font-medium tracking-wide">
+              Review and verify property owner identity documents.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 px-6 py-3 bg-amber-500/10 text-amber-600 dark:text-amber-500 rounded-2xl text-sm font-black uppercase tracking-widest">
+            <Clock size={18} />
+            {owners.length} Pending
+          </div>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 bg-yellow-50 text-yellow-700 rounded-xl text-sm font-bold">
-          <Clock size={18} />
-          {owners.length} Pending
-        </div>
-      </div>
 
-      <FormMessage message={message} isError={isError} />
+        <FormMessage message={message} isError={isError} />
 
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-gray-50/50 uppercase text-[10px] font-black text-gray-400 tracking-wider">
-                <th className="px-6 py-4">Owner</th>
-                <th className="px-6 py-4 text-center">Document Type</th>
-                <th className="px-6 py-4 text-center">Status</th>
-                <th className="px-6 py-4 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {isLoading ? (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="px-6 py-10 text-center text-gray-400 text-sm"
-                  >
-                    Loading pending verifications...
-                  </td>
-                </tr>
-              ) : owners.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="px-6 py-10 text-center text-gray-400 text-sm"
-                  >
-                    <div className="flex flex-col items-center gap-2">
-                      <ShieldCheck className="h-8 w-8 text-green-400" />
-                      <span>No pending verifications</span>
+        <div className="bg-[color:var(--color-background)] rounded-3xl border border-[color:var(--color-border)] overflow-hidden">
+          <Table<PendingOwner>
+            columns={[
+              {
+                header: "Owner",
+                key: "owner",
+                render: (owner: PendingOwner) => (
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-primary/10 text-primary font-black text-xs">
+                      {owner.ownerId.slice(-2).toUpperCase()}
                     </div>
-                  </td>
-                </tr>
-              ) : (
-                owners.map((owner) => (
-                  <tr
-                    key={owner.id}
-                    className="hover:bg-gray-50/50 transition-colors"
-                  >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full flex items-center justify-center bg-primary text-white font-bold text-xs">
-                          {owner.ownerId.slice(-2).toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-gray-900">
-                            Owner #{owner.ownerId.slice(-6).toUpperCase()}
-                          </p>
-                          <p className="text-[10px] text-gray-400">
-                            ID: {owner.id.slice(-6).toUpperCase()}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="px-6 py-4 text-center">
-                      {owner.documentUrl ? (
-                        <a
-                          href={owner.documentUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors cursor-pointer"
-                        >
-                          <FileText size={12} />
-                          {owner.documentType}
-                          <ExternalLink size={10} />
-                        </a>
-                      ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-600">
-                          <FileText size={12} />
-                          {owner.documentType}
-                        </span>
-                      )}
-                    </td>
-
-                    <td className="px-6 py-4 text-center">
-                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-yellow-50 text-yellow-600">
-                        <div className="w-1 h-1 rounded-full bg-yellow-600" />
-                        {owner.status}
+                    <div>
+                      <p className="text-sm font-black text-[color:var(--color-foreground)]">
+                        Owner #{owner.ownerId.slice(-6).toUpperCase()}
+                      </p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+                        UUID: {owner.id.slice(-8)}
+                      </p>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                header: "Document Type",
+                key: "documentType",
+                render: (owner) =>
+                  owner.documentUrl ? (
+                    <div className="text-center">
+                      <a
+                        href={owner.documentUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 transition-all cursor-pointer"
+                      >
+                        <FileText size={14} />
+                        {owner.documentType}
+                        <ExternalLink size={12} />
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="text-center">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest bg-slate-100 dark:bg-white/5 text-slate-500">
+                        {owner.documentType}
                       </span>
-                    </td>
-
-                    <td className="px-6 py-4">
-                      {rejectingId === owner.ownerId ? (
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="text"
-                            placeholder="Reason (min 5 chars)"
-                            value={rejectionReason}
-                            onChange={(e) => setRejectionReason(e.target.value)}
-                            className="px-2 py-1 text-xs border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-200 w-40"
-                          />
-                          <button
-                            onClick={() => handleReject(owner.ownerId)}
-                            disabled={rejectionReason.length < 5 || isLoading}
-                            className="p-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-colors"
-                          >
-                            <Check size={14} />
-                          </button>
-                          <button
-                            onClick={() => {
-                              setRejectingId(null);
-                              setRejectionReason("");
-                            }}
-                            className="p-1.5 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
-                          >
-                            <X size={14} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-center gap-2">
-                          <Button
-                            onClick={() => approve(owner.ownerId)}
-                            loading={isLoading}
-                            className="px-3 py-1 text-xs bg-green-600 hover:bg-green-700"
-                          >
-                            <Check size={14} className="mr-1" />
-                            Approve
-                          </Button>
-                          <button
-                            onClick={() => setRejectingId(owner.ownerId)}
-                            className="px-3 py-1 text-xs font-bold border border-red-200 text-red-600 rounded-xl hover:bg-red-50 transition-colors"
-                          >
-                            <span className="flex items-center gap-1">
-                              <X size={14} />
-                              Reject
-                            </span>
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                    </div>
+                  ),
+              },
+              {
+                header: "Status",
+                key: "status",
+                render: (owner) => (
+                  <div className="text-center">
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-amber-500/10 text-amber-600">
+                      <div className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
+                      {owner.status}
+                    </span>
+                  </div>
+                ),
+              },
+              {
+                header: "Actions",
+                key: "actions",
+                render: (owner) => (
+                  <div className="px-6 py-4 flex items-center justify-center gap-3">
+                    {rejectingId === owner.ownerId ? (
+                      <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-4 duration-300">
+                        <input
+                          type="text"
+                          placeholder="Reason..."
+                          value={rejectionReason}
+                          onChange={(e) => setRejectionReason(e.target.value)}
+                          className="px-4 py-2 text-xs border border-[color:var(--color-border)] rounded-xl focus:outline-none focus:ring-4 focus:ring-red-100 dark:focus:ring-red-900/20 w-48 bg-[color:var(--color-surface)] font-bold"
+                        />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleReject(owner.ownerId);
+                          }}
+                          disabled={rejectionReason.length < 5 || isLoading}
+                          className="p-2 bg-red-600 text-white rounded-xl hover:bg-red-700 disabled:opacity-50 transition-all shadow-lg shadow-red-600/20"
+                        >
+                          <Check size={16} />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setRejectingId(null);
+                            setRejectionReason("");
+                          }}
+                          className="p-2 bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-200 transition-all font-black"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            approve(owner.ownerId);
+                          }}
+                          loading={isLoading}
+                          className="px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/20"
+                        >
+                          Approve
+                        </Button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setRejectingId(owner.ownerId);
+                          }}
+                          className="px-6 py-2 text-xs font-black uppercase tracking-widest border border-red-200 text-red-600 rounded-xl hover:bg-red-50 dark:hover:bg-red-950/20 transition-all"
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
+                  </div>
+                ),
+              },
+            ]}
+            data={owners}
+            isLoading={isLoading}
+            emptyMessage="No pending verifications"
+          />
         </div>
       </div>
     </div>

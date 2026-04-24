@@ -1,9 +1,12 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { ENV } from "../../config/env";
 import { API_ROUTES, PAGE_ROUTES } from "../../config/routes";
-import { ErrorCodes } from "../../types/Constants/error.constant"; 
+import { ErrorCodes } from "../../types/constants/error.constant"; 
 import { store } from "../../app/store/store";
-import { logout, updateAccessToken } from "../../features/auth/slices/AuthSlice";
+import {
+  logout,
+  updateAccessToken,
+} from "../../features/auth/slices/AuthSlice";
 import toast from "react-hot-toast";
 
 export const axiosApi = axios.create({
@@ -13,14 +16,6 @@ export const axiosApi = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-// axiosApi.interceptors.request.use((config) => {
-//   const token = store.getState().auth.accessToken;
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// })
 
 // this will runs before every req & attaches teh access token with it
 axiosApi.interceptors.request.use(
@@ -68,7 +63,9 @@ axiosApi.interceptors.response.use(
     }
 
     // get new access token using the refresh token in cookie.
-    const isRefreshCall = originalRequest.url?.includes(API_ROUTES.REFRESH_TOKEN);
+    const isRefreshCall = originalRequest.url?.includes(
+      API_ROUTES.REFRESH_TOKEN,
+    );
     const isLoginCall = originalRequest.url?.includes("login");
     const isLogoutCall = originalRequest.url?.includes(API_ROUTES.LOGOUT);
 
@@ -87,6 +84,7 @@ axiosApi.interceptors.response.use(
         const newAccessToken = resp.data?.data?.accessToken;
 
         if (newAccessToken) {
+          console.log("new access token received and updated ---------------");
           store.dispatch(updateAccessToken(newAccessToken));
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return axiosApi(originalRequest);

@@ -1,5 +1,13 @@
 import React from "react";
-import { Phone, Video, MoreVertical, Paperclip, Image as ImageIcon, Smile, Send } from "lucide-react";
+import {
+  Phone,
+  Video,
+  MoreVertical,
+  Paperclip,
+  Image as ImageIcon,
+  Smile,
+  Send,
+} from "lucide-react";
 
 interface ChatWindowProps {
   chatId: string | null;
@@ -42,12 +50,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId }) => {
         <div className="flex items-center gap-3">
           <div className="relative border-r border-[color:var(--color-border)] pr-3">
             <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm ring-2 ring-[color:var(--color-surface)]">
-               AS
+              AS
             </div>
             <div className="absolute bottom-0 right-3 w-2.5 h-2.5 bg-green-500 border-2 border-[color:var(--color-surface)] rounded-full" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-[color:var(--color-foreground)] leading-none mb-1">Aswathy Sudhakaran</h3>
+            <h3 className="text-sm font-bold text-[color:var(--color-foreground)] leading-none mb-1">
+              Aswathy Sudhakaran
+            </h3>
             <p className="text-[10px] text-gray-500 flex items-center gap-1.5">
               <span className="text-green-500 font-bold">Online</span>
               <span className="text-gray-300 dark:text-gray-600">•</span>
@@ -72,7 +82,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId }) => {
       {/* Message Area */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar bg-[color:var(--color-background)]/20">
         <div className="flex justify-center my-4">
-           <span className="text-[10px] font-bold text-gray-400 bg-[color:var(--color-surface)] px-3 py-1 rounded-full border border-[color:var(--color-border)] uppercase tracking-widest">Today</span>
+          <span className="text-[10px] font-bold text-gray-400 bg-[color:var(--color-surface)] px-3 py-1 rounded-full border border-[color:var(--color-border)] uppercase tracking-widest">
+            Today
+          </span>
         </div>
 
         {mockMessages.map((msg) => (
@@ -94,7 +106,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId }) => {
                 }`}
               >
                 {msg.text}
-                <div className={`text-[9px] mt-1.5 flex items-center gap-1.5 ${msg.isMe ? "text-indigo-100 justify-end" : "text-gray-400 justify-start"}`}>
+                <div
+                  className={`text-[9px] mt-1.5 flex items-center gap-1.5 ${msg.isMe ? "text-indigo-100 justify-end" : "text-gray-400 justify-start"}`}
+                >
                   {msg.time}
                   {msg.isMe && (
                     <span className="flex">
@@ -114,14 +128,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId }) => {
       <div className="p-4 bg-[color:var(--color-surface)] border-t border-[color:var(--color-border)]">
         <div className="flex items-center gap-3 bg-[color:var(--color-background)] border border-transparent focus-within:border-primary/20 focus-within:bg-[color:var(--color-card)] p-2 rounded-2xl transition-all group">
           <div className="flex items-center gap-1.5 px-1 border-r border-[color:var(--color-border)]">
-             <button className="p-2 text-gray-400 hover:text-primary transition-colors">
-                <Paperclip size={18} />
-             </button>
-             <button className="p-2 text-gray-400 hover:text-primary transition-colors">
-                <ImageIcon size={18} />
-             </button>
+            <button className="p-2 text-gray-400 hover:text-primary transition-colors">
+              <Paperclip size={18} />
+            </button>
+            <button className="p-2 text-gray-400 hover:text-primary transition-colors">
+              <ImageIcon size={18} />
+            </button>
           </div>
-          
+
           <input
             type="text"
             placeholder="Write a message..."

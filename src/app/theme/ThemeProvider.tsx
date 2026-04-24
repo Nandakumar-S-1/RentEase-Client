@@ -1,15 +1,10 @@
-import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
-
-export type ThemeMode = "light" | "dark" | "system";
-
-type ThemeContextValue = {
-  mode: ThemeMode;
-  setMode: (mode: ThemeMode) => void;
-  toggle: () => void;
-  resolvedMode: "light" | "dark";
-};
-
-const ThemeContext = createContext<ThemeContextValue | null>(null);
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { ThemeContext, type ThemeMode, type ThemeContextValue } from "./ThemeContext";
 
 const STORAGE_KEY = "rentease-theme";
 
@@ -31,8 +26,8 @@ function readStoredMode(): ThemeMode | null {
 function writeStoredMode(mode: ThemeMode) {
   try {
     localStorage.setItem(STORAGE_KEY, mode);
-  } catch {
-
+  } catch (err) {
+    console.warn("Failed to save theme preference:", err);
   }
 }
 
@@ -47,9 +42,15 @@ function applyThemeToDocument(resolved: "light" | "dark") {
   root.style.colorScheme = resolved;
 }
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mode, setModeState] = useState<ThemeMode>(() => readStoredMode() ?? "system");
-  const [resolvedMode, setResolvedMode] = useState<"light" | "dark">(() => resolveMode(mode));
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [mode, setModeState] = useState<ThemeMode>(
+    () => readStoredMode() ?? "system",
+  );
+
+  // Derive resolvedMode during render to avoid cascading renders
+  const resolvedMode = useMemo(() => resolveMode(mode), [mode]);
 
   const setMode = useCallback((next: ThemeMode) => {
     setModeState(next);
@@ -61,20 +62,17 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [resolvedMode, setMode]);
 
   useEffect(() => {
-    const resolved = resolveMode(mode);
-    setResolvedMode(resolved);
-    applyThemeToDocument(resolved);
-  }, [mode]);
+    applyThemeToDocument(resolvedMode);
+  }, [resolvedMode]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
 
     const handler = () => {
-      if (mode !== "system") return;
-      const resolved = resolveMode("system");
-      setResolvedMode(resolved);
-      applyThemeToDocument(resolved);
+      if (mode === "system") {
+        applyThemeToDocument(resolveMode("system"));
+      }
     };
 
     mq.addEventListener?.("change", handler);
@@ -91,13 +89,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     [mode, setMode, toggle, resolvedMode],
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 };
-
-export function useTheme() {
-  const ctx = React.useContext(ThemeContext);
-  if (!ctx) {
-    throw new Error("useTheme must be used within ThemeProvider");
-  }
-  return ctx;
-}

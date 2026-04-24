@@ -1,137 +1,107 @@
 import React from "react";
-import { Mail, Phone, CheckCircle, Clock, Camera } from "lucide-react";
+import { Mail, Phone, CheckCircle, Clock, Star, LayoutGrid, Briefcase, Quote } from "lucide-react";
 import type { ProfileData } from "../types/profileTypes";
 import { format } from "date-fns";
 
 interface ProfileCardProps {
   profile: ProfileData;
-  onAvatarUpload: (file: File) => Promise<any>;
-  uploading: boolean;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ profile, onAvatarUpload, uploading }) => {
-  const initials = profile.fullName
-    .split(" ")
-    .map((n) => n[0])
-    .join("");
-
+const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
   const isOwner = profile.role === "OWNER";
   const joinedDate = profile.createdAt
     ? format(new Date(profile.createdAt), "MMMM yyyy")
     : "Recent";
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      onAvatarUpload(file);
-    }
-  };
-
   return (
-    <div className="bg-white dark:bg-card border border-border rounded-2xl p-6 shadow-sm">
-      <div className="flex flex-col items-center text-center pb-6 border-b border-border">
-        <div className="relative group mb-4">
-          <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center text-white text-3xl font-bold shadow-lg overflow-hidden border-4 border-white dark:border-card">
-            {profile.avatarUrl ? (
-              <img src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover" />
-            ) : (
-              initials
-            )}
+    <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
+      {/* Bio & Occupation Section */}
+      <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[2.5rem] p-8 shadow-sm">
+        <div className="space-y-6">
+          <div className="flex items-center gap-3 text-primary">
+            <div className="p-2 bg-primary/10 rounded-xl">
+              <Briefcase size={20} />
+            </div>
+            <h3 className="font-black text-sm uppercase tracking-widest">Professional Identity</h3>
           </div>
-          <label
-            htmlFor="avatar-upload"
-            className={`absolute bottom-0 right-0 p-2 bg-primary text-white rounded-full border-4 border-white dark:border-card hover:scale-110 transition-transform shadow-md cursor-pointer ${uploading ? "animate-pulse" : ""}`}
-          >
-            <Camera size={14} />
-          </label>
-          <input
-            id="avatar-upload"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileChange}
-            disabled={uploading}
-          />
-        </div>
-
-        <h2 className="text-xl font-bold text-foreground mb-1">
-          {profile.fullName}
-        </h2>
-        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
-          {profile.role.toLowerCase()}
-        </p>
-
-        {profile.role !== "ADMIN" && (
-          <div className="flex flex-col items-center gap-2 mb-4">
-            {profile.occupation && (
-              <p className="text-xs font-semibold px-3 py-1 bg-primary/5 text-primary rounded-lg border border-primary/10">
-                {profile.occupation}
+          
+          <div className="space-y-4">
+            <div className="p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100/50">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Current Occupation</p>
+              <p className="text-lg font-black text-gray-800 dark:text-white">
+                {profile.occupation || "Member of RentEase"}
               </p>
-            )}
-            {profile.bio && (
-              <p className="text-xs text-muted-foreground max-w-[250px] italic">
-                &ldquo;{profile.bio}&rdquo;
+            </div>
+
+            <div className="p-6 bg-primary/5 rounded-3xl border border-primary/10 relative overflow-hidden group">
+               <Quote className="absolute -right-2 -bottom-2 text-primary/10 group-hover:scale-110 transition-transform duration-500" size={64} />
+               <p className="text-[10px] font-black text-primary/60 uppercase tracking-widest mb-2">About Me</p>
+               <p className="text-sm text-gray-600 dark:text-gray-300 font-medium leading-relaxed italic relative z-10">
+                {profile.bio ? `"${profile.bio}"` : "This user hasn't shared a bio yet."}
               </p>
-            )}
+            </div>
           </div>
-        )}
-
-        {isOwner && profile.verificationStatus === "VERIFIED" && (
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-full text-xs font-semibold">
-            <CheckCircle size={14} />
-            Verified Owner
-          </div>
-        )}
-        {!isOwner && profile.role !== "ADMIN" && (
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-semibold">
-            <CheckCircle size={14} />
-            Verified Tenant
-          </div>
-        )}
-      </div>
-
-      <div className="py-6 space-y-4 border-b border-border">
-        <div className="flex items-center gap-3 text-sm text-foreground">
-          <div className="p-2 bg-gray-50 dark:bg-white/5 rounded-lg text-muted-foreground">
-            <Mail size={16} />
-          </div>
-          <span className="truncate text-xs">{profile.email}</span>
-        </div>
-        <div className="flex items-center gap-3 text-sm text-foreground">
-          <div className="p-2 bg-gray-50 dark:bg-white/5 rounded-lg text-muted-foreground">
-            <Phone size={16} />
-          </div>
-          <span className="text-xs">{profile.phone || "Not set"}</span>
-        </div>
-        
-        <div className="flex items-center gap-3 text-sm text-foreground">
-          <div className="p-2 bg-gray-50 dark:bg-white/5 rounded-lg text-muted-foreground">
-            <Clock size={16} />
-          </div>
-          <span className="text-xs">Member since {joinedDate}</span>
         </div>
       </div>
 
-      {profile.role !== "ADMIN" && (
-        <div className="pt-6 grid grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-2xl text-center">
-            <p className="text-2xl font-bold text-primary mb-1">
-              {isOwner ? "0" : "0"}
-            </p>
-            <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest leading-none">
-              {isOwner ? "Properties" : "Current Rental"}
-            </p>
+      {/* Quick Info Grid */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[2rem] p-6 text-center shadow-sm hover:translate-y-[-4px] transition-all">
+          <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <LayoutGrid size={20} />
           </div>
-          <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-2xl text-center">
-            <p className="text-2xl font-bold text-primary mb-1">
-              {isOwner ? "0.0" : "0"}
-            </p>
-            <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest leading-none">
-              {isOwner ? "Rating" : "Wishlist Items"}
-            </p>
-          </div>
+          <p className="text-2xl font-black text-gray-900 dark:text-white">{profile.listingsCount || 0}</p>
+          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{isOwner ? "Listings" : "Rentals"}</p>
         </div>
-      )}
+        <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[2rem] p-6 text-center shadow-sm hover:translate-y-[-4px] transition-all">
+          <div className="w-10 h-10 bg-amber-50 dark:bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <Star size={20} />
+          </div>
+          <p className="text-2xl font-black text-gray-900 dark:text-white">4.9</p>
+          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Avg Rating</p>
+        </div>
+      </div>
+
+      {/* Contact Details */}
+      <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[2.5rem] p-8 shadow-sm">
+        <h3 className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6 px-1">Verifications & Contact</h3>
+        <div className="space-y-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gray-50 dark:bg-white/5 rounded-2xl flex items-center justify-center text-gray-400">
+              <Mail size={20} />
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-gray-400 uppercase">Email Address</p>
+              <p className="font-bold text-sm text-gray-800 dark:text-gray-200">{profile.email}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gray-50 dark:bg-white/5 rounded-2xl flex items-center justify-center text-gray-400">
+              <Phone size={20} />
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-gray-400 uppercase">Phone Number</p>
+              <p className="font-bold text-sm text-gray-800 dark:text-gray-200">{profile.phone || "Not provided"}</p>
+            </div>
+          </div>
+          {isOwner && profile.verificationStatus === "VERIFIED" && (
+            <div className="flex items-center gap-4 pt-2">
+              <div className="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center">
+                <CheckCircle size={20} />
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-green-600 uppercase">Account Status</p>
+                <p className="font-bold text-sm text-green-700">Verified Owner</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-8 pt-8 border-t border-gray-50 dark:border-white/5 flex items-center gap-2 text-gray-400">
+          <Clock size={14} />
+          <span className="text-[10px] font-black uppercase tracking-widest">Joined {joinedDate}</span>
+        </div>
+      </div>
     </div>
   );
 };

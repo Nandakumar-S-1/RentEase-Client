@@ -24,7 +24,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ selectedId, onSelect }) => {
 
   return (
     <div className="w-80 h-full flex flex-col border-r border-[color:var(--color-border)] bg-[color:var(--color-surface)]">
-      {/* Search Header */}
+
       <div className="p-4 border-b border-[color:var(--color-border)]">
         <div className="relative group">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 group-focus-within:text-primary transition-colors" />
@@ -36,20 +36,19 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ selectedId, onSelect }) => {
         </div>
       </div>
 
-      {/* Tabs */}
+
       <div className="flex px-4 pt-4 border-b border-[color:var(--color-border)] gap-6">
         {["All", "Unread (3)"].map((tab) => {
           const isUnread = tab.includes("Unread");
           const label = isUnread ? "Unread" : "All";
           const isActive = activeTab === label;
-          
+
           return (
             <button
               key={label}
-              onClick={() => setActiveTab(label as any)}
-              className={`pb-2 text-sm font-semibold transition-all relative ${
-                isActive ? "text-primary" : "text-gray-400 hover:text-gray-600"
-              }`}
+              onClick={() => setActiveTab(label as "All" | "Unread")}
+              className={`pb-2 text-sm font-semibold transition-all relative ${isActive ? "text-primary" : "text-gray-400 hover:text-gray-600"
+                }`}
             >
               {tab}
               {isActive && (
@@ -67,20 +66,26 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ selectedId, onSelect }) => {
             <button
               key={chat.id}
               onClick={() => onSelect(chat.id)}
-              className={`w-full p-4 flex items-start gap-3 transition-all text-left group ${
-                isActive 
-                  ? "bg-primary/5 shadow-[inset_4px_0_0_0_#4338ca] dark:bg-primary/10" 
+              className={`w-full p-4 flex items-start gap-3 transition-all text-left group ${isActive
+                  ? "bg-primary/5 shadow-[inset_4px_0_0_0_#4338ca] dark:bg-primary/10"
                   : "hover:bg-[color:var(--color-background)]"
-              }`}
+                }`}
             >
-              {/* Avatar */}
+
               <div className="relative shrink-0">
                 <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs ring-2 ring-[color:var(--color-surface)]">
                   {chat.avatar ? (
-                    <img src={chat.avatar} alt={chat.name} className="w-full h-full rounded-full object-cover" />
+                    <img
+                      src={chat.avatar}
+                      alt={chat.name}
+                      className="w-full h-full rounded-full object-cover"
+                    />
                   ) : (
                     <div className="w-full h-full rounded-full bg-indigo-600 text-white flex items-center justify-center">
-                       {chat.name.split(" ").map(n => n[0]).join("")}
+                      {chat.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
                     </div>
                   )}
                 </div>
@@ -89,10 +94,12 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ selectedId, onSelect }) => {
                 )}
               </div>
 
-              {/* Info */}
+
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start mb-0.5">
-                  <h4 className={`text-sm font-bold truncate ${isActive ? "text-primary" : "text-[color:var(--color-foreground)]"}`}>
+                  <h4
+                    className={`text-sm font-bold truncate ${isActive ? "text-primary" : "text-[color:var(--color-foreground)]"}`}
+                  >
                     {chat.name}
                   </h4>
                   <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">

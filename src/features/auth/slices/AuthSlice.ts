@@ -53,7 +53,7 @@ const authSlice = createSlice({
     },
 
     updateIsAuthenticated: (state) => {
-       state.isAuthenticated = true;
+      state.isAuthenticated = true;
     },
 
     logout: (state) => {

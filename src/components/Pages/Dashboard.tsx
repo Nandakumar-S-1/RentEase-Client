@@ -42,11 +42,11 @@ function Dashboard() {
     }
 
     switch (user.role) {
-      case "ADMIN":
+      case RoleTypes.ADMIN_USER:
         return <AdminDashboard />;
-      case "OWNER":
+      case RoleTypes.OWNER_USER:
         return <OwnerDashboard />;
-      case "TENANT":
+      case RoleTypes.TENANT_USER:
         return <TenantDashboard />;
       default:
         return <div>Role not recognized</div>;

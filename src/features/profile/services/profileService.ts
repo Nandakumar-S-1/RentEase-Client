@@ -18,7 +18,9 @@ export const updateProfile = async (
   return response.data;
 };
 
-export const uploadAvatar = async (file: File): Promise<{ success: boolean; data: { avatarUrl: string } }> => {
+export const uploadAvatar = async (
+  file: File,
+): Promise<{ success: boolean; data: { avatarUrl: string } }> => {
   const formData = new FormData();
   formData.append("avatar", file);
 
