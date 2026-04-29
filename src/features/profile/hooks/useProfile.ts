@@ -16,9 +16,9 @@ export const useProfile = () => {
   const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch();
 
-  const fetchProfile = useCallback(async () => {
+  const fetchProfile = useCallback(async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       setError(null);
       const response = await getProfile();
       if (response.success) {
@@ -29,7 +29,7 @@ export const useProfile = () => {
         err instanceof Error ? err.message : ProfileMessages.LOAD_FAILED;
       setError(message);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, []);
 
@@ -45,7 +45,7 @@ export const useProfile = () => {
             phone: data.phone,
           }),
         );
-        await fetchProfile();
+        await fetchProfile(true);
       }
       return response;
     } catch (err: unknown) {
@@ -65,7 +65,7 @@ export const useProfile = () => {
       const response = await uploadAvatarService(file);
       if (response.success) {
         dispatch(updateUser({ avatarUrl: response.data.avatarUrl }));
-        await fetchProfile();
+        await fetchProfile(true);
       }
       return response;
     } catch (err: unknown) {

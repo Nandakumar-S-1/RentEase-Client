@@ -39,9 +39,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             onChange={onChange}
             required={required}
             disabled={disabled}
-            className={`w-full py-2 rounded-lg border border-gray-200 focus:border-primary focus:outline-none transition ${
+            className={`w-full py-2 rounded-lg border border-gray-200 dark:border-white/10 dark:bg-zinc-900 dark:text-white focus:border-primary focus:outline-none transition ${
               icon ? "pl-10 pr-4" : "px-4"
-            } ${disabled ? "bg-gray-100 cursor-not-allowed" : ""} ${customClassName}`}
+            } ${disabled ? "bg-gray-100 dark:bg-zinc-800 cursor-not-allowed" : ""} ${customClassName}`}
           />
         </div>
       </div>

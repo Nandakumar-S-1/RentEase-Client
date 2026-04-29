@@ -8,7 +8,7 @@ import { LoadingOverlay } from "../../../components/common";
 import { Camera, ShieldCheck, Settings2, BellRing, UserCog } from "lucide-react";
 
 const ProfilePage: React.FC = () => {
-  const { profile, loading, updating, error, uploadAvatar } = useProfile();
+  const { profile, loading, updating, saveProfile, error, uploadAvatar } = useProfile();
   const [activeTab, setActiveTab] = useState("profile");
 
   const tabs = [
@@ -38,40 +38,7 @@ const ProfilePage: React.FC = () => {
   return (
     <DashboardLayout role={profile.role as RoleType} userName={profile.fullName}>
       <div className="min-h-screen pb-20">
-        {/* Modern Header Section with Banner & Centered Avatar */}
-        <div className="relative mb-32">
-          {/* Main Banner */}
-          <div className="h-64 md:h-80 w-full rounded-[3rem] bg-gradient-to-br from-primary via-primary-dark to-accent relative overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
-            <div className="absolute top-[-100px] left-[-100px] w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-[-50px] right-[50px] w-64 h-64 bg-accent/20 rounded-full blur-2xl" />
-          </div>
-
-          {/* Centered Avatar Overlay */}
-          <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center">
-            <div className="relative group">
-              <div className="w-40 h-40 md:w-48 md:h-48 rounded-[3.5rem] bg-white dark:bg-card p-2 shadow-2xl shadow-primary/20 transition-all duration-500 group-hover:rotate-3">
-                <div className="w-full h-full rounded-[3rem] bg-gray-100 dark:bg-white/5 overflow-hidden flex items-center justify-center relative">
-                  {profile.avatarUrl ? (
-                    <img src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  ) : (
-                    <span className="text-5xl font-black text-primary opacity-30">{profile.fullName[0]}</span>
-                  )}
-                </div>
-              </div>
-              
-              <label htmlFor="avatar-header-upload" className={`absolute bottom-2 right-2 p-4 bg-primary text-white rounded-2xl shadow-2xl cursor-pointer hover:scale-110 active:scale-95 transition-all border-4 border-white dark:border-card ${updating ? "animate-pulse" : ""}`}>
-                <Camera size={20} />
-              </label>
-              <input id="avatar-header-upload" type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} disabled={updating} />
-            </div>
-
-            <div className="text-center mt-6 space-y-1">
-              <h1 className="text-3xl font-black text-gray-800 dark:text-white tracking-tight">{profile.fullName}</h1>
-              <p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em]">{profile.role} Account</p>
-            </div>
-          </div>
-        </div>
+        {/* Modern Header Section with Banner & Centered Avatar Removed */}
 
         {/* Navigation Tabs */}
         <div className="max-w-7xl mx-auto px-6 mb-12">
@@ -80,11 +47,10 @@ const ProfilePage: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-sm font-black transition-all duration-500 ${
-                  activeTab === tab.id
-                    ? "bg-white dark:bg-primary text-primary dark:text-white shadow-xl shadow-primary/10 scale-105"
-                    : "text-gray-400 hover:text-primary"
-                }`}
+                className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-sm font-black transition-all duration-500 ${activeTab === tab.id
+                  ? "bg-white dark:bg-primary text-primary dark:text-white shadow-xl shadow-primary/10 scale-105"
+                  : "text-gray-400 hover:text-primary"
+                  }`}
               >
                 <tab.icon size={18} />
                 {tab.label}
@@ -96,17 +62,32 @@ const ProfilePage: React.FC = () => {
         {/* Main Content Grid */}
         <div className="max-w-7xl mx-auto px-6">
           {activeTab === "profile" ? (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div className="flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-8 xl:gap-0 relative">
+
               {/* Left Column: Details Overview */}
-              <div className="lg:col-span-4 lg:sticky lg:top-10 h-fit">
+              <div className="w-full xl:w-[45%] bg-white dark:bg-card rounded-[3rem] p-8 shadow-xl xl:pr-24 relative z-0 border border-gray-100 dark:border-white/5">
                 <ProfileCard profile={profile} />
               </div>
 
-              {/* Right Column: Edit Forms */}
-              <div className="lg:col-span-8">
-                <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[3rem] p-12 shadow-sm">
-                  <PersonalInfoForm profile={profile} />
+              <div className="relative z-10 flex-shrink-0 xl:-mx-20 my-8 xl:my-0 flex items-center justify-center">
+                <div className="relative group p-4 bg-[color:var(--color-surface)] rounded-full border border-gray-100 dark:border-white/5">
+                  <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-gray-100 dark:bg-white/5 overflow-hidden flex items-center justify-center relative shadow-2xl">
+                    {profile.avatarUrl ? (
+                      <img src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    ) : (
+                      <span className="text-6xl font-black text-primary opacity-30">{profile.fullName[0]}</span>
+                    )}
+                  </div>
+
+                  <label htmlFor="avatar-header-upload" className={`absolute bottom-6 right-6 p-4 bg-primary text-white rounded-2xl shadow-2xl cursor-pointer hover:scale-110 active:scale-95 transition-all border-4 border-[color:var(--color-surface)] ${updating ? "animate-pulse" : ""}`}>
+                    <Camera size={24} />
+                  </label>
+                  <input id="avatar-header-upload" type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} disabled={updating} />
                 </div>
+              </div>
+
+              <div className="w-full xl:w-[55%] bg-white dark:bg-card rounded-[3rem] p-8 shadow-xl xl:pl-24 relative z-0 border border-gray-100 dark:border-white/5">
+                <PersonalInfoForm profile={profile} saveProfile={saveProfile} isSaving={updating} />
               </div>
             </div>
           ) : (

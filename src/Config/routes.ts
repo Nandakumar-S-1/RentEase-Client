@@ -94,11 +94,7 @@ export const PATH_ROUTES = {
   PATH_USERS: "/users",
   PATH_DASHBOARD: "/dashboard",
   PATH_OWNERS: "/owners",
-<<<<<<< HEAD
-  PATH_DETAILS:'users/:id'
-=======
   PATH_PROPERTIES: 'properties',
   PATH_PROPERTY_DETAILS: "/properties/:id",
   PATH_USER_DETAILS: "/users/:id",
->>>>>>> 8176578 (fix: remove mapbox token and use env variables)
 };
