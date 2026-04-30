@@ -45,6 +45,11 @@
     @apply bg-[color:var(--color-background)] text-[color:var(--color-foreground)];
   }
 
+  select, option {
+    color: var(--color-foreground);
+    background-color: var(--color-surface);
+  }
+
   /* Shimmer effect for skeleton loaders */
   @keyframes shimmer {
     0% {

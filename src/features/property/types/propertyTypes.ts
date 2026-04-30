@@ -41,6 +41,13 @@ export interface GetPropertiesParams {
   status?: string;
   page?: number;
   limit?: number;
+  query?: string;
+  city?: string;
+  district?: string;
+  minRent?: number;
+  maxRent?: number;
+  bhk?: number;
+  amenities?: string[];
 }
 
 export interface PaginatedPropertyResponse {

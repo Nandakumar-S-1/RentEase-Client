@@ -34,3 +34,8 @@ export const deleteServiceProvider = async (id: string) => {
   const response = await axiosApi.delete(`${BASE_URL}/${id}`);
   return response.data;
 };
+
+export const updateServiceProvider = async (id: string, data: Partial<ServiceProvider>) => {
+  const response = await axiosApi.put(`${BASE_URL}/${id}`, data);
+  return response.data;
+};

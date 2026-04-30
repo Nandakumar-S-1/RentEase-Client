@@ -36,10 +36,13 @@ const PropertyPage: React.FC = () => {
     setStatus,
     layout,
     setLayout,
+    filters,
+    setFilters,
   } = useProperty(isSearchMode ? "search" : "owner");
 
   const { user } = useAppSelector((state: RootState) => state.auth);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
 
   const tabs = [
     { id: "ALL", label: "All Properties" },
@@ -51,11 +54,16 @@ const PropertyPage: React.FC = () => {
 
   const totalPages = Math.ceil(total / 6);
 
-  const filteredProperties = properties.filter(
-    (p) =>
-      p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.locationCity.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFilters(prev => ({ ...prev, query: searchTerm }));
+    setPage(1);
+  };
+
+  const handleFilterChange = (newFilters: any) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+    setPage(1);
+  };
 
   return (
     <DashboardLayout
@@ -112,42 +120,94 @@ const PropertyPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-gray-50/50 dark:bg-white/5 p-4 rounded-3xl border border-[color:var(--color-border)]">
-          <div className="relative w-full md:max-w-md">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              size={18}
-            />
-            <input
-              type="text"
-              placeholder="Search by title or location..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-card border border-[color:var(--color-border)] rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
-            />
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex p-1 bg-white dark:bg-card border border-[color:var(--color-border)] rounded-xl">
-              <button
-                onClick={() => setLayout("grid")}
-                className={`p-2 rounded-lg transition-all ${layout === "grid" ? "bg-primary/10 text-primary" : "text-gray-400 hover:text-gray-600"}`}
-              >
-                <Grid size={18} />
-              </button>
-              <button
-                onClick={() => setLayout("list")}
-                className={`p-2 rounded-lg transition-all ${layout === "list" ? "bg-primary/10 text-primary" : "text-gray-400 hover:text-gray-600"}`}
-              >
-                <List size={18} />
-              </button>
+        <div className="flex flex-col gap-4">
+          <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 justify-between items-center bg-gray-50/50 dark:bg-white/5 p-4 rounded-3xl border border-[color:var(--color-border)]">
+            <div className="relative w-full md:max-w-md">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                size={18}
+              />
+              <input
+                type="text"
+                placeholder="Search by title or location..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-card border border-[color:var(--color-border)] rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+              />
             </div>
 
-            <button className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-card border border-[color:var(--color-border)] rounded-xl text-sm font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 transition-all">
-              <Filter size={16} />
-              <span>Filters</span>
-            </button>
-          </div>
+            <div className="flex items-center gap-3">
+              <div className="flex p-1 bg-white dark:bg-card border border-[color:var(--color-border)] rounded-xl">
+                <button
+                  type="button"
+                  onClick={() => setLayout("grid")}
+                  className={`p-2 rounded-lg transition-all ${layout === "grid" ? "bg-primary/10 text-primary" : "text-gray-400 hover:text-gray-600"}`}
+                >
+                  <Grid size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLayout("list")}
+                  className={`p-2 rounded-lg transition-all ${layout === "list" ? "bg-primary/10 text-primary" : "text-gray-400 hover:text-gray-600"}`}
+                >
+                  <List size={18} />
+                </button>
+              </div>
+
+              <button 
+                type="button"
+                onClick={() => setShowFilters(!showFilters)}
+                className={`flex items-center gap-2 px-4 py-2.5 border rounded-xl text-sm font-bold transition-all ${showFilters ? "bg-primary text-white border-primary shadow-lg shadow-primary/20" : "bg-white dark:bg-card border-[color:var(--color-border)] text-gray-600 dark:text-gray-400 hover:bg-gray-50"}`}
+              >
+                <Filter size={16} />
+                <span>Filters</span>
+              </button>
+            </div>
+          </form>
+
+          {showFilters && (
+            <div className="p-6 bg-white dark:bg-card border border-[color:var(--color-border)] rounded-[2rem] shadow-sm animate-in slide-in-from-top-4 duration-300 grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">City</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Kochi" 
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-white/5 border border-border rounded-xl text-sm"
+                  onChange={(e) => handleFilterChange({ city: e.target.value })}
+                  value={filters.city || ""}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Rent Range (Max)</label>
+                <input 
+                  type="number" 
+                  placeholder="Max Rent" 
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-white/5 border border-border rounded-xl text-sm"
+                  onChange={(e) => handleFilterChange({ maxRent: e.target.value ? Number(e.target.value) : undefined })}
+                  value={filters.maxRent || ""}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">BHK</label>
+                <select 
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-white/5 border border-border rounded-xl text-sm"
+                  onChange={(e) => handleFilterChange({ bhk: e.target.value ? Number(e.target.value) : undefined })}
+                  value={filters.bhk || ""}
+                >
+                  <option value="">Any BHK</option>
+                  {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n} BHK</option>)}
+                </select>
+              </div>
+              <div className="flex items-end">
+                <button 
+                  onClick={() => { setFilters({}); setShowFilters(false); setSearchTerm(""); }}
+                  className="w-full py-2.5 text-xs font-black text-gray-400 hover:text-primary uppercase tracking-widest"
+                >
+                  Reset All
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {loading ? (
@@ -166,7 +226,7 @@ const PropertyPage: React.FC = () => {
               Retry
             </button>
           </div>
-        ) : filteredProperties.length === 0 ? (
+        ) : properties.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-white/5 rounded-3xl border border-dashed border-[color:var(--color-border)]">
             <div className="w-16 h-16 bg-gray-100 dark:bg-white/5 flex items-center justify-center rounded-2xl mb-4">
               <Home className="text-gray-400" size={32} />
@@ -186,7 +246,7 @@ const PropertyPage: React.FC = () => {
                 : "space-y-4"
             }
           >
-            {filteredProperties.map((property) => (
+            {properties.map((property) => (
               <PropertyCard
                 key={property.id}
                 property={property}
@@ -197,7 +257,7 @@ const PropertyPage: React.FC = () => {
           </div>
         )}
 
-        {!loading && filteredProperties.length > 0 && (
+        {!loading && properties.length > 0 && (
           <div className="flex items-center justify-between border-t border-[color:var(--color-border)] pt-6 mt-8">
             <p className="text-sm text-gray-500 font-medium">
               Showing{" "}

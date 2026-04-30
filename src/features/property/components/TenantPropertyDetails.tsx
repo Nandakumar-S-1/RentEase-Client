@@ -17,20 +17,21 @@ import {
   Info,
 } from "lucide-react";
 import { usePropertyDetail } from "../hooks/usePropertyDetail";
+import { useWishlist } from "../hooks/useWishlist";
 import { LoadingOverlay } from "../../../components/common";
-import Map, { Marker } from "react-map-gl/mapbox";
-import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl from "mapbox-gl";
+// import Map, { Marker } from "react-map-gl/mapbox";
+// import "mapbox-gl/dist/mapbox-gl.css";
+// import mapboxgl from "mapbox-gl";
 import { toast } from "react-hot-toast";
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN 
-mapboxgl.accessToken = MAPBOX_TOKEN;
+// const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN 
+// mapboxgl.accessToken = MAPBOX_TOKEN;
 
 const TenantPropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { property, loading } = usePropertyDetail(id);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { isSaved, toggle } = useWishlist(id || "");
 
   if (loading || !property) return <LoadingOverlay />;
 
@@ -50,13 +51,13 @@ const TenantPropertyDetails = () => {
         </button>
         <div className="flex gap-2">
           <button
-            onClick={() => {
-              setIsWishlisted(!isWishlisted);
-              toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+            onClick={(e) => {
+              e.stopPropagation();
+              toggle();
             }}
-            className={`p-3 rounded-2xl shadow-sm transition-all border ${isWishlisted ? "bg-red-50 text-red-500 border-red-100" : "bg-white dark:bg-card text-gray-400 border-gray-100 hover:text-red-400"}`}
+            className={`p-3 rounded-2xl shadow-sm transition-all border ${isSaved ? "bg-red-50 text-red-500 border-red-100" : "bg-white dark:bg-card text-gray-400 border-gray-100 hover:text-red-400"}`}
           >
-            <Heart size={20} fill={isWishlisted ? "currentColor" : "none"} />
+            <Heart size={20} fill={isSaved ? "currentColor" : "none"} />
           </button>
           <button className="p-3 bg-white dark:bg-card border border-gray-100 rounded-2xl shadow-sm text-gray-400 hover:text-primary transition-all">
             <Share2 size={20} />
@@ -160,8 +161,9 @@ const TenantPropertyDetails = () => {
           {/* Map Location */}
           <div className="space-y-6">
              <h3 className="text-2xl font-black text-gray-900 dark:text-white">Location</h3>
-             <div className="h-96 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl relative">
-                <Map
+             <div className="h-96 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl relative bg-gray-50 flex items-center justify-center text-gray-400 font-bold">
+                Map functionality temporarily disabled
+                {/* <Map
                   mapboxAccessToken={MAPBOX_TOKEN}
                   initialViewState={{
                     longitude: property.longitude ?? 76.2711,
@@ -172,7 +174,7 @@ const TenantPropertyDetails = () => {
                   mapStyle="mapbox://styles/mapbox/streets-v11"
                 >
                   <Marker longitude={property.longitude ?? 76.2711} latitude={property.latitude ?? 10.8505} color="#6366f1" />
-                </Map>
+                </Map> */}
                 <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/20">
                    <p className="text-xs font-black uppercase text-primary tracking-widest mb-1">Exact Area</p>
                    <p className="text-sm font-bold text-gray-900">{property.locationCity}, {property.locationDistrict}</p>

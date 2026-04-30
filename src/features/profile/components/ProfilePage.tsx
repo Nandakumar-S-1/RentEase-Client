@@ -6,17 +6,26 @@ import PersonalInfoForm from "./PersonalInfoForm";
 import type { RoleType } from "../../../types/constants/role.constant";
 import { LoadingOverlay } from "../../../components/common";
 import { Camera, ShieldCheck, Settings2, BellRing, UserCog } from "lucide-react";
+import type { UpdateProfileData } from "../types/profileTypes";
 
 const ProfilePage: React.FC = () => {
   const { profile, loading, updating, saveProfile, error, uploadAvatar } = useProfile();
   const [activeTab, setActiveTab] = useState("profile");
-
   const tabs = [
     { id: "profile", label: "Identity", icon: UserCog },
     { id: "preferences", label: "Preferences", icon: Settings2 },
     { id: "notifications", label: "Alerts", icon: BellRing },
     { id: "security", label: "Security", icon: ShieldCheck },
   ];
+  const [resetKey, setResetKey] = useState(0);
+
+  const handleSaveProfile = async (data: UpdateProfileData) => {
+    const response = await saveProfile(data);
+    if (response.success) {
+      setResetKey((prev) => prev + 1);
+    }
+    return response;
+  };
 
   if (loading) return <LoadingOverlay />;
 
@@ -87,7 +96,12 @@ const ProfilePage: React.FC = () => {
               </div>
 
               <div className="w-full xl:w-[55%] bg-white dark:bg-card rounded-[3rem] p-8 shadow-xl xl:pl-24 relative z-0 border border-gray-100 dark:border-white/5">
-                <PersonalInfoForm profile={profile} saveProfile={saveProfile} isSaving={updating} />
+                <PersonalInfoForm
+                  key={`${profile.email}-${resetKey}`}
+                  profile={profile}
+                  saveProfile={handleSaveProfile}
+                  isSaving={updating}
+                />
               </div>
             </div>
           ) : (

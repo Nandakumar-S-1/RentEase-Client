@@ -4,7 +4,8 @@ import {
   addServiceProvider,
   deleteServiceProvider,
   toggleServiceProviderStatus,
-  type ServiceProvider
+  type ServiceProvider,
+  updateServiceProvider
 } from "../services/serviceProviderService";
 import { toast } from "react-hot-toast";
 
@@ -17,8 +18,8 @@ export const useServiceProviders = (propertyId: string) => {
     try {
       setLoading(true);
       const res = await getServiceProviders(propertyId);
-      if (res && res.data) {
-        setProviders(res.data);
+      if (res) {
+        setProviders(res);
       }
     } catch (error) {
       console.error("Failed to fetch service providers:", error);
@@ -65,11 +66,22 @@ export const useServiceProviders = (propertyId: string) => {
     }
   };
 
+  const updateProvider = async (id: string, data: Partial<ServiceProvider>) => {
+    try {
+      await updateServiceProvider(id, data);
+      toast.success("Provider updated");
+      fetchProviders();
+    } catch {
+      toast.error("Failed to update provider");
+    }
+  };
+
   return {
     providers,
     loading,
     addProvider,
     removeProvider,
+    updateProvider,
     toggleStatus,
     refresh: fetchProviders
   };

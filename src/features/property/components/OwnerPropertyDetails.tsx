@@ -16,11 +16,12 @@ import {
    XCircle,
    AlertCircle,
    TrendingUp,
+   Eye,
 } from "lucide-react";
 import { usePropertyDetail } from "../hooks/usePropertyDetail";
-import { LoadingOverlay } from "../../../components/common";
+import { LoadingOverlay, Modal } from "../../../components/common";
 import { PAGE_ROUTES } from "../../../config/routes";
-import { unlistProperty, deleteProperty } from "../services/propertyService";
+import { unlistProperty, relistProperty, deleteProperty } from "../services/propertyService";
 import { toast } from "react-hot-toast";
 import DashboardLayout from "../../../components/common/DashboardLayout";
 import { useSelector } from "react-redux";
@@ -33,6 +34,10 @@ const OwnerPropertyDetails = () => {
    const { user } = useSelector((state: RootState) => state.auth);
    const { property, loading } = usePropertyDetail(id);
 
+   const [isUnlistModalOpen, setIsUnlistModalOpen] = React.useState(false);
+   const [isRelistModalOpen, setIsRelistModalOpen] = React.useState(false);
+   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+
    if (loading || !property) return <LoadingOverlay />;
 
    const handleEdit = () => {
@@ -40,28 +45,35 @@ const OwnerPropertyDetails = () => {
    };
 
    const handleUnlist = async () => {
-      if (window.confirm("Are you sure you want to unlist this property?")) {
-         try {
-            await unlistProperty(property.id);
-            toast.success("Property unlisted successfully");
-            navigate(PAGE_ROUTES.OWNER_PROPERTIES);
-         } catch (err) {
-            console.error("Failed to unlist property:", err);
-            toast.error("Failed to unlist property");
-         }
+      try {
+         await unlistProperty(property.id);
+         toast.success("Property unlisted successfully");
+         navigate(PAGE_ROUTES.OWNER_PROPERTIES);
+      } catch (err) {
+         console.error("Failed to unlist property:", err);
+         toast.error("Failed to unlist property");
+      }
+   };
+
+   const handleRelist = async () => {
+      try {
+         await relistProperty(property.id);
+         toast.success("Property listed successfully");
+         navigate(PAGE_ROUTES.OWNER_PROPERTIES);
+      } catch (err) {
+         console.error("Failed to relist property:", err);
+         toast.error("Failed to relist property");
       }
    };
 
    const handleDelete = async () => {
-      if (window.confirm("Are you sure you want to PERMANENTLY delete this property?")) {
-         try {
-            await deleteProperty(property.id);
-            toast.success("Property deleted permanently");
-            navigate(PAGE_ROUTES.OWNER_PROPERTIES);
-         } catch (err) {
-            console.error("Failed to delete property:", err);
-            toast.error("Failed to delete property");
-         }
+      try {
+         await deleteProperty(property.id);
+         toast.success("Property deleted permanently");
+         navigate(PAGE_ROUTES.OWNER_PROPERTIES);
+      } catch (err) {
+         console.error("Failed to delete property:", err);
+         toast.error("Failed to delete property");
       }
    };
 
@@ -138,15 +150,26 @@ const OwnerPropertyDetails = () => {
                      <Wrench size={16} /> Services
                   </button>
                   <div className="h-12 w-[1px] bg-gray-100 dark:bg-white/5 mx-2 hidden md:block" />
+                  {property.status === "UNLISTED" && (
+                     <button
+                        onClick={() => setIsRelistModalOpen(true)}
+                        className="p-3.5 bg-green-50 text-green-600 rounded-2xl hover:bg-green-100 transition-colors"
+                        title="Relist Property"
+                     >
+                        <Eye size={20} />
+                     </button>
+                  )}
+                  {property.status === "ACTIVE" && (
+                     <button
+                        onClick={() => setIsUnlistModalOpen(true)}
+                        className="p-3.5 bg-amber-50 text-amber-600 rounded-2xl hover:bg-amber-100 transition-colors"
+                        title="Unlist Property"
+                     >
+                        <EyeOff size={20} />
+                     </button>
+                  )}
                   <button
-                     onClick={handleUnlist}
-                     className="p-3.5 bg-amber-50 text-amber-600 rounded-2xl hover:bg-amber-100 transition-colors"
-                     title="Unlist Property"
-                  >
-                     <EyeOff size={20} />
-                  </button>
-                  <button
-                     onClick={handleDelete}
+                     onClick={() => setIsDeleteModalOpen(true)}
                      className="p-3.5 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-100 transition-colors"
                      title="Delete Permanently"
                   >
@@ -161,7 +184,7 @@ const OwnerPropertyDetails = () => {
                <div className="lg:col-span-8 space-y-10">
                   {/* Visual Banner */}
                   <div className="relative aspect-[21/9] rounded-[3rem] overflow-hidden shadow-2xl group">
-                     {property.photos?.[property.primaryPhotoIndex] ? (
+                      {property.photos?.[property.primaryPhotoIndex] ? (
                         <img
                            src={property.photos[property.primaryPhotoIndex]}
                            alt="Main"
@@ -171,6 +194,30 @@ const OwnerPropertyDetails = () => {
                         <div className="w-full h-full bg-gray-100 flex items-center justify-center">No Main Image</div>
                      )}
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                     
+                     {/* Rejection Alert */}
+                     {property.status === "REJECTED" && (
+                        <div className="absolute top-10 left-10 right-10 p-6 bg-red-600/90 backdrop-blur-md rounded-3xl border border-red-500 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500">
+                           <div className="flex items-start gap-4">
+                              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
+                                 <AlertCircle className="text-white" size={24} />
+                              </div>
+                              <div className="flex-1">
+                                 <h4 className="text-white font-black uppercase tracking-widest text-xs mb-1">Listing Rejected</h4>
+                                 <p className="text-white/90 text-sm font-medium leading-relaxed">
+                                    {property.rejectionReason || "No specific reason provided by the auditor."}
+                                 </p>
+                                 <button 
+                                    onClick={handleEdit}
+                                    className="mt-4 px-6 py-2 bg-white text-red-600 font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-gray-100 transition-all active:scale-95"
+                                 >
+                                    Fix & Resubmit
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     )}
+
                      <div className="absolute bottom-10 left-10 text-white">
                         <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest mb-4 ${status.bg} ${status.color}`}>
                            <status.icon size={14} />
@@ -213,6 +260,26 @@ const OwnerPropertyDetails = () => {
                         {property.description}
                      </p>
                   </div>
+
+                  {/* Amenities Section */}
+                  {property.amenities && property.amenities.length > 0 && (
+                     <div className="space-y-8">
+                        <h3 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                           <span className="w-1.5 h-6 bg-primary rounded-full" />
+                           Amenities & Features
+                        </h3>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                           {property.amenities.map((amenity: string) => (
+                              <div key={amenity} className="flex items-center gap-3 p-5 bg-white dark:bg-card border border-gray-100 rounded-3xl group hover:border-primary/30 transition-all">
+                                 <div className="p-2 bg-primary/5 text-primary rounded-xl group-hover:bg-primary group-hover:text-white transition-all">
+                                    <CheckCircle size={18} />
+                                 </div>
+                                 <span className="font-bold text-gray-700 dark:text-gray-300">{amenity}</span>
+                              </div>
+                           ))}
+                        </div>
+                     </div>
+                  )}
 
                   {/* Image Gallery Overhaul */}
                   <div className="space-y-6">
@@ -275,6 +342,37 @@ const OwnerPropertyDetails = () => {
                   </div>
                </div>
             </div>
+            
+            {/* Modals */}
+            <Modal
+               isOpen={isUnlistModalOpen}
+               onClose={() => setIsUnlistModalOpen(false)}
+               onConfirm={handleUnlist}
+               title="Unlist Property"
+               description="Are you sure you want to unlist this property? It will no longer be visible to potential tenants."
+               confirmText="Unlist"
+               isDestructive={false}
+            />
+            
+            <Modal
+               isOpen={isRelistModalOpen}
+               onClose={() => setIsRelistModalOpen(false)}
+               onConfirm={handleRelist}
+               title="Relist Property"
+               description="Are you sure you want to list this property again? It will become visible to all potential tenants."
+               confirmText="List Property"
+               isDestructive={false}
+            />
+
+            <Modal
+               isOpen={isDeleteModalOpen}
+               onClose={() => setIsDeleteModalOpen(false)}
+               onConfirm={handleDelete}
+               title="Delete Permanently"
+               description="Are you sure you want to PERMANENTLY delete this property? This action cannot be undone."
+               confirmText="Delete"
+               isDestructive={true}
+            />
          </div>
       </DashboardLayout>
    );

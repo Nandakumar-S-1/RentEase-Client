@@ -14,9 +14,10 @@ import {
   XCircle,
   ChevronLeft,
   Search,
-  Star
+  Star,
+  Edit2
 } from "lucide-react";
-import { LoadingOverlay } from "../../../components/common";
+import { LoadingOverlay, Modal } from "../../../components/common";
 
 const PROVIDER_TYPES = [
   "Electrician", "Plumber", "Cleaner", "Painter", "Carpenter",
@@ -30,6 +31,10 @@ const ServiceProviderManagement: React.FC = () => {
   const { providers, loading, addProvider, removeProvider, toggleStatus } = useServiceProviders(propertyId || "");
 
   const [isAdding, setIsAdding] = useState(false);
+  const [editingProviderId, setEditingProviderId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [providerToDelete, setProviderToDelete] = useState<string | null>(null);
+
   const [newProvider, setNewProvider] = useState({
     providerName: "",
     providerType: "Electrician",
@@ -38,14 +43,47 @@ const ServiceProviderManagement: React.FC = () => {
     typicalChargesMax: "",
   });
 
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
+  const validateForm = () => {
+    const errors: Record<string, string> = {};
+    if (!newProvider.providerName.trim()) errors.providerName = "Name is required";
+    if (!newProvider.phone.trim()) {
+      errors.phone = "Phone is required";
+    } else if (!/^\+?[\d\s-]{10,}$/.test(newProvider.phone)) {
+      errors.phone = "Invalid phone number";
+    }
+
+    if (newProvider.typicalChargesMin && newProvider.typicalChargesMax) {
+      if (Number(newProvider.typicalChargesMin) > Number(newProvider.typicalChargesMax)) {
+        errors.typicalChargesMax = "Max charge must be greater than min";
+      }
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addProvider({
-      ...newProvider,
-      typicalChargesMin: Number(newProvider.typicalChargesMin) || 0,
-      typicalChargesMax: Number(newProvider.typicalChargesMax) || 0,
-    });
+    if (!validateForm()) return;
+
+    if (editingProviderId) {
+      await updateProvider(editingProviderId, {
+        ...newProvider,
+        typicalChargesMin: Number(newProvider.typicalChargesMin) || 0,
+        typicalChargesMax: Number(newProvider.typicalChargesMax) || 0,
+      });
+    } else {
+      await addProvider({
+        ...newProvider,
+        typicalChargesMin: Number(newProvider.typicalChargesMin) || 0,
+        typicalChargesMax: Number(newProvider.typicalChargesMax) || 0,
+      });
+    }
+
     setIsAdding(false);
+    setEditingProviderId(null);
     setNewProvider({
       providerName: "",
       providerType: "Electrician",
@@ -53,6 +91,25 @@ const ServiceProviderManagement: React.FC = () => {
       typicalChargesMin: "",
       typicalChargesMax: "",
     });
+    setFormErrors({});
+  };
+
+  const startEdit = (provider: any) => {
+    setNewProvider({
+      providerName: provider.providerName,
+      providerType: provider.providerType,
+      phone: provider.phone,
+      typicalChargesMin: provider.typicalChargesMin?.toString() || "",
+      typicalChargesMax: provider.typicalChargesMax?.toString() || "",
+    });
+    setEditingProviderId(provider.id);
+    setIsAdding(true);
+    setFormErrors({});
+  };
+
+  const confirmDelete = (id: string) => {
+    setProviderToDelete(id);
+    setIsDeleteModalOpen(true);
   };
 
   if (loading && providers.length === 0) return <LoadingOverlay />;
@@ -171,6 +228,13 @@ const ServiceProviderManagement: React.FC = () => {
                 </div>
                 <div className="flex gap-2">
                   <button
+                    onClick={() => startEdit(p)}
+                    className="p-2 text-primary bg-primary/5 hover:bg-primary/10 rounded-xl transition-all"
+                    title="Edit"
+                  >
+                    <Edit2 size={18} />
+                  </button>
+                  <button
                     onClick={() => toggleStatus(p.id, !p.isActive)}
                     className={`p-2 rounded-xl transition-all ${p.isActive ? "text-green-500 bg-green-50 hover:bg-green-100" : "text-gray-400 bg-gray-50 hover:bg-gray-100"}`}
                     title={p.isActive ? "Deactivate" : "Activate"}
@@ -178,7 +242,7 @@ const ServiceProviderManagement: React.FC = () => {
                     {p.isActive ? <CheckCircle2 size={18} /> : <XCircle size={18} />}
                   </button>
                   <button
-                    onClick={() => removeProvider(p.id)}
+                    onClick={() => confirmDelete(p.id)}
                     className="p-2 text-red-500 bg-red-50 hover:bg-red-100 rounded-xl transition-all"
                     title="Remove"
                   >
@@ -218,9 +282,25 @@ const ServiceProviderManagement: React.FC = () => {
             </div>
           ))}
         </div>
+        <Modal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={() => {
+            if (providerToDelete) removeProvider(providerToDelete);
+            setIsDeleteModalOpen(false);
+          }}
+          title="Remove Service Provider"
+          description="Are you sure you want to remove this service provider? This action cannot be undone."
+          confirmText="Remove"
+          isDestructive={true}
+        />
       </div>
     </DashboardLayout>
   );
 };
 
 export default ServiceProviderManagement;
+function updateProvider(editingProviderId: string, arg1: { typicalChargesMin: number; typicalChargesMax: number; providerName: string; providerType: string; phone: string; }) {
+  throw new Error("Function not implemented.");
+}
+

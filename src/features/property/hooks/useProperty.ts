@@ -15,6 +15,8 @@ export const useProperty = (mode: "owner" | "search" = "owner") => {
   const [status, setStatus] = useState<string | undefined>(undefined);
   const [layout, setLayout] = useState<"grid" | "list">("grid");
 
+  const [filters, setFilters] = useState<Partial<GetPropertiesParams>>({});
+
   const fetchProperties = useCallback(async () => {
     try {
       setLoading(true);
@@ -23,6 +25,7 @@ export const useProperty = (mode: "owner" | "search" = "owner") => {
         page,
         limit,
         status: status === "ALL" ? undefined : status,
+        ...filters,
       };
 
       const response = await (mode === "owner"
@@ -40,7 +43,7 @@ export const useProperty = (mode: "owner" | "search" = "owner") => {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, status, mode]);
+  }, [page, limit, status, mode, filters]);
 
   useEffect(() => {
     fetchProperties();
@@ -57,6 +60,8 @@ export const useProperty = (mode: "owner" | "search" = "owner") => {
     setStatus,
     layout,
     setLayout,
+    filters,
+    setFilters,
     fetchProperties,
   };
 };

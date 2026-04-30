@@ -2,6 +2,7 @@ import { MapPin, Home, Maximize2, ExternalLink, Edit, Trash2, EyeOff, MoreVertic
 import { unlistProperty, relistProperty, deleteProperty } from "../services/propertyService";
 import { useWishlist } from "../hooks/useWishlist";
 import { toast } from "react-hot-toast";
+import { Modal } from "../../../components/common";
 import type { PropertyData } from "../types/propertyTypes";
 
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import { PAGE_ROUTES } from "../../../config/routes";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../app/store/store";
 import { RoleTypes } from "../../../types/constants/role.constant";
+import { useState } from "react";
 
 interface PropertyCardProps {
   property: PropertyData;
@@ -24,6 +26,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
 
   const isOwner = user?.role === RoleTypes.OWNER_USER;
 
+  const [isUnlistModalOpen, setIsUnlistModalOpen] = useState(false);
+  const [isRelistModalOpen, setIsRelistModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const handleDetailsClick = () => {
     const route = isSearchMode
       ? PAGE_ROUTES.PROPERTY_DETAIL.replace(":id", property.id)
@@ -36,42 +42,33 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
     navigate(PAGE_ROUTES.OWNER_EDIT_PROPERTY.replace(":id", property.id));
   };
 
-  const handleUnlist = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (window.confirm("Are you sure you want to unlist this property?")) {
-      try {
-        await unlistProperty(property.id);
-        toast.success("Property unlisted successfully");
-        window.location.reload();
-      } catch {
-        toast.error("Failed to unlist property");
-      }
+  const handleUnlist = async () => {
+    try {
+      await unlistProperty(property.id);
+      toast.success("Property unlisted successfully");
+      window.location.reload();
+    } catch {
+      toast.error("Failed to unlist property");
     }
   };
 
-  const handleRelist = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (window.confirm("Are you sure you want to list this property again?")) {
-      try {
-        await relistProperty(property.id);
-        toast.success("Property listed successfully");
-        window.location.reload();
-      } catch {
-        toast.error("Failed to list property");
-      }
+  const handleRelist = async () => {
+    try {
+      await relistProperty(property.id);
+      toast.success("Property listed successfully");
+      window.location.reload();
+    } catch {
+      toast.error("Failed to list property");
     }
   };
 
-  const handleDelete = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (window.confirm("Are you sure you want to PERMANENTLY delete this property?")) {
-      try {
-        await deleteProperty(property.id);
-        toast.success("Property deleted permanently");
-        window.location.reload();
-      } catch {
-        toast.error("Failed to delete property");
-      }
+  const handleDelete = async () => {
+    try {
+      await deleteProperty(property.id);
+      toast.success("Property deleted permanently");
+      window.location.reload();
+    } catch {
+      toast.error("Failed to delete property");
     }
   };
 
@@ -202,7 +199,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
             </button>
             {property.status === "UNLISTED" ? (
               <button
-                onClick={handleRelist}
+                onClick={(e) => { e.stopPropagation(); setIsRelistModalOpen(true); }}
                 className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-xl transition-all"
                 title="List Property"
               >
@@ -210,7 +207,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
               </button>
             ) : (
               <button
-                onClick={handleUnlist}
+                onClick={(e) => { e.stopPropagation(); setIsUnlistModalOpen(true); }}
                 className="p-2 text-gray-400 hover:text-orange-500 hover:bg-orange-50 rounded-xl transition-all"
                 title="Unlist Property"
               >
@@ -218,7 +215,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
               </button>
             )}
             <button
-              onClick={handleDelete}
+              onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); }}
               className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
               title="Delete Property"
             >
@@ -227,6 +224,37 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
           </div>
         )}
       </div>
+
+      {/* Modals */}
+      <Modal
+        isOpen={isUnlistModalOpen}
+        onClose={() => setIsUnlistModalOpen(false)}
+        onConfirm={handleUnlist}
+        title="Unlist Property"
+        description="Are you sure you want to unlist this property? It will no longer be visible to potential tenants."
+        confirmText="Unlist"
+        isDestructive={false}
+      />
+
+      <Modal
+        isOpen={isRelistModalOpen}
+        onClose={() => setIsRelistModalOpen(false)}
+        onConfirm={handleRelist}
+        title="Relist Property"
+        description="Are you sure you want to list this property again? It will become visible to all potential tenants."
+        confirmText="List Property"
+        isDestructive={false}
+      />
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete Permanently"
+        description="Are you sure you want to PERMANENTLY delete this property? This action cannot be undone."
+        confirmText="Delete"
+        isDestructive={true}
+      />
     </div>
   );
 };

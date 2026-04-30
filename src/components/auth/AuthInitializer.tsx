@@ -10,6 +10,8 @@ import {
 } from "../../features/auth/slices/AuthSlice";
 import { useDispatch } from "react-redux";
 
+import { RoleTypes } from "../../types/constants/role.constant";
+
 interface AuthInitializerProps {
   children: React.ReactNode;
 }
@@ -23,12 +25,10 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
   const location = useLocation();
 
   useEffect(() => {
+    const initialPath = location.pathname;
+
     const initializeAuth = async () => {
       try {
-        const intendedPath = location.pathname;
-        //when the app loadas refresh token api is called , if valid token exist save AT and user is authenticated
-        // if not. user will be logged out andd state is cleared
-        //also loading screen
         const initialAuthResponse = await axiosApi.post(
           API_ROUTES.REFRESH_TOKEN,
           {},
@@ -41,35 +41,40 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
           dispatch(updateAccessToken(accessToken));
           dispatch(updateIsAuthenticated());
 
+          let currentUser = null;
           try {
             const meRes = await axiosApi.get(API_ROUTES.ME);
-            const user = meRes.data?.data?.user;
-            if (user) {
-              dispatch(setCredentials({ user, accessToken }));
+            currentUser = meRes.data?.data?.user;
+            if (currentUser) {
+              dispatch(setCredentials({ user: currentUser, accessToken }));
             }
-          } catch { /* empty */ }
+          } catch { }
 
           const isAuthPage =
-            intendedPath === PAGE_ROUTES.LOGIN ||
-            intendedPath === PAGE_ROUTES.REGISTER ||
-            intendedPath === PAGE_ROUTES.HOME;
+            initialPath === PAGE_ROUTES.LOGIN ||
+            initialPath === PAGE_ROUTES.ADMIN_LOGIN ||
+            initialPath === PAGE_ROUTES.REGISTER ||
+            initialPath === PAGE_ROUTES.HOME;
 
           if (isAuthPage) {
-            navigate(PAGE_ROUTES.DASHBOARD, { replace: true });
-          } else {
-            navigate(intendedPath, { replace: true });
+            const target = currentUser?.role === RoleTypes.ADMIN_USER
+              ? PAGE_ROUTES.ADMIN_DASHBOARD
+              : PAGE_ROUTES.DASHBOARD;
+
+            if (window.location.pathname !== target) {
+              navigate(target, { replace: true });
+            }
           }
         }
       } catch (err) {
-        console.log(" No valid session found:", err);
-        dispatch(logout());
+        console.log("Session initialization skipped or failed:", err);
       } finally {
-        setTimeout(() => setLoading(false), 1500);
+        setLoading(false);
       }
     };
 
     initializeAuth();
-  }, [dispatch, navigate]);
+  }, []);
 
   if (loading) {
     return (

@@ -69,7 +69,6 @@ export const AdminRouter = () => {
         }
       />
       <Route
-        path={PATH_ROUTES.PATH_DETAILS}
         path={PATH_ROUTES.PATH_USER_DETAILS}
         element={
           <ProtectedRoute>

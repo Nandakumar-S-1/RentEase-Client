@@ -17,6 +17,8 @@ import { getAllProperties } from "../../features/property/services/propertyServi
 import type { PropertyData } from "../../features/property/types/propertyTypes";
 import { useState, useEffect } from "react";
 
+import { ThemeToggle } from "../common/ThemeToggle";
+
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [properties, setProperties] = useState<PropertyData[]>([]);
@@ -52,8 +54,8 @@ const LandingPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans selection:bg-primary/20 selection:text-primary">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div className="min-h-screen bg-white dark:bg-[#0a0f1c] text-gray-900 dark:text-gray-100 font-sans selection:bg-primary/20 selection:text-primary transition-colors duration-300">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#0a0f1c]/80 backdrop-blur-md border-b border-gray-100 dark:border-white/10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-12">
@@ -61,34 +63,35 @@ const LandingPage: React.FC = () => {
               <div className="hidden md:flex items-center gap-8">
                 <a
                   href="#"
-                  className="text-sm font-semibold text-gray-600 hover:text-primary transition-colors"
+                  className="text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
                 >
                   Home
                 </a>
                 <a
                   href="#"
-                  className="text-sm font-semibold text-gray-600 hover:text-primary transition-colors"
+                  className="text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
                 >
                   Properties
                 </a>
                 <a
                   href="#"
-                  className="text-sm font-semibold text-gray-600 hover:text-primary transition-colors"
+                  className="text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
                 >
                   How It Works
                 </a>
                 <a
                   href="#"
-                  className="text-sm font-semibold text-gray-600 hover:text-primary transition-colors"
+                  className="text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
                 >
                   Pricing
                 </a>
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <button
                 onClick={() => navigate(PAGE_ROUTES.LOGIN)}
-                className="px-6 py-2.5 text-sm font-bold text-gray-700 hover:text-primary transition-colors"
+                className="px-6 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
               >
                 Login
               </button>
@@ -115,27 +118,27 @@ const LandingPage: React.FC = () => {
             Trusted by 5,000+ Kerala families
           </div>
 
-          <h1 className="text-5xl lg:text-7xl font-black tracking-tight mb-6 leading-[1.1]">
+          <h1 className="text-5xl lg:text-7xl font-black tracking-tight mb-6 leading-[1.1] text-gray-900 dark:text-white">
             Find Your Perfect{" "}
             <span className="text-primary italic">Rental Home</span> <br />
             in Kerala
           </h1>
 
-          <p className="max-w-2xl mx-auto text-lg text-gray-500 mb-12 leading-relaxed">
+          <p className="max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-400 mb-12 leading-relaxed">
             Connect with verified property owners. Seamless rentals from search
             to move-in. Virtual tours, secure payments, and hassle-free
             agreements.
           </p>
 
-          <div className="max-w-4xl mx-auto bg-white rounded-[2.5rem] shadow-2xl shadow-gray-200/50 p-3 mb-8 border border-gray-100">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-[#111c2e] rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-none p-3 mb-8 border border-gray-100 dark:border-white/10 transition-colors duration-300">
             <div className="flex flex-col md:flex-row items-center gap-2">
               <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-3 gap-2 px-4">
-                <div className="flex items-center gap-3 py-3 border-b md:border-b-0 md:border-r border-gray-100 font-bold">
-                  <div className="p-2 bg-gray-50 rounded-xl">
+                <div className="flex items-center gap-3 py-3 border-b md:border-b-0 md:border-r border-gray-100 dark:border-white/10 font-bold">
+                  <div className="p-2 bg-gray-50 dark:bg-white/5 rounded-xl">
                     <MapPin size={18} className="text-primary" />
                   </div>
                   <div className="text-left flex-1">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
                       Location
                     </p>
                     <input
@@ -143,50 +146,50 @@ const LandingPage: React.FC = () => {
                       placeholder="Enter City"
                       value={searchFilters.location}
                       onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
-                      className="w-full text-sm font-semibold focus:outline-none placeholder:text-gray-300 bg-transparent"
+                      className="w-full text-sm font-semibold focus:outline-none placeholder:text-gray-300 dark:placeholder:text-gray-600 bg-transparent dark:text-white"
                     />
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 py-3 border-b md:border-b-0 md:border-r border-gray-100">
-                  <div className="p-2 bg-gray-50 rounded-xl">
+                <div className="flex items-center gap-3 py-3 border-b md:border-b-0 md:border-r border-gray-100 dark:border-white/10">
+                  <div className="p-2 bg-gray-50 dark:bg-white/5 rounded-xl">
                     <Home size={18} className="text-primary" />
                   </div>
                   <div className="text-left flex-1">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
                       Property Type
                     </p>
                     <select
                       value={searchFilters.type}
                       onChange={(e) => setSearchFilters({ ...searchFilters, type: e.target.value })}
-                      className="w-full text-sm font-semibold focus:outline-none bg-transparent"
+                      className="w-full text-sm font-semibold focus:outline-none bg-transparent dark:text-white appearance-none"
                     >
-                      <option value="">All Types</option>
-                      <option value="HOUSE">House</option>
-                      <option value="FLAT">Flat/Apartment</option>
-                      <option value="PG">PG/Hostel</option>
+                      <option value="" className="dark:bg-[#111c2e]">All Types</option>
+                      <option value="HOUSE" className="dark:bg-[#111c2e]">House</option>
+                      <option value="FLAT" className="dark:bg-[#111c2e]">Flat/Apartment</option>
+                      <option value="PG" className="dark:bg-[#111c2e]">PG/Hostel</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3 py-3">
-                  <div className="p-2 bg-gray-50 rounded-xl">
+                  <div className="p-2 bg-gray-50 dark:bg-white/5 rounded-xl">
                     <IndianRupee size={18} className="text-primary" />
                   </div>
                   <div className="text-left flex-1">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
                       Budget
                     </p>
                     <select
                       value={searchFilters.budget}
                       onChange={(e) => setSearchFilters({ ...searchFilters, budget: e.target.value })}
-                      className="w-full text-sm font-semibold focus:outline-none bg-transparent"
+                      className="w-full text-sm font-semibold focus:outline-none bg-transparent dark:text-white appearance-none"
                     >
-                      <option value="">Any Budget</option>
-                      <option value="0-5000">Under 5k</option>
-                      <option value="5000-15000">5k - 15k</option>
-                      <option value="15000-30000">15k - 30k</option>
-                      <option value="30000+">30k+</option>
+                      <option value="" className="dark:bg-[#111c2e]">Any Budget</option>
+                      <option value="0-5000" className="dark:bg-[#111c2e]">Under 5k</option>
+                      <option value="5000-15000" className="dark:bg-[#111c2e]">5k - 15k</option>
+                      <option value="15000-30000" className="dark:bg-[#111c2e]">15k - 30k</option>
+                      <option value="30000+" className="dark:bg-[#111c2e]">30k+</option>
                     </select>
                   </div>
                 </div>
@@ -202,18 +205,18 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4 text-sm font-medium text-gray-500">
+          <div className="flex flex-wrap justify-center gap-4 text-sm font-medium text-gray-500 dark:text-gray-400">
             <span>Popular:</span>
-            <button className="text-gray-900 font-bold hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
+            <button className="text-gray-900 dark:text-gray-200 font-bold hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
               2 BHK Ernakulam
             </button>
-            <button className="text-gray-900 font-bold hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
+            <button className="text-gray-900 dark:text-gray-200 font-bold hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
               Flat Kochi
             </button>
-            <button className="text-gray-900 font-bold hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
+            <button className="text-gray-900 dark:text-gray-200 font-bold hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
               PG Trivandrum
             </button>
-            <button className="text-gray-900 font-bold hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
+            <button className="text-gray-900 dark:text-gray-200 font-bold hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
               House Thrissur
             </button>
           </div>
@@ -221,30 +224,30 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Stats Counter Section */}
-      <section className="py-12 border-y border-gray-100 bg-gray-50/30">
+      <section className="py-12 border-y border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-white/5 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center p-6 bg-white rounded-3xl border border-gray-100 shadow-sm">
-              <p className="text-3xl font-black text-gray-900 mb-1">5,000+</p>
-              <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+            <div className="text-center p-6 bg-white dark:bg-[#111c2e] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm transition-all">
+              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">5,000+</p>
+              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Properties Listed
               </p>
             </div>
-            <div className="text-center p-6 bg-white rounded-3xl border border-gray-100 shadow-sm">
-              <p className="text-3xl font-black text-gray-900 mb-1">3,200+</p>
-              <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+            <div className="text-center p-6 bg-white dark:bg-[#111c2e] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm transition-all">
+              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">3,200+</p>
+              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Happy Tenants
               </p>
             </div>
-            <div className="text-center p-6 bg-white rounded-3xl border border-gray-100 shadow-sm">
-              <p className="text-3xl font-black text-gray-900 mb-1">₹50L+</p>
-              <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+            <div className="text-center p-6 bg-white dark:bg-[#111c2e] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm transition-all">
+              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">₹50L+</p>
+              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Rent Collected
               </p>
             </div>
-            <div className="text-center p-6 bg-white rounded-3xl border border-gray-100 shadow-sm">
-              <p className="text-3xl font-black text-gray-900 mb-1">4.8★</p>
-              <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+            <div className="text-center p-6 bg-white dark:bg-[#111c2e] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm transition-all">
+              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">4.8★</p>
+              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Average Rating
               </p>
             </div>
@@ -253,18 +256,18 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Featured Properties Section */}
-      <section className="py-24 bg-white relative">
+      <section className="py-24 bg-white dark:bg-[#0a0f1c] relative transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div className="space-y-2">
-              <h2 className="text-4xl font-black tracking-tight">
+              <h2 className="text-4xl font-black tracking-tight text-gray-900 dark:text-white">
                 Featured <span className="text-primary italic">Properties</span>
               </h2>
-              <p className="text-gray-500 font-medium tracking-wide">
+              <p className="text-gray-500 dark:text-gray-400 font-medium tracking-wide">
                 Hand-picked properties verified by our team
               </p>
             </div>
-            <button className="group flex items-center gap-2 text-sm font-bold text-gray-900 hover:text-primary transition-colors">
+            <button className="group flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-gray-200 hover:text-primary transition-colors">
               View All Properties
               <ArrowRight
                 size={18}
@@ -276,7 +279,7 @@ const LandingPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {loading ? (
               [...Array(4)].map((_, i) => (
-                <div key={i} className="animate-pulse bg-gray-50 rounded-[2rem] aspect-[4/3]" />
+                <div key={i} className="animate-pulse bg-gray-50 dark:bg-white/5 rounded-[2rem] aspect-[4/3]" />
               ))
             ) : properties.length === 0 ? (
               <div className="col-span-full text-center py-10 text-gray-400 font-medium">
@@ -286,7 +289,7 @@ const LandingPage: React.FC = () => {
               properties.map((property) => (
                 <div
                   key={property.id}
-                  className="group bg-white rounded-[2rem] border border-gray-100 overflow-hidden hover:shadow-2xl hover:shadow-gray-200 transition-all"
+                  className="group bg-white dark:bg-[#111c2e] rounded-[2rem] border border-gray-100 dark:border-white/5 overflow-hidden hover:shadow-2xl hover:shadow-gray-200 dark:hover:shadow-none transition-all"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500">
                     <img
@@ -294,24 +297,19 @@ const LandingPage: React.FC = () => {
                       alt={property.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    {/* {property.isNegotiable && (
-                      <div className="absolute top-4 left-4 px-3 py-1 bg-primary/95 text-white text-[10px] font-black uppercase tracking-[0.1em] rounded-full backdrop-blur-sm">
-                        Negotiable
-                      </div>
-                    )} */}
-                    <div className="absolute bottom-4 right-4 px-4 py-2 bg-white/95 text-primary text-sm font-black rounded-2xl backdrop-blur-sm">
+                    <div className="absolute bottom-4 right-4 px-4 py-2 bg-white/95 dark:bg-[#111c2e]/95 text-primary text-sm font-black rounded-2xl backdrop-blur-sm">
                       ₹{property.monthlyRent?.toLocaleString()}/mo
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="font-black text-lg mb-1 truncate">
+                    <h3 className="font-black text-lg mb-1 truncate text-gray-900 dark:text-white">
                       {property.title}
                     </h3>
-                    <p className="flex items-center gap-1 text-xs text-gray-500 font-medium mb-4">
+                    <p className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 font-medium mb-4">
                       <MapPin size={12} className="text-gray-400" />
                       {property.locationCity}, {property.locationDistrict}
                     </p>
-                    <div className="flex items-center gap-4 text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">
+                    <div className="flex items-center gap-4 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-6">
                       <span className="flex items-center gap-1">
                         {/* <Home size={10} /> {property.bhk} BHK */}
                       </span>
@@ -320,9 +318,6 @@ const LandingPage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1">
                         <Star size={14} className="text-amber-400 fill-amber-400" />
-                        {/* <span className="text-sm font-black text-gray-900">
-                          {property.rating || "4.5"}
-                        </span> */}
                       </div>
                       <button
                         onClick={() => navigate(PAGE_ROUTES.PROPERTY_DETAIL.replace(":id", property.id))}
@@ -339,55 +334,55 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-24 bg-gray-50/50">
+      <section className="py-24 bg-gray-50/50 dark:bg-white/5 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-          <h2 className="text-4xl font-black tracking-tight mb-4">
+          <h2 className="text-4xl font-black tracking-tight mb-4 text-gray-900 dark:text-white">
             How <span className="text-primary italic">RentEase</span> Works
           </h2>
-          <p className="max-w-2xl mx-auto text-gray-500 font-medium font-lg">
+          <p className="max-w-2xl mx-auto text-gray-500 dark:text-gray-400 font-medium font-lg">
             Simple, transparent, and efficient. Get started in minutes and
             experience hassle-free rentals.
           </p>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="relative p-10 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm text-center">
-            <div className="absolute top-0 right-0 p-4 font-black text-5xl text-gray-50">
+          <div className="relative p-10 bg-white dark:bg-[#111c2e] rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-sm text-center transition-all">
+            <div className="absolute top-0 right-0 p-4 font-black text-5xl text-gray-50 dark:text-white/5">
               1
             </div>
             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 mx-auto text-primary">
               <Zap size={32} />
             </div>
-            <h3 className="text-xl font-black mb-4">List Your Property</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">List Your Property</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
               Add your property details, photos, and set your rent in just 5
               minutes. Our verification ensures quality listings.
             </p>
           </div>
 
-          <div className="relative p-10 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm text-center">
-            <div className="absolute top-0 right-0 p-4 font-black text-5xl text-gray-50">
+          <div className="relative p-10 bg-white dark:bg-[#111c2e] rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-sm text-center transition-all">
+            <div className="absolute top-0 right-0 p-4 font-black text-5xl text-gray-50 dark:text-white/5">
               2
             </div>
-            <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-8 mx-auto text-emerald-600">
+            <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-8 mx-auto text-emerald-600">
               <Users size={32} />
             </div>
-            <h3 className="text-xl font-black mb-4">Connect with Tenants</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">Connect with Tenants</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
               Receive inquiries, conduct virtual tours, and chat with verified
               tenants. Find the perfect match for your property.
             </p>
           </div>
 
-          <div className="relative p-10 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm text-center">
-            <div className="absolute top-0 right-0 p-4 font-black text-5xl text-gray-50">
+          <div className="relative p-10 bg-white dark:bg-[#111c2e] rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-sm text-center transition-all">
+            <div className="absolute top-0 right-0 p-4 font-black text-5xl text-gray-50 dark:text-white/5">
               3
             </div>
-            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 mx-auto text-blue-600">
+            <div className="w-16 h-16 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-center justify-center mb-8 mx-auto text-blue-600">
               <ShieldCheck size={32} />
             </div>
-            <h3 className="text-xl font-black mb-4">Manage Everything</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">Manage Everything</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
               Digital agreements, automated rent collection, and maintenance
               tracking. Your complete rental solution.
             </p>
@@ -396,12 +391,12 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-[#0a0f1c] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-          <h2 className="text-4xl font-black tracking-tight mb-4">
+          <h2 className="text-4xl font-black tracking-tight mb-4 text-gray-900 dark:text-white">
             Loved by <span className="text-primary italic">Thousands</span>
           </h2>
-          <p className="text-gray-500 font-medium">
+          <p className="text-gray-500 dark:text-gray-400 font-medium">
             Join the growing community of satisfied property owners and tenants
             across Kerala
           </p>
@@ -409,7 +404,7 @@ const LandingPage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Testimonial 1 */}
-          <div className="p-10 bg-gray-50 rounded-[2.5rem] relative">
+          <div className="p-10 bg-gray-50 dark:bg-[#111c2e] rounded-[2.5rem] relative transition-all border border-transparent dark:border-white/5">
             <div className="flex gap-1 mb-6">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -419,13 +414,13 @@ const LandingPage: React.FC = () => {
                 />
               ))}
             </div>
-            <p className="text-gray-700 font-medium leading-relaxed italic mb-8">
+            <p className="text-gray-700 dark:text-gray-300 font-medium leading-relaxed italic mb-8">
               "RentEase transformed how I manage my properties. Virtual tours
               save so much time, and the automated rent collection is a
               game-changer. Highly recommended!"
             </p>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-white/10">
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100"
                   alt="Arjun Menon"
@@ -433,7 +428,7 @@ const LandingPage: React.FC = () => {
                 />
               </div>
               <div>
-                <h4 className="font-black text-sm">Arjun Menon</h4>
+                <h4 className="font-black text-sm text-gray-900 dark:text-white">Arjun Menon</h4>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                   Property Owner • Ernakulam
                 </p>
@@ -442,7 +437,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           {/* Testimonial 2 */}
-          <div className="p-10 bg-primary/5 rounded-[2.5rem] relative">
+          <div className="p-10 bg-primary/5 dark:bg-primary/10 rounded-[2.5rem] relative transition-all border border-transparent dark:border-primary/10">
             <div className="flex gap-1 mb-6">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -452,13 +447,13 @@ const LandingPage: React.FC = () => {
                 />
               ))}
             </div>
-            <p className="text-gray-700 font-medium leading-relaxed italic mb-8">
+            <p className="text-gray-700 dark:text-gray-300 font-medium leading-relaxed italic mb-8">
               "Found my perfect apartment within a week! The virtual tour
               feature helped me finalize without multiple visits. The agreement
               process was completely digital and hassle-free."
             </p>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-white/10">
                 <img
                   src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100"
                   alt="Priya Nair"
@@ -466,7 +461,7 @@ const LandingPage: React.FC = () => {
                 />
               </div>
               <div>
-                <h4 className="font-black text-sm">Priya Nair</h4>
+                <h4 className="font-black text-sm text-gray-900 dark:text-white">Priya Nair</h4>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                   Tenant • Trivandrum
                 </p>
@@ -475,7 +470,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           {/* Testimonial 3 */}
-          <div className="p-10 bg-gray-50 rounded-[2.5rem] relative">
+          <div className="p-10 bg-gray-50 dark:bg-[#111c2e] rounded-[2.5rem] relative transition-all border border-transparent dark:border-white/5">
             <div className="flex gap-1 mb-6">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -485,13 +480,13 @@ const LandingPage: React.FC = () => {
                 />
               ))}
             </div>
-            <p className="text-gray-700 font-medium leading-relaxed italic mb-8">
+            <p className="text-gray-700 dark:text-gray-300 font-medium leading-relaxed italic mb-8">
               "Managing 5 rental properties was overwhelming before RentEase.
               Now everything from tenant screening to maintenance requests is
               streamlined in one place."
             </p>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-white/10">
                 <img
                   src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100"
                   alt="Rajesh Kumar"
@@ -499,7 +494,7 @@ const LandingPage: React.FC = () => {
                 />
               </div>
               <div>
-                <h4 className="font-black text-sm">Rajesh Kumar</h4>
+                <h4 className="font-black text-sm text-gray-900 dark:text-white">Rajesh Kumar</h4>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                   Property Owner • Kozhikode
                 </p>
@@ -510,8 +505,8 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4">
-        <div className="max-w-7xl mx-auto bg-primary rounded-[3rem] p-12 lg:p-24 relative overflow-hidden text-center text-white">
+      <section className="py-24 px-4 bg-white dark:bg-[#0a0f1c] transition-colors duration-300">
+        <div className="max-w-7xl mx-auto bg-primary rounded-[3rem] p-12 lg:p-24 relative overflow-hidden text-center text-white shadow-2xl shadow-primary/20">
           <div className="absolute top-0 right-0 w-[40%] h-full bg-white/5 skew-x-[-20deg] translate-x-[20%]" />
 
           <h2 className="text-4xl lg:text-6xl font-black mb-8 leading-tight relative">
@@ -557,7 +552,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 text-white pt-24 pb-12">
+      <footer className="bg-slate-950 dark:bg-[#050810] text-white pt-24 pb-12 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-20">
             <div className="lg:col-span-2 space-y-8">

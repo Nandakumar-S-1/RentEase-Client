@@ -26,7 +26,8 @@ export const getPendingProperties = async (page: number = 1, limit: number = 10)
 };
 
 export const getAllPropertiesForAdmin = async (page: number = 1, limit: number = 10, status: string): Promise<PendingPropertiesResponse> => {
-  const response = await axiosApi.get(API_ROUTES.SEARCH_PROPERTIES, {
+  const url = status === "PENDING_APPROVAL" ? API_ROUTES.ADMIN_PENDING_PROPERTIES : API_ROUTES.ADMIN_PROPERTIES;
+  const response = await axiosApi.get(url, {
     params: { page, limit, status }
   });
   return response.data;

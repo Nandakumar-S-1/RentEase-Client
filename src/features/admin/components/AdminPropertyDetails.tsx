@@ -14,10 +14,10 @@ import { usePropertyDetail } from "../../property/hooks/usePropertyDetail";
 import { useAdminProperties } from "../hooks/useAdminProperties";
 import { PAGE_ROUTES } from "../../../config/routes";
 import { LoadingOverlay } from "../../../components/common";
-import Map, { Marker } from "react-map-gl/mapbox";
-import "mapbox-gl/dist/mapbox-gl.css";
+// import Map, { Marker } from "react-map-gl/mapbox";
+// import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN 
+// const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN 
 
 const AdminPropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -168,34 +168,41 @@ const AdminPropertyDetails = () => {
                 <p className="text-sm font-bold text-gray-600">Security Deposit</p>
                 <p className="text-lg font-black text-gray-900 dark:text-white">₹{property.depositAmount?.toLocaleString() || "0"}</p>
               </div>
-              {property.maintenanceCharges > 0 && (
+              {property.maintenanceCharges && property.maintenanceCharges > 0 && (
                 <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-white/5 rounded-2xl">
                   <p className="text-sm font-bold text-gray-600">Maintenance</p>
                   <p className="text-lg font-black text-gray-900 dark:text-white">₹{property.maintenanceCharges.toLocaleString()}</p>
                 </div>
               )}
+              {/* {property.totalPrice > 0 && (
+                <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-white/5 rounded-2xl">
+                  <p className="text-sm font-bold text-gray-600">Total Price</p>
+                  <p className="text-lg font-black text-gray-900 dark:text-white">₹{property.totalPrice.toLocaleString()}</p>
+                </div>
+              )} */}
             </div>
           </div>
 
           <div className="bg-white dark:bg-card border border-gray-100 rounded-[2.5rem] p-6 shadow-sm overflow-hidden">
             <h3 className="font-black text-xs uppercase tracking-widest text-gray-400 mb-4 px-2">Exact Location</h3>
-            <div className="h-64 rounded-3xl overflow-hidden border-2 border-gray-50">
-              <Map
-                mapboxAccessToken={MAPBOX_TOKEN}
-                initialViewState={{
-                  longitude: property.longitude || 76.2711,
-                  latitude: property.latitude || 10.8505,
-                  zoom: 13
-                }}
-                style={{ width: "100%", height: "100%" }}
-                mapStyle="mapbox://styles/mapbox/streets-v12"
-              >
-                <Marker
-                  longitude={property.longitude || 76.2711}
-                  latitude={property.latitude || 10.8505}
-                  color="#6366f1"
-                />
-              </Map>
+            <div className="h-64 rounded-3xl overflow-hidden border-2 border-gray-50 bg-gray-50 flex items-center justify-center text-gray-400 font-bold">
+              Map functionality temporarily disabled
+              {/* <Map
+                  mapboxAccessToken={MAPBOX_TOKEN}
+                  initialViewState={{
+                    longitude: property.longitude || 76.2711,
+                    latitude: property.latitude || 10.8505,
+                    zoom: 13
+                  }}
+                  style={{ width: "100%", height: "100%" }}
+                  mapStyle="mapbox://styles/mapbox/streets-v12"
+                >
+                  <Marker
+                    longitude={property.longitude || 76.2711}
+                    latitude={property.latitude || 10.8505}
+                    color="#6366f1"
+                  />
+                </Map> */}
             </div>
           </div>
 

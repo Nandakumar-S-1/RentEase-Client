@@ -10,15 +10,15 @@ import { usePropertyDetail } from "../hooks/usePropertyDetail";
 import { getApiErrorMessage } from "../../../types/common";
 import { z } from "zod";
 import { X, Plus, CheckCircle2, ChevronRight, ChevronLeft } from "lucide-react";
-import Map, { Marker, type MapMouseEvent } from "react-map-gl/mapbox";
-import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl from "mapbox-gl";
+// import Map, { Marker, type MapMouseEvent } from "react-map-gl/mapbox";
+// import "mapbox-gl/dist/mapbox-gl.css";
+// import mapboxgl from "mapbox-gl";
 import { toast } from "react-hot-toast";
 import { LoadingOverlay } from "../../../components/common";
 import type { PropertyData } from "../types/propertyTypes";
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN 
-mapboxgl.accessToken = MAPBOX_TOKEN;
+// const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+// mapboxgl.accessToken = MAPBOX_TOKEN;
 
 const PROPERTY_TYPE_OPTIONS = ["HOUSE", "FLAT", "PG", "SHOP", "LAND"] as const;
 type PropertyTypeOption = (typeof PROPERTY_TYPE_OPTIONS)[number];
@@ -70,6 +70,7 @@ const EditProperty: React.FC = () => {
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [isModalOpen, setIsModalOpen] = useState<{ type: 'delete' | 'unlist' | 'cancel'; isOpen: boolean }>({ type: 'cancel', isOpen: false });
 
   const [formData, setFormData] = useState({
     title: "",
@@ -139,7 +140,15 @@ const EditProperty: React.FC = () => {
     const target = e.target as HTMLInputElement;
     const { name, value, type, checked } = target;
     setFormData((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-    if (validationErrors[name]) setValidationErrors((prev) => { const next = { ...prev }; delete next[name]; return next; });
+
+    // Clear validation error when user types
+    if (validationErrors[name]) {
+      setValidationErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
   };
 
   const handleCheckboxArray = (field: "amenities" | "preferredTenantType", value: string) => {
@@ -174,25 +183,45 @@ const EditProperty: React.FC = () => {
     setNewPreviews(newPreviews.filter((_, i) => i !== index));
   };
 
-  const handleMapClick = (e: MapMouseEvent) => {
-    const { lng, lat } = e.lngLat;
-    setFormData((prev) => ({ ...prev, latitude: lat, longitude: lng }));
-    toast.success("Location updated!", { icon: "📍" });
+  const handleMapClick = (e: any) => {
+    // const { lng, lat } = e.lngLat;
+    // setFormData((prev) => ({ ...prev, latitude: lat, longitude: lng }));
+    // toast.success("Location updated!", { icon: "📍" });
   };
 
   const validateCurrentStep = () => {
-    if (step === 1 && (!formData.title || !formData.description)) {
-      toast.error("Please fill title and description.");
+    const errors: Record<string, string> = {};
+
+    if (step === 1) {
+      if (!formData.title || formData.title.length < 5) errors.title = "Title must be at least 5 characters";
+      if (!formData.description || formData.description.length < 20) errors.description = "Description must be at least 20 characters";
+      if (!formData.propertyType) errors.propertyType = "Property type is required";
+    }
+
+    if (step === 2) {
+      if (!formData.locationDistrict) errors.locationDistrict = "District is required";
+      if (!formData.locationCity) errors.locationCity = "City is required";
+      if (!formData.locationPinCode || !/^\d{6}$/.test(formData.locationPinCode)) errors.locationPinCode = "Valid 6-digit pin code is required";
+    }
+
+    if (step === 4) {
+      if (existingPhotos.length + newFiles.length === 0) {
+        toast.error("At least 1 photo is required.");
+        return false;
+      }
+    }
+
+    if (step === 5) {
+      if (!formData.monthlyRent || Number(formData.monthlyRent) <= 0) errors.monthlyRent = "Monthly rent must be positive";
+      if (!formData.depositAmount || Number(formData.depositAmount) <= 0) errors.depositAmount = "Security deposit must be positive";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      toast.error("Please fill required fields correctly.");
       return false;
     }
-    if (step === 2 && (!formData.locationCity || !formData.locationDistrict)) {
-      toast.error("Please fill location details.");
-      return false;
-    }
-    if (step === 4 && (existingPhotos.length + newFiles.length === 0)) {
-      toast.error("At least 1 photo is required.");
-      return false;
-    }
+
     return true;
   };
 
@@ -250,6 +279,7 @@ const EditProperty: React.FC = () => {
         ...result.data,
         photos: finalPhotos,
         primaryPhotoIndex: 0,
+        status: "PENDING_APPROVAL",
       } as Partial<PropertyData>);
 
       toast.success("Property updated successfully!");
@@ -298,29 +328,58 @@ const EditProperty: React.FC = () => {
               <h3 className="text-xl font-black mb-6">Basic Property Information</h3>
               <div className="space-y-2">
                 <label className="text-sm font-black text-gray-700 ml-1">Property Title *</label>
-                <input name="title" value={formData.title} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" />
+                <input name="title" value={formData.title} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.title ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                {validationErrors.title && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.title}</p>}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-black text-gray-700 ml-1">Property Type</label>
-                  <select name="propertyType" value={formData.propertyType} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm">
+                  <select name="propertyType" value={formData.propertyType} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.propertyType ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`}>
+                    <option value="">Select Type</option>
                     {PROPERTY_TYPE_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                   </select>
+                  {validationErrors.propertyType && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.propertyType}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-black text-gray-700 ml-1">Area (Sq. Ft.)</label>
-                  <input type="number" name="areaSqft" value={formData.areaSqft} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" />
+                  <input type="number" name="areaSqft" value={formData.areaSqft} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.areaSqft ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                  {validationErrors.areaSqft && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.areaSqft}</p>}
                 </div>
               </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">BHK</label><input type="number" name="bhk" value={formData.bhk} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
-                <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Bathrooms</label><input type="number" name="bathrooms" value={formData.bathrooms} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
-                <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Floor</label><input name="floorNumber" value={formData.floorNumber} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
-                <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Age</label><input name="propertyAge" value={formData.propertyAge} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
-              </div>
+
+              {formData.propertyType !== "LAND" && (
+                <>
+                  {formData.propertyType !== "SHOP" && (
+                    <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+                      <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">BHK</label><input type="number" name="bhk" value={formData.bhk} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
+                      <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Bathrooms</label><input type="number" name="bathrooms" value={formData.bathrooms} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+                    <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Floor</label><input name="floorNumber" value={formData.floorNumber} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
+                    <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Age</label><input name="propertyAge" value={formData.propertyAge} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-black text-gray-700 ml-1">Facing</label>
+                      <input name="facingDirection" value={formData.facingDirection} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-black text-gray-700 ml-1">Furnishing Status</label>
+                      <select name="furnishingStatus" value={formData.furnishingStatus} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm">
+                        <option value="Unfurnished">Unfurnished</option>
+                        <option value="Semi-Furnished">Semi-Furnished</option>
+                        <option value="Fully Furnished">Fully Furnished</option>
+                      </select>
+                    </div>
+                  </div>
+                </>
+              )}
+
               <div className="space-y-2">
                 <label className="text-sm font-black text-gray-700 ml-1">Description *</label>
-                <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" />
+                <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.description ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                {validationErrors.description && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.description}</p>}
               </div>
             </div>
           )}
@@ -328,14 +387,35 @@ const EditProperty: React.FC = () => {
           {step === 2 && (
             <div className="space-y-6">
               <h3 className="text-xl font-black mb-6">Location Details</h3>
-              <div className="h-72 rounded-3xl overflow-hidden border-2 border-gray-100 relative">
-                <Map mapboxAccessToken={MAPBOX_TOKEN} initialViewState={{ longitude: formData.longitude, latitude: formData.latitude, zoom: 12 }} style={{ width: "100%", height: "100%" }} mapStyle="mapbox://styles/mapbox/streets-v11" onClick={handleMapClick}>
+              <div className="h-72 rounded-3xl overflow-hidden border-2 border-gray-100 relative bg-gray-50 flex items-center justify-center text-gray-400 font-bold">
+                Map functionality temporarily disabled
+                {/* <Map mapboxAccessToken={MAPBOX_TOKEN} initialViewState={{ longitude: formData.longitude, latitude: formData.latitude, zoom: 12 }} style={{ width: "100%", height: "100%" }} mapStyle="mapbox://styles/mapbox/streets-v11" onClick={handleMapClick}>
                   <Marker longitude={formData.longitude ?? 76.2711} latitude={formData.latitude ?? 10.8505} color="#ef4444" />
-                </Map>
+                </Map> */}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">District *</label><input name="locationDistrict" value={formData.locationDistrict} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
-                <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">City *</label><input name="locationCity" value={formData.locationCity} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
+                <div className="space-y-2">
+                  <label className="text-sm font-black text-gray-700 ml-1">District *</label>
+                  <input name="locationDistrict" value={formData.locationDistrict} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.locationDistrict ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                  {validationErrors.locationDistrict && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.locationDistrict}</p>}
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-black text-gray-700 ml-1">City *</label>
+                  <input name="locationCity" value={formData.locationCity} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.locationCity ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                  {validationErrors.locationCity && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.locationCity}</p>}
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-black text-gray-700 ml-1">Pincode *</label>
+                  <input name="locationPinCode" value={formData.locationPinCode} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.locationPinCode ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                  {validationErrors.locationPinCode && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.locationPinCode}</p>}
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-black text-gray-700 ml-1">Full Address *</label>
+                  <input name="fullAddress" value={formData.fullAddress} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.fullAddress ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                  {validationErrors.fullAddress && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.fullAddress}</p>}
+                </div>
               </div>
             </div>
           )}
@@ -394,11 +474,13 @@ const EditProperty: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-black text-gray-700 ml-1">Monthly Rent *</label>
-                  <input type="number" name="monthlyRent" value={formData.monthlyRent} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" />
+                  <input type="number" name="monthlyRent" value={formData.monthlyRent} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.monthlyRent ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                  {validationErrors.monthlyRent && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.monthlyRent}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-black text-gray-700 ml-1">Security Deposit *</label>
-                  <input type="number" name="depositAmount" value={formData.depositAmount} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" />
+                  <input type="number" name="depositAmount" value={formData.depositAmount} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.depositAmount ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
+                  {validationErrors.depositAmount && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.depositAmount}</p>}
                 </div>
               </div>
             </div>
