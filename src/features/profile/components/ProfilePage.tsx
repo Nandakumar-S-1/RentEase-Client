@@ -47,9 +47,7 @@ const ProfilePage: React.FC = () => {
   return (
     <DashboardLayout role={profile.role as RoleType} userName={profile.fullName}>
       <div className="min-h-screen pb-20">
-        {/* Modern Header Section with Banner & Centered Avatar Removed */}
 
-        {/* Navigation Tabs */}
         <div className="max-w-7xl mx-auto px-6 mb-12">
           <div className="flex justify-center flex-wrap gap-4 p-3 bg-gray-50 dark:bg-white/5 rounded-[2.5rem] border border-gray-100 dark:border-white/5 w-fit mx-auto shadow-sm">
             {tabs.map((tab) => (
@@ -68,12 +66,10 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Content Grid */}
         <div className="max-w-7xl mx-auto px-6">
           {activeTab === "profile" ? (
             <div className="flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-8 xl:gap-0 relative">
 
-              {/* Left Column: Details Overview */}
               <div className="w-full xl:w-[45%] bg-white dark:bg-card rounded-[3rem] p-8 shadow-xl xl:pr-24 relative z-0 border border-gray-100 dark:border-white/5">
                 <ProfileCard profile={profile} />
               </div>

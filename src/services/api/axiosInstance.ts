@@ -50,27 +50,32 @@ axiosApi.interceptors.response.use(
     const message = responseData?.message || "";
     const errorCode = responseData?.code;
 
+    const isRefreshCall = originalRequest.url?.includes(API_ROUTES.REFRESH_TOKEN);
+    const isLoginCall = originalRequest.url?.includes("login");
+    const isLogoutCall = originalRequest.url?.includes(API_ROUTES.LOGOUT);
+
     if (
       errorCode === ErrorCodes.ACCOUNT_SUSPENDED ||
       errorCode === ErrorCodes.ACCOUNT_DEACTIVATED ||
       message.toLowerCase().includes("blocked")
     ) {
-      toast.error(message || "Your account has been restricted.");
       void axiosApi.post(API_ROUTES.LOGOUT, {}).catch(() => { });
       store.dispatch(logout());
-      window.location.href = PAGE_ROUTES.LOGIN;
+
+      const currentPath = window.location.pathname;
+      const isAlreadyOnLogin = currentPath === PAGE_ROUTES.LOGIN;
+
+      if (!isAlreadyOnLogin && !isLoginCall) {
+        window.location.href = `${PAGE_ROUTES.LOGIN}?message=${encodeURIComponent(message || "Your account has been restricted.")}`;
+      } else {
+        toast.error(message || "Your account has been restricted.");
+      }
       return Promise.reject(error);
     }
 
     // get new access token using the refresh token in cookie.
-    const isRefreshCall = originalRequest.url?.includes(
-      API_ROUTES.REFRESH_TOKEN,
-    );
-    const isLoginCall = originalRequest.url?.includes("login");
-    const isLogoutCall = originalRequest.url?.includes(API_ROUTES.LOGOUT);
-
     if (status === 401 && !originalRequest._retry &&
-      !isRefreshCall &&! isLoginCall && !isLogoutCall) {
+      !isRefreshCall && !isLoginCall && !isLogoutCall) {
 
       originalRequest._retry = true;
       try {

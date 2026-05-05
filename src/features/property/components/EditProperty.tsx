@@ -8,55 +8,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import { updateProperty, getPropertyPhotoUploadUrls } from "../services/propertyService";
 import { usePropertyDetail } from "../hooks/usePropertyDetail";
 import { getApiErrorMessage } from "../../../types/common";
-import { z } from "zod";
 import { X, Plus, CheckCircle2, ChevronRight, ChevronLeft } from "lucide-react";
-// import Map, { Marker, type MapMouseEvent } from "react-map-gl/mapbox";
-// import "mapbox-gl/dist/mapbox-gl.css";
-// import mapboxgl from "mapbox-gl";
+import {
+  PropertyTypes,
+  type PropertyType,
+  FurnishingStatus,
+  AMENITIES_OPTIONS,
+  PropertyStatus,
+  LAND_AMENITIES
+} from "../../../types/constants/property.constant";
+import { propertySchema } from "../schemas/propertySchemas";
 import { toast } from "react-hot-toast";
 import { LoadingOverlay } from "../../../components/common";
 import type { PropertyData } from "../types/propertyTypes";
 
-// const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
-// mapboxgl.accessToken = MAPBOX_TOKEN;
-
-const PROPERTY_TYPE_OPTIONS = ["HOUSE", "FLAT", "PG", "SHOP", "LAND"] as const;
-type PropertyTypeOption = (typeof PROPERTY_TYPE_OPTIONS)[number];
-
-const AMENITIES_OPTIONS = [
-  "2-wheeler Parking", "4-wheeler Parking", "WIFI", "Power Backup",
-  "Water Supply 24/7", "Security", "Lift", "Gym", "Swimming Pool",
-  "Club House", "Park", "Intercom"
-];
-
-const propertySchema = z.object({
-  title: z.string().min(5, "Title must be at least 5 characters").max(100),
-  description: z.string().min(20, "Description must be at least 20 characters").max(2000),
-  propertyType: z.enum(PROPERTY_TYPE_OPTIONS),
-  bhk: z.number().int().positive().optional().nullable(),
-  bathrooms: z.number().int().positive().optional().nullable(),
-  floorNumber: z.string().optional().nullable(),
-  propertyAge: z.string().optional().nullable(),
-  facingDirection: z.string().optional().nullable(),
-  furnishingStatus: z.string().optional().nullable(),
-
-  locationDistrict: z.string().min(2, "District is required"),
-  locationCity: z.string().min(2, "City is required"),
-  locationPinCode: z.string().regex(/^\d{6}$/, "Pin code must be exactly 6 digits"),
-  fullAddress: z.string().min(10, "Address is too short"),
-  nearbyLandmarks: z.string().max(200).optional().nullable(),
-  latitude: z.number().optional().nullable(),
-  longitude: z.number().optional().nullable(),
-
-  amenities: z.array(z.string()).optional(),
-  preferredTenantType: z.array(z.string()).optional(),
-
-  monthlyRent: z.number().positive("Rent must be positive"),
-  depositAmount: z.number().positive("Deposit must be positive"),
-  maintenanceCharges: z.number().nonnegative().optional(),
-  maintenanceIncluded: z.boolean().optional(),
-  areaSqft: z.number().positive("Area must be positive").optional().nullable(),
-});
+const PROPERTY_TYPE_OPTIONS = Object.values(PropertyTypes);
+const FURNISHING_OPTIONS = Object.values(FurnishingStatus);
 
 const STEPS = ["Basic Details", "Location", "Amenities", "Photos", "Pricing"];
 
@@ -70,18 +37,17 @@ const EditProperty: React.FC = () => {
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [isModalOpen, setIsModalOpen] = useState<{ type: 'delete' | 'unlist' | 'cancel'; isOpen: boolean }>({ type: 'cancel', isOpen: false });
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    propertyType: "FLAT" as PropertyTypeOption,
+    propertyType: PropertyTypes.FLAT as PropertyType,
     bhk: "",
     bathrooms: "",
     floorNumber: "",
     propertyAge: "",
     facingDirection: "",
-    furnishingStatus: "Semi-Furnished",
+    totalFloors: "",
+    furnishingStatus: "" as string,
 
     locationDistrict: "",
     locationCity: "",
@@ -93,6 +59,14 @@ const EditProperty: React.FC = () => {
 
     amenities: [] as string[],
     preferredTenantType: [] as string[],
+    petsAllowed: false,
+    smokingAllowed: false,
+    maximumOccupants: "",
+    landType: "RESIDENTIAL" as string,
+    isCornerPlot: false,
+    roadWidthFeet: "",
+    shopType: "" as string,
+    hasParking: false,
 
     monthlyRent: "",
     depositAmount: "",
@@ -110,13 +84,14 @@ const EditProperty: React.FC = () => {
       setFormData({
         title: property.title || "",
         description: property.description || "",
-        propertyType: property.propertyType as PropertyTypeOption,
+        propertyType: property.propertyType as PropertyType,
         bhk: property.bhk?.toString() || "",
         bathrooms: property.bathrooms?.toString() || "",
         floorNumber: property.floorNumber || "",
+        totalFloors: property.totalFloors?.toString() || "",
         propertyAge: property.propertyAge || "",
         facingDirection: property.facingDirection || "",
-        furnishingStatus: property.furnishingStatus || "Semi-Furnished",
+        furnishingStatus: property.furnishingStatus || "",
         locationDistrict: property.locationDistrict || "",
         locationCity: property.locationCity || "",
         locationPinCode: property.locationPincode || "",
@@ -131,6 +106,14 @@ const EditProperty: React.FC = () => {
         maintenanceCharges: property.maintenanceCharges?.toString() || "0",
         maintenanceIncluded: property.maintenanceIncluded || false,
         areaSqft: property.areaSqft?.toString() || "",
+        petsAllowed: property.petsAllowed || false,
+        smokingAllowed: property.smokingAllowed || false,
+        maximumOccupants: property.maximumOccupants?.toString() || "",
+        landType: (property.landType || "RESIDENTIAL") as string,
+        isCornerPlot: property.isCornerPlot || false,
+        roadWidthFeet: property.roadWidthFeet?.toString() || "",
+        shopType: (property.shopType || "") as string,
+        hasParking: property.hasParking || false,
       });
       setExistingPhotos(property.photos || []);
     }
@@ -183,45 +166,49 @@ const EditProperty: React.FC = () => {
     setNewPreviews(newPreviews.filter((_, i) => i !== index));
   };
 
-  const handleMapClick = (e: any) => {
-    // const { lng, lat } = e.lngLat;
-    // setFormData((prev) => ({ ...prev, latitude: lat, longitude: lng }));
-    // toast.success("Location updated!", { icon: "📍" });
-  };
-
   const validateCurrentStep = () => {
+    const numericData = {
+      ...formData,
+      monthlyRent: Number(formData.monthlyRent),
+      depositAmount: Number(formData.depositAmount),
+      maintenanceCharges: Number(formData.maintenanceCharges),
+      areaSqft: formData.areaSqft ? Number(formData.areaSqft) : null,
+      bhk: formData.bhk ? Number(formData.bhk) : null,
+      bathrooms: formData.bathrooms ? Number(formData.bathrooms) : null,
+    };
+
+    const result = propertySchema.safeParse(numericData);
+    if (result.success) {
+      setValidationErrors({});
+      return true;
+    }
+
     const errors: Record<string, string> = {};
+    const relevantIssues = result.error.issues.filter(issue => {
+      const field = issue.path[0]?.toString();
+      if (!field) return false;
 
-    if (step === 1) {
-      if (!formData.title || formData.title.length < 5) errors.title = "Title must be at least 5 characters";
-      if (!formData.description || formData.description.length < 20) errors.description = "Description must be at least 20 characters";
-      if (!formData.propertyType) errors.propertyType = "Property type is required";
+      if (step === 1) return ["title", "description", "propertyType"].includes(field);
+      if (step === 2) return ["locationDistrict", "locationCity", "locationPinCode", "fullAddress"].includes(field);
+      if (step === 5) return ["monthlyRent", "depositAmount"].includes(field);
+      return false;
+    });
+
+    if (step === 4 && (existingPhotos.length + newFiles.length === 0)) {
+      toast.error("At least 1 photo is required.");
+      return false;
     }
 
-    if (step === 2) {
-      if (!formData.locationDistrict) errors.locationDistrict = "District is required";
-      if (!formData.locationCity) errors.locationCity = "City is required";
-      if (!formData.locationPinCode || !/^\d{6}$/.test(formData.locationPinCode)) errors.locationPinCode = "Valid 6-digit pin code is required";
-    }
-
-    if (step === 4) {
-      if (existingPhotos.length + newFiles.length === 0) {
-        toast.error("At least 1 photo is required.");
-        return false;
-      }
-    }
-
-    if (step === 5) {
-      if (!formData.monthlyRent || Number(formData.monthlyRent) <= 0) errors.monthlyRent = "Monthly rent must be positive";
-      if (!formData.depositAmount || Number(formData.depositAmount) <= 0) errors.depositAmount = "Security deposit must be positive";
-    }
-
-    if (Object.keys(errors).length > 0) {
+    if (relevantIssues.length > 0) {
+      relevantIssues.forEach((issue) => {
+        errors[issue.path[0]?.toString() || "unknown"] = issue.message;
+      });
       setValidationErrors(errors);
       toast.error("Please fill required fields correctly.");
       return false;
     }
 
+    setValidationErrors({});
     return true;
   };
 
@@ -242,6 +229,7 @@ const EditProperty: React.FC = () => {
       areaSqft: formData.areaSqft ? Number(formData.areaSqft) : null,
       bhk: formData.bhk ? Number(formData.bhk) : null,
       bathrooms: formData.bathrooms ? Number(formData.bathrooms) : null,
+      totalFloors: formData.totalFloors ? Number(formData.totalFloors) : null,
     };
 
     const result = propertySchema.safeParse(validationData);
@@ -279,7 +267,7 @@ const EditProperty: React.FC = () => {
         ...result.data,
         photos: finalPhotos,
         primaryPhotoIndex: 0,
-        status: "PENDING_APPROVAL",
+        status: PropertyStatus.PENDING_APPROVAL,
       } as Partial<PropertyData>);
 
       toast.success("Property updated successfully!");
@@ -306,7 +294,6 @@ const EditProperty: React.FC = () => {
           </button>
         </div>
 
-        {/* Progress Bar (Borrowed from AddProperty) */}
         <div className="flex items-center gap-2 mb-8">
           {STEPS.map((s, idx) => (
             <React.Fragment key={s}>
@@ -322,7 +309,6 @@ const EditProperty: React.FC = () => {
         </div>
 
         <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-[2.5rem] p-8 shadow-sm">
-          {/* Reuse Step UI from AddProperty with small adjustments for Edit mode */}
           {step === 1 && (
             <div className="space-y-6">
               <h3 className="text-xl font-black mb-6">Basic Property Information</h3>
@@ -355,8 +341,9 @@ const EditProperty: React.FC = () => {
                       <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Bathrooms</label><input type="number" name="bathrooms" value={formData.bathrooms} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
                     </div>
                   )}
-                  <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Floor</label><input name="floorNumber" value={formData.floorNumber} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
+                    <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Total Floors</label><input type="number" name="totalFloors" value={formData.totalFloors} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
                     <div className="space-y-2"><label className="text-sm font-black text-gray-700 ml-1">Age</label><input name="propertyAge" value={formData.propertyAge} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" /></div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -366,11 +353,11 @@ const EditProperty: React.FC = () => {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-black text-gray-700 ml-1">Furnishing Status</label>
-                      <select name="furnishingStatus" value={formData.furnishingStatus} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm">
-                        <option value="Unfurnished">Unfurnished</option>
-                        <option value="Semi-Furnished">Semi-Furnished</option>
-                        <option value="Fully Furnished">Fully Furnished</option>
+                      <select name="furnishingStatus" value={formData.furnishingStatus} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.furnishingStatus ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`}>
+                        <option value="">Select Status</option>
+                        {(FURNISHING_OPTIONS as string[]).map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
                       </select>
+                      {validationErrors.furnishingStatus && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.furnishingStatus}</p>}
                     </div>
                   </div>
                 </>
@@ -389,9 +376,6 @@ const EditProperty: React.FC = () => {
               <h3 className="text-xl font-black mb-6">Location Details</h3>
               <div className="h-72 rounded-3xl overflow-hidden border-2 border-gray-100 relative bg-gray-50 flex items-center justify-center text-gray-400 font-bold">
                 Map functionality temporarily disabled
-                {/* <Map mapboxAccessToken={MAPBOX_TOKEN} initialViewState={{ longitude: formData.longitude, latitude: formData.latitude, zoom: 12 }} style={{ width: "100%", height: "100%" }} mapStyle="mapbox://styles/mapbox/streets-v11" onClick={handleMapClick}>
-                  <Marker longitude={formData.longitude ?? 76.2711} latitude={formData.latitude ?? 10.8505} color="#ef4444" />
-                </Map> */}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -425,14 +409,68 @@ const EditProperty: React.FC = () => {
               <div>
                 <h3 className="text-xl font-black mb-4">Amenities</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {AMENITIES_OPTIONS.map(amenity => (
-                    <label key={amenity} className={`flex items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all ${formData.amenities.includes(amenity) ? "border-primary bg-primary/5 text-primary" : "border-gray-100 hover:border-gray-200 text-gray-600"}`}>
-                      <input type="checkbox" className="hidden" checked={formData.amenities.includes(amenity)} onChange={() => handleCheckboxArray('amenities', amenity)} />
+                  {(formData.propertyType === "LAND" ? LAND_AMENITIES : AMENITIES_OPTIONS).map(amenity => (
+                    <label key={amenity} className={`flex items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all ${formData.amenities.includes(amenity as string) ? "border-primary bg-primary/5 text-primary" : "border-gray-100 hover:border-gray-200 text-gray-600"}`}>
+                      <input type="checkbox" className="hidden" checked={formData.amenities.includes(amenity as string)} onChange={() => handleCheckboxArray('amenities', amenity as string)} />
                       <span className="text-sm font-bold">{amenity}</span>
                     </label>
                   ))}
                 </div>
               </div>
+
+              <div>
+                <h3 className="text-xl font-black mb-4">House Rules & Occupancy</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50">
+                    <input type="checkbox" name="petsAllowed" checked={formData.petsAllowed} onChange={handleInputChange} className="w-5 h-5 rounded text-primary focus:ring-primary" />
+                    <span className="text-sm font-bold text-gray-700">Pets Allowed</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50">
+                    <input type="checkbox" name="smokingAllowed" checked={formData.smokingAllowed} onChange={handleInputChange} className="w-5 h-5 rounded text-primary focus:ring-primary" />
+                    <span className="text-sm font-bold text-gray-700">Smoking Allowed</span>
+                  </label>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Max Occupants</label>
+                    <input type="number" name="maximumOccupants" value={formData.maximumOccupants} onChange={handleInputChange} placeholder="e.g. 4" className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm" />
+                  </div>
+                </div>
+              </div>
+
+              {(formData.propertyType === "LAND") && (
+                <div>
+                  <h3 className="text-xl font-black mb-4">Land Details</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Land Type</label>
+                      <input name="landType" value={formData.landType} onChange={handleInputChange} placeholder="e.g. Residential, Commercial" className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm" />
+                    </div>
+                    <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50 h-fit self-end">
+                      <input type="checkbox" name="isCornerPlot" checked={formData.isCornerPlot} onChange={handleInputChange} className="w-5 h-5 rounded text-primary focus:ring-primary" />
+                      <span className="text-sm font-bold text-gray-700">Corner Plot</span>
+                    </label>
+                    <div className="space-y-2">
+                      <label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Road Width (ft)</label>
+                      <input type="number" name="roadWidthFeet" value={formData.roadWidthFeet} onChange={handleInputChange} placeholder="e.g. 30" className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {(formData.propertyType === "SHOP") && (
+                <div>
+                  <h3 className="text-xl font-black mb-4">Business Details</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Shop/Office Type</label>
+                      <input name="shopType" value={formData.shopType} onChange={handleInputChange} placeholder="e.g. Retail, Office Space" className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm" />
+                    </div>
+                    <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50 h-fit self-end">
+                      <input type="checkbox" name="hasParking" checked={formData.hasParking} onChange={handleInputChange} className="w-5 h-5 rounded text-primary focus:ring-primary" />
+                      <span className="text-sm font-bold text-gray-700">Dedicated Parking Area</span>
+                    </label>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -481,6 +519,21 @@ const EditProperty: React.FC = () => {
                   <label className="text-sm font-black text-gray-700 ml-1">Security Deposit *</label>
                   <input type="number" name="depositAmount" value={formData.depositAmount} onChange={handleInputChange} className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.depositAmount ? 'border-red-500' : 'border-border'} rounded-2xl text-sm`} />
                   {validationErrors.depositAmount && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{validationErrors.depositAmount}</p>}
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+                <div className="space-y-2">
+                  <label className="text-sm font-black text-gray-700 ml-1">Maintenance Charges</label>
+                  <div className="relative">
+                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-gray-400">₹</span>
+                    <input type="number" name="maintenanceCharges" value={formData.maintenanceCharges} onChange={handleInputChange} className="w-full pl-10 pr-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm" />
+                  </div>
+                </div>
+                <div className="space-y-2 flex flex-col justify-center pt-6">
+                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50">
+                    <input type="checkbox" name="maintenanceIncluded" checked={formData.maintenanceIncluded} onChange={handleInputChange} className="w-5 h-5 rounded text-primary focus:ring-primary inline-block" />
+                    <span className="text-sm font-bold text-gray-700">Maintenance is included in Rent</span>
+                  </label>
                 </div>
               </div>
             </div>

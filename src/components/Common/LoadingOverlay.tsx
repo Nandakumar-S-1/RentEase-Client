@@ -1,40 +1,37 @@
 import React from "react";
-import { Home } from "lucide-react";
 
 interface LoadingOverlayProps {
   fullPage?: boolean;
+  message?: string;
 }
 
 export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
   fullPage = true,
+  message = "Loading...",
 }) => {
   return (
     <div
-      className={`${
-        fullPage ? "fixed inset-0 z-[9999]" : "absolute inset-0"
-      } bg-[color:var(--color-surface)]/80 backdrop-blur-sm flex flex-col items-center justify-center transition-all duration-500`}
+      className={`${fullPage ? "fixed inset-0 z-[9999]" : "absolute inset-0"
+        } bg-[color:var(--color-surface)]/80 backdrop-blur-md flex flex-col items-center justify-center transition-all duration-500`}
     >
-      <div className="relative">
-        <div className="p-6 bg-primary/10 rounded-full animate-pulse-house">
-          <Home size={60} className="text-primary" />
+      <div className="flex flex-col items-center gap-6">
+        <div className="relative w-16 h-16">
+          <div className="absolute inset-0 border-4 border-primary/10 rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
-        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <p className="text-sm font-bold text-primary tracking-widest uppercase">
-            Finding your home
+
+        <div className="flex flex-col items-center gap-3">
+          <p className="text-lg font-black text-primary tracking-[0.2em] uppercase animate-pulse">
+            {message}
           </p>
-          <div className="flex gap-1">
-            <div
-              className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
-              style={{ animationDelay: "0ms" }}
-            ></div>
-            <div
-              className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
-              style={{ animationDelay: "200ms" }}
-            ></div>
-            <div
-              className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
-              style={{ animationDelay: "400ms" }}
-            ></div>
+          <div className="flex gap-1.5">
+            {[0, 200, 400].map((delay) => (
+              <div
+                key={delay}
+                className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce"
+                style={{ animationDelay: `${delay}ms` }}
+              ></div>
+            ))}
           </div>
         </div>
       </div>

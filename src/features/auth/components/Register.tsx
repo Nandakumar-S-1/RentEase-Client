@@ -5,12 +5,13 @@ import { Button, FormMessage, Input, Logo } from "../../../components/common";
 import { useRegister } from "../hooks/useRegister";
 import { useGoogleAuth } from "../hooks/useGoogleAuth";
 import { PAGE_ROUTES } from "../../../config/routes";
+import { RoleTypes } from "../../../types/constants/role.constant";
 
 const Register = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const role = (searchParams.get("role") || "TENANT") as "TENANT" | "OWNER";
+  const role = (searchParams.get("role") || RoleTypes.TENANT_USER) as typeof RoleTypes.TENANT_USER | typeof RoleTypes.OWNER_USER;
 
   const {
     register,
@@ -74,7 +75,7 @@ const Register = () => {
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-linear-to-b from-[hsl(260,20%,18%)] to-[hsl(260,25%,12%)] p-12 text-white">
         <Logo size="md" />
         <p className="max-w-md text-lg leading-relaxed text-white/70">
-          {role === "OWNER"
+          {role === RoleTypes.OWNER_USER
             ? "Manage your rental properties effortlessly..."
             : "Find your perfect rental home..."}
         </p>

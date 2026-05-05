@@ -18,6 +18,7 @@ import {
   Edit2
 } from "lucide-react";
 import { LoadingOverlay, Modal } from "../../../components/common";
+import { serviceProviderSchema } from "../schemas/propertySchemas";
 
 const PROVIDER_TYPES = [
   "Electrician", "Plumber", "Cleaner", "Painter", "Carpenter",
@@ -28,7 +29,7 @@ const ServiceProviderManagement: React.FC = () => {
   const { propertyId } = useParams<{ propertyId: string }>();
   const navigate = useNavigate();
   const { user } = useAppSelector((state: RootState) => state.auth);
-  const { providers, loading, addProvider, removeProvider, toggleStatus } = useServiceProviders(propertyId || "");
+  const { providers, loading, addProvider, removeProvider, toggleStatus, updateProvider } = useServiceProviders(propertyId || "");
 
   const [isAdding, setIsAdding] = useState(false);
   const [editingProviderId, setEditingProviderId] = useState<string | null>(null);
@@ -46,22 +47,18 @@ const ServiceProviderManagement: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const validateForm = () => {
-    const errors: Record<string, string> = {};
-    if (!newProvider.providerName.trim()) errors.providerName = "Name is required";
-    if (!newProvider.phone.trim()) {
-      errors.phone = "Phone is required";
-    } else if (!/^\+?[\d\s-]{10,}$/.test(newProvider.phone)) {
-      errors.phone = "Invalid phone number";
+    const result = serviceProviderSchema.safeParse(newProvider);
+    if (!result.success) {
+      const errors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        errors[issue.path[0]?.toString() || "unknown"] = issue.message;
+      });
+      setFormErrors(errors);
+      return false;
     }
 
-    if (newProvider.typicalChargesMin && newProvider.typicalChargesMax) {
-      if (Number(newProvider.typicalChargesMin) > Number(newProvider.typicalChargesMax)) {
-        errors.typicalChargesMax = "Max charge must be greater than min";
-      }
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
+    setFormErrors({});
+    return true;
   };
 
   const handleAddSubmit = async (e: React.FormEvent) => {
@@ -94,7 +91,14 @@ const ServiceProviderManagement: React.FC = () => {
     setFormErrors({});
   };
 
-  const startEdit = (provider: any) => {
+  const startEdit = (provider: {
+    id: string;
+    providerName: string;
+    providerType: string;
+    phone: string;
+    typicalChargesMin?: number;
+    typicalChargesMax?: number;
+  }) => {
     setNewProvider({
       providerName: provider.providerName,
       providerType: provider.providerType,
@@ -149,9 +153,10 @@ const ServiceProviderManagement: React.FC = () => {
                   required
                   value={newProvider.providerName}
                   onChange={(e) => setNewProvider({ ...newProvider, providerName: e.target.value })}
-                  className="w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm font-medium"
+                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.providerName ? 'border-red-500' : 'border-[color:var(--color-border)]'} rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm font-medium`}
                   placeholder="e.g. John Doe"
                 />
+                {formErrors.providerName && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{formErrors.providerName}</p>}
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-black text-gray-700 ml-1">Service Category</label>
@@ -169,9 +174,10 @@ const ServiceProviderManagement: React.FC = () => {
                   required
                   value={newProvider.phone}
                   onChange={(e) => setNewProvider({ ...newProvider, phone: e.target.value })}
-                  className="w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm font-medium"
+                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.phone ? 'border-red-500' : 'border-[color:var(--color-border)]'} rounded-2xl text-sm font-medium`}
                   placeholder="e.g. +91 9876543210"
                 />
+                {formErrors.phone && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{formErrors.phone}</p>}
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-black text-gray-700 ml-1">Min Charges (₹)</label>
@@ -179,9 +185,10 @@ const ServiceProviderManagement: React.FC = () => {
                   type="number"
                   value={newProvider.typicalChargesMin}
                   onChange={(e) => setNewProvider({ ...newProvider, typicalChargesMin: e.target.value })}
-                  className="w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm font-medium"
+                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.typicalChargesMin ? 'border-red-500' : 'border-[color:var(--color-border)]'} rounded-2xl text-sm font-medium`}
                   placeholder="500"
                 />
+                {formErrors.typicalChargesMin && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{formErrors.typicalChargesMin}</p>}
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-black text-gray-700 ml-1">Max Charges (₹)</label>
@@ -189,9 +196,10 @@ const ServiceProviderManagement: React.FC = () => {
                   type="number"
                   value={newProvider.typicalChargesMax}
                   onChange={(e) => setNewProvider({ ...newProvider, typicalChargesMax: e.target.value })}
-                  className="w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm font-medium"
+                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.typicalChargesMax ? 'border-red-500' : 'border-[color:var(--color-border)]'} rounded-2xl text-sm font-medium`}
                   placeholder="2000"
                 />
+                {formErrors.typicalChargesMax && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{formErrors.typicalChargesMax}</p>}
               </div>
               <div className="flex items-end">
                 <button type="submit" className="w-full py-4 bg-primary text-white font-black rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
@@ -299,8 +307,5 @@ const ServiceProviderManagement: React.FC = () => {
   );
 };
 
-export default ServiceProviderManagement;
-function updateProvider(editingProviderId: string, arg1: { typicalChargesMin: number; typicalChargesMax: number; providerName: string; providerType: string; phone: string; }) {
-  throw new Error("Function not implemented.");
-}
 
+export default ServiceProviderManagement;

@@ -2,13 +2,14 @@ import React from "react";
 import { Mail, Phone, CheckCircle, Clock, Star, LayoutGrid, Briefcase, Quote } from "lucide-react";
 import type { ProfileData } from "../types/profileTypes";
 import { format } from "date-fns";
+import { RoleTypes } from "../../../types/constants/role.constant";
 
 interface ProfileCardProps {
   profile: ProfileData;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
-  const isOwner = profile.role === "OWNER";
+  const isOwner = profile.role === RoleTypes.OWNER_USER;
   const joinedDate = profile.createdAt
     ? format(new Date(profile.createdAt), "MMMM yyyy")
     : "Recent";

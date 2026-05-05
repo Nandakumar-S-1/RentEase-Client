@@ -1,5 +1,6 @@
 import type { User } from "../types/authTypes";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { VerificationStatusType } from "../../../types/constants/ownerVerification.constant";
 
 interface AuthState {
   user: User | null;
@@ -71,7 +72,7 @@ const authSlice = createSlice({
 
     updateVerificationStatus: (
       state,
-      action: PayloadAction<"PENDING" | "SUBMITTED" | "VERIFIED" | "REJECTED">,
+      action: PayloadAction<VerificationStatusType>,
     ) => {
       if (state.user) {
         state.user.verificationStatus = action.payload;

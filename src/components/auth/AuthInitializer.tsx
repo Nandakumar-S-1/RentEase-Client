@@ -6,7 +6,6 @@ import {
   updateIsAuthenticated,
   updateAccessToken,
   setCredentials,
-  logout,
 } from "../../features/auth/slices/AuthSlice";
 import { useDispatch } from "react-redux";
 
@@ -48,7 +47,9 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
             if (currentUser) {
               dispatch(setCredentials({ user: currentUser, accessToken }));
             }
-          } catch { }
+          } catch (e) { 
+            console.error("Failed to fetch user profile:", e);
+          }
 
           const isAuthPage =
             initialPath === PAGE_ROUTES.LOGIN ||
@@ -74,7 +75,7 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
     };
 
     initializeAuth();
-  }, []);
+  }, [dispatch, location.pathname, navigate]);
 
   if (loading) {
     return (

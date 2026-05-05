@@ -18,8 +18,8 @@ export const useServiceProviders = (propertyId: string) => {
     try {
       setLoading(true);
       const res = await getServiceProviders(propertyId);
-      if (res) {
-        setProviders(res);
+      if (res && res.success) {
+        setProviders(res.data);
       }
     } catch (error) {
       console.error("Failed to fetch service providers:", error);

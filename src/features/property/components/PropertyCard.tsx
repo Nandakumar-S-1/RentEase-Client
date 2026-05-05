@@ -11,14 +11,16 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../app/store/store";
 import { RoleTypes } from "../../../types/constants/role.constant";
 import { useState } from "react";
+import { PropertyStatus } from "../../../types/constants/property.constant";
 
 interface PropertyCardProps {
   property: PropertyData;
   layout: "grid" | "list";
   isSearchMode?: boolean;
+  onToggleWishlist?: () => void;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchMode }) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchMode, onToggleWishlist }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
   const { isSaved, toggle } = useWishlist(property.id);
@@ -29,6 +31,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
   const [isUnlistModalOpen, setIsUnlistModalOpen] = useState(false);
   const [isRelistModalOpen, setIsRelistModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isWishlistConfirmModalOpen, setIsWishlistConfirmModalOpen] = useState(false);
 
   const handleDetailsClick = () => {
     const route = isSearchMode
@@ -74,18 +77,18 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
 
   const getStatusColor = (status: string) => {
     switch (status.toUpperCase()) {
-      case "ACTIVE":
+      case PropertyStatus.ACTIVE:
       case "APPROVED":
       case "AVAILABLE":
         return "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400";
       case "RENTED":
         return "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400";
-      case "UNLISTED":
+      case PropertyStatus.UNLISTED:
         return "bg-gray-100 text-gray-700 dark:bg-gray-500/20 dark:text-gray-400";
-      case "PENDING_APPROVAL":
-      case "PENDING":
+      case PropertyStatus.PENDING_APPROVAL:
+      case PropertyStatus.PENDING:
         return "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-400";
-      case "REJECTED":
+      case PropertyStatus.REJECTED:
         return "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400";
       default:
         return "bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400";
@@ -93,8 +96,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
   };
 
   const getStatusLabel = (status: string) => {
-    if (status === "ACTIVE" || status === "APPROVED") return "Listed";
-    if (status === "PENDING_APPROVAL") return "Verification Pending";
+    if (status === PropertyStatus.ACTIVE || status === "APPROVED") return "Listed";
+    if (status === PropertyStatus.PENDING_APPROVAL) return "Verification Pending";
     return status.charAt(0) + status.slice(1).toLowerCase();
   };
 
@@ -123,11 +126,29 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
 
         {isSearchMode && !isOwner && (
           <button
-            onClick={(e) => { e.stopPropagation(); toggle(); }}
+            onClick={async (e) => {
+              e.stopPropagation();
+              if (isSaved) {
+                setIsWishlistConfirmModalOpen(true);
+              } else {
+                await toggle();
+                if (onToggleWishlist) onToggleWishlist();
+              }
+            }}
             className={`absolute top-4 right-4 p-2.5 rounded-2xl shadow-lg transition-all hover:scale-110 active:scale-95 ${isSaved ? "bg-red-500 text-white" : "bg-white/80 backdrop-blur-md text-gray-600 hover:bg-white"}`}
           >
             <Heart size={20} fill={isSaved ? "currentColor" : "none"} className={isSaved ? "animate-pulse" : ""} />
           </button>
+        )}
+
+        {isSearchMode && property.status === PropertyStatus.UNLISTED && (
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center p-4">
+            <div className="bg-white/90 dark:bg-black/80 px-6 py-3 rounded-2xl shadow-2xl border border-white/20 transform -rotate-3">
+              <span className="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] text-center block">
+                This property is temporarily unavailable
+              </span>
+            </div>
+          </div>
         )}
       </div>
 
@@ -176,16 +197,18 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
             <span className="text-xs text-gray-500 ml-1">/month</span>
           </div>
 
-          <button
-            onClick={handleDetailsClick}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-white/5 hover:bg-primary hover:text-white text-primary text-sm font-bold rounded-xl transition-all group/btn"
-          >
-            <span>Details</span>
-            <ExternalLink
-              size={14}
-              className="group-hover/btn:translate-x-0.5 transition-transform"
-            />
-          </button>
+          {!(isSearchMode && property.status === PropertyStatus.UNLISTED) && (
+            <button
+              onClick={handleDetailsClick}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-white/5 hover:bg-primary hover:text-white text-primary text-sm font-bold rounded-xl transition-all group/btn"
+            >
+              <span>Details</span>
+              <ExternalLink
+                size={14}
+                className="group-hover/btn:translate-x-0.5 transition-transform"
+              />
+            </button>
+          )}
         </div>
 
         {!isSearchMode && (
@@ -253,6 +276,21 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
         title="Delete Permanently"
         description="Are you sure you want to PERMANENTLY delete this property? This action cannot be undone."
         confirmText="Delete"
+        isDestructive={true}
+      />
+
+      <Modal
+        isOpen={isWishlistConfirmModalOpen}
+        onClose={() => setIsWishlistConfirmModalOpen(false)}
+        onConfirm={async () => {
+          await toggle();
+          if (onToggleWishlist) onToggleWishlist();
+          setIsWishlistConfirmModalOpen(false);
+          toast.success("Removed from wishlist");
+        }}
+        title="Remove from Wishlist"
+        description="Are you sure you want to remove this property from your saved list?"
+        confirmText="Remove"
         isDestructive={true}
       />
     </div>

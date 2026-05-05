@@ -43,6 +43,8 @@ export const PAGE_ROUTES = {
   PROPERTY_DETAIL: "/properties/:id",
   SEARCH_PROPERTIES: "/search",
   ONBOARDING: "/onboarding",
+  OWNER_DASHBOARD: "/owner/dashboard",
+  TENANT_DASHBOARD: "/tenant/dashboard",
 } as const;
 
 

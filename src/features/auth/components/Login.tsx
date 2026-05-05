@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import {
   Input,
@@ -26,9 +26,12 @@ const Login = () => {
     error: googleError,
   } = useGoogleAuth();
 
+  const [searchParams] = useSearchParams();
+  const urlMessage = searchParams.get("message");
+
   const isLoading = loginLoading || googleLoading;
-  const message = successMessage || loginError || googleError || "";
-  const isError = !!(loginError || googleError);
+  const message = successMessage || loginError || googleError || urlMessage || "";
+  const isError = !!(loginError || googleError || urlMessage);
 
   const [formData, setFormData] = useState<LoginData>({
     email: "",

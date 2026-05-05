@@ -17,6 +17,7 @@ import {
    AlertCircle,
    TrendingUp,
    Eye,
+   X,
 } from "lucide-react";
 import { usePropertyDetail } from "../hooks/usePropertyDetail";
 import { LoadingOverlay, Modal } from "../../../components/common";
@@ -37,6 +38,8 @@ const OwnerPropertyDetails = () => {
    const [isUnlistModalOpen, setIsUnlistModalOpen] = React.useState(false);
    const [isRelistModalOpen, setIsRelistModalOpen] = React.useState(false);
    const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+   const [activePhotoIndex, setActivePhotoIndex] = React.useState(0);
+   const [isZoomOpen, setIsZoomOpen] = React.useState(false);
 
    if (loading || !property) return <LoadingOverlay />;
 
@@ -120,7 +123,6 @@ const OwnerPropertyDetails = () => {
    return (
       <DashboardLayout role={user?.role as RoleType} userName={user?.fullname || "User"}>
          <div className="pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Header & Quick Actions */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                <div>
                   <button
@@ -178,15 +180,15 @@ const OwnerPropertyDetails = () => {
                </div>
             </div>
 
-            {/* Main Content Sections */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-               {/* Primary Details (Left) */}
                <div className="lg:col-span-8 space-y-10">
-                  {/* Visual Banner */}
-                  <div className="relative aspect-[21/9] rounded-[3rem] overflow-hidden shadow-2xl group">
-                      {property.photos?.[property.primaryPhotoIndex] ? (
+                  <div
+                     className="relative aspect-[21/9] rounded-[3rem] overflow-hidden shadow-2xl group cursor-zoom-in"
+                     onClick={() => setIsZoomOpen(true)}
+                  >
+                     {property.photos?.[activePhotoIndex] ? (
                         <img
-                           src={property.photos[property.primaryPhotoIndex]}
+                           src={property.photos[activePhotoIndex]}
                            alt="Main"
                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                         />
@@ -194,8 +196,7 @@ const OwnerPropertyDetails = () => {
                         <div className="w-full h-full bg-gray-100 flex items-center justify-center">No Main Image</div>
                      )}
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                     
-                     {/* Rejection Alert */}
+
                      {property.status === "REJECTED" && (
                         <div className="absolute top-10 left-10 right-10 p-6 bg-red-600/90 backdrop-blur-md rounded-3xl border border-red-500 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500">
                            <div className="flex items-start gap-4">
@@ -207,7 +208,7 @@ const OwnerPropertyDetails = () => {
                                  <p className="text-white/90 text-sm font-medium leading-relaxed">
                                     {property.rejectionReason || "No specific reason provided by the auditor."}
                                  </p>
-                                 <button 
+                                 <button
                                     onClick={handleEdit}
                                     className="mt-4 px-6 py-2 bg-white text-red-600 font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-gray-100 transition-all active:scale-95"
                                  >
@@ -231,7 +232,6 @@ const OwnerPropertyDetails = () => {
                      </div>
                   </div>
 
-                  {/* Core Attributes Grid */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                      {[
                         { label: "Configuration", val: `${property.bhk || 0} BHK`, icon: Bed, color: "bg-blue-500" },
@@ -249,7 +249,6 @@ const OwnerPropertyDetails = () => {
                      ))}
                   </div>
 
-                  {/* Description Section */}
                   <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[3rem] p-10 shadow-sm relative overflow-hidden">
                      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-10 -mt-10 blur-2xl" />
                      <h3 className="text-xl font-black mb-6 flex items-center gap-3">
@@ -261,7 +260,6 @@ const OwnerPropertyDetails = () => {
                      </p>
                   </div>
 
-                  {/* Amenities Section */}
                   {property.amenities && property.amenities.length > 0 && (
                      <div className="space-y-8">
                         <h3 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
@@ -281,7 +279,62 @@ const OwnerPropertyDetails = () => {
                      </div>
                   )}
 
-                  {/* Image Gallery Overhaul */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-10 border-t border-gray-100">
+                     <div className="space-y-6">
+                        <h3 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                           <span className="w-1.5 h-6 bg-primary rounded-full" />
+                           House Rules
+                        </h3>
+                        <div className="space-y-4">
+                           <div className="flex items-center justify-between p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-gray-100">
+                              <span className="font-bold text-gray-600">Pets Allowed</span>
+                              <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${property.petsAllowed ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"}`}>
+                                 {property.petsAllowed ? "Yes" : "No"}
+                              </span>
+                           </div>
+                           <div className="flex items-center justify-between p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-gray-100">
+                              <span className="font-bold text-gray-600">Smoking Allowed</span>
+                              <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${property.smokingAllowed ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"}`}>
+                                 {property.smokingAllowed ? "Yes" : "No"}
+                              </span>
+                           </div>
+                           {property.maximumOccupants && (
+                              <div className="flex items-center justify-between p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-gray-100">
+                                 <span className="font-bold text-gray-600">Max Occupants</span>
+                                 <span className="font-black text-gray-900 dark:text-white">{property.maximumOccupants} Persons</span>
+                              </div>
+                           )}
+                        </div>
+                     </div>
+
+                     <div className="space-y-6">
+                        <h3 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                           <span className="w-1.5 h-6 bg-primary rounded-full" />
+                           Other Details
+                        </h3>
+                        <div className="space-y-4">
+                           <div className="flex items-center justify-between p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-gray-100">
+                              <span className="font-bold text-gray-600">Property Age</span>
+                              <span className="font-black text-gray-900 dark:text-white">{property.propertyAge || "New"}</span>
+                           </div>
+                           <div className="flex items-center justify-between p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-gray-100">
+                              <span className="font-bold text-gray-600">Facing</span>
+                              <span className="font-black text-gray-900 dark:text-white">{property.facingDirection || "Not Specified"}</span>
+                           </div>
+                           {property.preferredTenantType && property.preferredTenantType.length > 0 && (
+                              <div className="flex flex-col gap-3 p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-gray-100">
+                                 <span className="font-bold text-gray-600">Preferred Tenants</span>
+                                 <div className="flex flex-wrap gap-2">
+                                    {property.preferredTenantType.map((t: string) => (
+                                       <span key={t} className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase rounded-lg">{t}</span>
+                                    ))}
+                                 </div>
+                              </div>
+                           )}
+                        </div>
+                     </div>
+                  </div>
+
                   <div className="space-y-6">
                      <div className="flex items-center justify-between px-4">
                         <h3 className="text-xl font-black">All Property Media</h3>
@@ -289,7 +342,11 @@ const OwnerPropertyDetails = () => {
                      </div>
                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {property.photos?.map((src: string, i: number) => (
-                           <div key={i} className="aspect-square rounded-[2rem] overflow-hidden border-4 border-white dark:border-white/5 shadow-lg group cursor-zoom-in">
+                           <div
+                              key={i}
+                              onClick={() => setActivePhotoIndex(i)}
+                              className={`aspect-square rounded-[2rem] overflow-hidden border-4 shadow-lg group cursor-pointer transition-all ${activePhotoIndex === i ? "border-primary scale-95" : "border-white dark:border-white/5 opacity-70 hover:opacity-100"}`}
+                           >
                               <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Gallery" />
                            </div>
                         ))}
@@ -297,7 +354,6 @@ const OwnerPropertyDetails = () => {
                   </div>
                </div>
 
-               {/* Analytics & Meta (Right) */}
                <div className="lg:col-span-4 space-y-10">
                   <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[3rem] p-10 shadow-sm space-y-8 sticky top-10">
                      <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Live Performance</h3>
@@ -342,7 +398,7 @@ const OwnerPropertyDetails = () => {
                   </div>
                </div>
             </div>
-            
+
             {/* Modals */}
             <Modal
                isOpen={isUnlistModalOpen}
@@ -353,7 +409,7 @@ const OwnerPropertyDetails = () => {
                confirmText="Unlist"
                isDestructive={false}
             />
-            
+
             <Modal
                isOpen={isRelistModalOpen}
                onClose={() => setIsRelistModalOpen(false)}
@@ -373,6 +429,28 @@ const OwnerPropertyDetails = () => {
                confirmText="Delete"
                isDestructive={true}
             />
+
+            {isZoomOpen && (
+               <div
+                  className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 animate-in fade-in duration-300"
+                  onClick={() => setIsZoomOpen(false)}
+               >
+                  <button
+                     className="absolute top-8 right-8 p-4 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all z-[210]"
+                     onClick={(e) => { e.stopPropagation(); setIsZoomOpen(false); }}
+                  >
+                     <X size={32} />
+                  </button>
+
+                  <div className="max-w-6xl w-full aspect-video relative rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white/5 animate-in zoom-in-95 duration-500">
+                     <img
+                        src={property.photos[activePhotoIndex]}
+                        className="w-full h-full object-contain"
+                        alt="Zoomed"
+                     />
+                  </div>
+               </div>
+            )}
          </div>
       </DashboardLayout>
    );

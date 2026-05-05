@@ -24,6 +24,7 @@ export interface PropertyData {
   bhk?: number | null;
   bathrooms?: number | null;
   floorNumber?: string | null;
+  totalFloors?: number | null;
   propertyAge?: string | null;
   facingDirection?: string | null;
   furnishingStatus?: string | null;
@@ -31,6 +32,14 @@ export interface PropertyData {
   preferredTenantType?: string[];
   maintenanceCharges?: number;
   maintenanceIncluded?: boolean;
+  petsAllowed?: boolean;
+  smokingAllowed?: boolean;
+  maximumOccupants?: number | null;
+  landType?: string | null;
+  isCornerPlot?: boolean | null;
+  roadWidthFeet?: number | null;
+  shopType?: string | null;
+  hasParking?: boolean | null;
   
   // Analytics
   viewsCount?: number;
@@ -44,8 +53,11 @@ export interface GetPropertiesParams {
   query?: string;
   city?: string;
   district?: string;
+  propertyType?: string;
   minRent?: number;
   maxRent?: number;
+  minArea?: number;
+  maxArea?: number;
   bhk?: number;
   amenities?: string[];
 }
@@ -94,6 +106,14 @@ export interface CreatePropertyData {
 
   maintenanceCharges?: number;
   maintenanceIncluded?: boolean;
+  petsAllowed?: boolean;
+  smokingAllowed?: boolean;
+  maximumOccupants?: number | null;
+  landType?: string | null;
+  isCornerPlot?: boolean | null;
+  roadWidthFeet?: number | null;
+  shopType?: string | null;
+  hasParking?: boolean | null;
 }
 
 export interface PropertyPhotoUpload {

@@ -19,12 +19,14 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
   role: RoleType;
   userName: string;
+  hideSearch?: boolean;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
   role,
   userName,
+  hideSearch = true,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -60,16 +62,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header className="h-16 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] flex items-center justify-between px-6 shrink-0 rounded-2xl">
           <div className="flex-1 max-w-xl">
-            <div className="relative group">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 group-focus-within:text-primary transition-colors">
-                <Search size={18} />
-              </span>
-              <input
-                type="text"
-                placeholder="Search anything..."
-                className="block w-full pl-10 pr-3 py-2 border border-[color:var(--color-border)] rounded-xl bg-[color:var(--color-card)] text-sm text-[color:var(--color-foreground)] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-              />
-            </div>
+            {!hideSearch && (
+              <div className="relative group">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 group-focus-within:text-primary transition-colors">
+                  <Search size={18} />
+                </span>
+                <input
+                  type="text"
+                  placeholder="Search anything..."
+                  className="block w-full pl-10 pr-3 py-2 border border-[color:var(--color-border)] rounded-xl bg-[color:var(--color-card)] text-sm text-[color:var(--color-foreground)] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-4 ml-4">
@@ -81,7 +85,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </span>
             </button>
             <button
-              onClick={() => navigate(PAGE_ROUTES.PROFILE)}
+              onClick={() => navigate(role === RoleTypes.ADMIN_USER ? PAGE_ROUTES.ADMIN_SETTINGS : PAGE_ROUTES.PROFILE)}
               className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/10 rounded-lg transition-all"
             >
               <Settings size={20} />
@@ -90,7 +94,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </header>
 
         <main className="flex-1 overflow-y-auto custom-scrollbar pt-4">
-          <div className="h-full bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl p-6 overflow-hidden">
+          <div className="h-full bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl p-6 overflow-hidden shadow-sm">
             <div className="h-full overflow-y-auto custom-scrollbar pr-1">
               {children}
             </div>

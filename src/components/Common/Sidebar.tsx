@@ -197,7 +197,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 group/item ${
                 isActive
                   ? "bg-primary text-white shadow-lg shadow-primary/20"
-                  : "hover:bg-slate-50 dark:hover:bg-white/5 text-slate-600 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white"
+                  : "hover:bg-slate-50 dark:hover:bg-white/5 text-slate-600 hover:text-primary dark:text-gray-400 dark:hover:text-white"
               }`}
             >
               <div className="flex items-center gap-3.5">
@@ -215,7 +215,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         {role !== RoleTypes.ADMIN_USER && (
           <div className="flex items-center gap-3 px-3 py-2 mb-2">
             <button
-              onClick={() => navigate(PAGE_ROUTES.PROFILE)}
+              onClick={() => navigate(role === RoleTypes.ADMIN_USER ? PAGE_ROUTES.ADMIN_SETTINGS : PAGE_ROUTES.PROFILE)}
               className="flex items-center gap-3 flex-1 min-w-0 text-left hover:bg-gray-100 dark:hover:bg-white/10 p-1 rounded-lg transition-colors group"
             >
               <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#4338ca] text-white font-bold text-sm overflow-hidden group-hover:scale-105 transition-transform">

@@ -16,11 +16,24 @@ import { PAGE_ROUTES } from "../../config/routes";
 import { getAllProperties } from "../../features/property/services/propertyService";
 import type { PropertyData } from "../../features/property/types/propertyTypes";
 import { useState, useEffect } from "react";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import type { RootState } from "../../app/store/store";
+import { RoleTypes } from "../../types/constants/role.constant";
 
 import { ThemeToggle } from "../common/ThemeToggle";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAppSelector((state: RootState) => state.auth);
+
+  const getDashboardRoute = () => {
+    if (!user) return PAGE_ROUTES.LOGIN;
+    switch (user.role) {
+      case RoleTypes.ADMIN_USER: return PAGE_ROUTES.ADMIN_DASHBOARD;
+      case RoleTypes.OWNER_USER: return PAGE_ROUTES.OWNER_DASHBOARD;
+      default: return PAGE_ROUTES.TENANT_DASHBOARD;
+    }
+  };
   const [properties, setProperties] = useState<PropertyData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchFilters, setSearchFilters] = useState({
@@ -34,7 +47,7 @@ const LandingPage: React.FC = () => {
     if (searchFilters.location) params.append("location", searchFilters.location);
     if (searchFilters.type) params.append("type", searchFilters.type);
     if (searchFilters.budget) params.append("budget", searchFilters.budget);
-    
+
     navigate(`${PAGE_ROUTES.SEARCH_PROPERTIES}?${params.toString()}`);
   };
 
@@ -89,18 +102,29 @@ const LandingPage: React.FC = () => {
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
-              <button
-                onClick={() => navigate(PAGE_ROUTES.LOGIN)}
-                className="px-6 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => navigate("/onboarding")}
-                className="px-6 py-2.5 bg-primary text-white text-sm font-bold rounded-2xl shadow-lg shadow-primary/25 hover:scale-105 active:scale-95 transition-all"
-              >
-                Sign Up
-              </button>
+              {user ? (
+                <button
+                  onClick={() => navigate(getDashboardRoute())}
+                  className="px-8 py-3 bg-primary text-white text-sm font-black rounded-[1.5rem] shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+                >
+                  Dashboard <ArrowRight size={16} />
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => navigate(PAGE_ROUTES.LOGIN)}
+                    className="px-6 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => navigate("/onboarding")}
+                    className="px-6 py-2.5 bg-primary text-white text-sm font-bold rounded-2xl shadow-lg shadow-primary/25 hover:scale-105 active:scale-95 transition-all"
+                  >
+                    Sign Up
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -526,10 +550,10 @@ const LandingPage: React.FC = () => {
                 List your property and connect with verified tenants
               </p>
               <button
-                onClick={() => navigate("/onboarding")}
+                onClick={() => navigate(user?.role === RoleTypes.OWNER_USER ? PAGE_ROUTES.OWNER_ADD_PROPERTY : (user ? getDashboardRoute() : "/onboarding"))}
                 className="w-full py-4 bg-white text-primary font-black rounded-2xl hover:scale-[1.02] active:scale-95 transition-all"
               >
-                Get Started
+                {user?.role === RoleTypes.OWNER_USER ? "Add Property" : "Get Started"}
               </button>
             </div>
 
@@ -541,10 +565,10 @@ const LandingPage: React.FC = () => {
                 Find your perfect home from thousands of listings
               </p>
               <button
-                onClick={() => navigate(PAGE_ROUTES.LOGIN)}
+                onClick={() => navigate(user?.role === RoleTypes.TENANT_USER ? PAGE_ROUTES.SEARCH_PROPERTIES : (user ? getDashboardRoute() : PAGE_ROUTES.LOGIN))}
                 className="w-full py-4 bg-white text-primary font-black rounded-2xl hover:scale-[1.02] active:scale-95 transition-all"
               >
-                Start Searching
+                {user?.role === RoleTypes.TENANT_USER ? "Search Now" : "Start Searching"}
               </button>
             </div>
           </div>

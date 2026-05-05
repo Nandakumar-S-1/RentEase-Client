@@ -26,10 +26,6 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ profile, saveProfil
       )
       : false
   );
-
-  // No longer using useEffect for syncing props to avoid cascading renders.
-  // Instead, the parent component should use a unique key if it needs to reset the form.
-
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error";

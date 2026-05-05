@@ -12,7 +12,9 @@ export const useWishlist = (propertyId?: string) => {
         if (!propertyId) return;
         try {
             const res = await checkWishlisted(propertyId);
-            setIsSaved(res.data.isWishlisted);
+            if (res && res.success) {
+                setIsSaved(!!res.data?.isWishlisted);
+            }
         } catch (err) {
             console.error("Error checking wishlist status", err);
         }
@@ -22,9 +24,15 @@ export const useWishlist = (propertyId?: string) => {
         try {
             setLoading(true);
             const res = await getMyWishlist();
-            setWishlistItems(res.data);
-        } catch {
+            if (res && res.success) {
+                setWishlistItems(Array.isArray(res.data) ? res.data : []);
+            } else {
+                setWishlistItems([]);
+            }
+        } catch (err) {
+            console.error("Failed to load wishlist", err);
             toast.error("Failed to load wishlist");
+            setWishlistItems([]);
         } finally {
             setLoading(false);
         }
@@ -38,10 +46,14 @@ export const useWishlist = (propertyId?: string) => {
         if (!propertyId) return;
         try {
             const res = await toggleWishlistApi(propertyId);
-            setIsSaved(res.data.isWishlisted);
-            toast.success(res.data.isWishlisted ? "Saved to wishlist" : "Removed from wishlist");
-        } catch {
+            const newStatus = !!res.data?.isWishlisted;
+            setIsSaved(newStatus);
+            toast.success(newStatus ? "Saved to wishlist" : "Removed from wishlist");
+            return newStatus;
+        } catch (err) {
+            console.error("Failed to update wishlist", err);
             toast.error("Failed to update wishlist");
+            return isSaved;
         }
     };
 

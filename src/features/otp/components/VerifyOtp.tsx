@@ -25,7 +25,7 @@ const VerifyOtp = () => {
   } = useResendOtp();
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendCooldown, setResendCooldown] = useState(60); // Start timer immediately
 
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -91,7 +91,6 @@ const VerifyOtp = () => {
 
     await verify(email, otpString);
 
-    // If verification failed, reset OTP inputs
     if (verifyError) {
       setOtp(["", "", "", "", "", ""]);
       otpRefs.current[0]?.focus();
@@ -107,72 +106,82 @@ const VerifyOtp = () => {
 
   return (
     <AuthLayout
-      title="Verify your email"
-      subtitle="Enter the 6-digit code we sent to your email"
+      title="Security Check"
+      subtitle={`We've sent a 6-digit verification code to ${email}`}
       showLeftPanel={false}
     >
-      <FormMessage message={message} isError={isError} />
+      <div className="relative z-10 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <FormMessage message={message} isError={isError} />
 
-      <form onSubmit={handleVerifyOtp} className="space-y-6">
-        <div className="flex gap-2 justify-center" onPaste={handlePaste}>
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              ref={(el) => {
-                otpRefs.current[index] = el;
-              }}
-              type="text"
-              inputMode="numeric"
-              maxLength={1}
-              value={digit}
-              onChange={(e) => handleOtpChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
-              className="h-12 w-12 rounded-lg border-2 border-gray-200 text-center text-lg font-bold focus:border-primary focus:outline-none transition"
-              placeholder="•"
-            />
-          ))}
+        <form onSubmit={handleVerifyOtp} className="space-y-8">
+          <div className="flex gap-3 justify-center" onPaste={handlePaste}>
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                ref={(el) => {
+                  otpRefs.current[index] = el;
+                }}
+                type="text"
+                inputMode="numeric"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleOtpChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                className="h-14 w-12 rounded-2xl border-2 border-gray-100 bg-white/50 backdrop-blur-sm text-center text-xl font-black text-primary focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all shadow-sm"
+                placeholder="-"
+              />
+            ))}
+          </div>
+
+          <Button
+            type="submit"
+            loading={isLoading}
+            disabled={otp.join("").length !== 6 || isLoading}
+            className="w-full py-4 text-lg font-black rounded-2xl shadow-xl shadow-primary/25 hover:scale-[1.02] active:scale-95 transition-all"
+          >
+            Verify & Continue
+          </Button>
+        </form>
+
+        <div className="flex flex-col gap-4">
+          <div className="relative py-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-100"></div>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase tracking-widest font-black text-gray-400">
+              <span className="bg-white px-4">Wait time</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-4">
+            {resendCooldown > 0 ? (
+              <div className="flex items-center gap-2 px-6 py-3 bg-gray-50 rounded-2xl border border-gray-100">
+                <Clock className="h-4 w-4 text-primary animate-pulse" />
+                <span className="text-sm font-black text-gray-600">
+                  Resend available in <span className="text-primary">{resendCooldown}s</span>
+                </span>
+              </div>
+            ) : (
+              <button
+                onClick={handleResendOtp}
+                disabled={resendLoading}
+                className="flex items-center gap-2 px-8 py-3 text-primary font-black hover:bg-primary/5 rounded-2xl transition-all"
+              >
+                <RotateCcw className={`h-4 w-4 ${resendLoading ? 'animate-spin' : ''}`} />
+                Resend Code
+              </button>
+            )}
+          </div>
         </div>
 
-        <Button
-          type="submit"
-          loading={isLoading}
-          disabled={otp.join("").length !== 6 || isLoading}
-          className="w-full"
+        <button
+          onClick={() => navigate(PAGE_ROUTES.LOGIN)}
+          className="w-full flex items-center justify-center gap-2 text-sm font-bold text-gray-400 hover:text-primary transition-all group"
         >
-          Verify Email
-        </Button>
-      </form>
-
-      <div className="mt-6 flex flex-col gap-3 border-t border-gray-200 pt-6">
-        <p className="text-center text-sm text-muted-foreground">
-          Didn't receive the code?
-        </p>
-
-        <Button
-          onClick={handleResendOtp}
-          loading={resendLoading}
-          disabled={resendCooldown > 0 || resendLoading}
-          variant="outline"
-          className="w-full"
-          icon={
-            resendCooldown > 0 ? (
-              <Clock className="h-4 w-4" />
-            ) : (
-              <RotateCcw className="h-4 w-4" />
-            )
-          }
-        >
-          {resendCooldown > 0 ? `Retry in ${resendCooldown}s` : "Resend code"}
-        </Button>
+          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+          Return to Login
+        </button>
       </div>
-
-      <button
-        onClick={() => navigate(PAGE_ROUTES.LOGIN)}
-        className="mt-8 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-primary transition"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to sign in
-      </button>
     </AuthLayout>
   );
 };
