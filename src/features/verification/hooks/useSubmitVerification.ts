@@ -36,29 +36,32 @@ export const useSubmitVerification = () => {
     }
   }, [dispatch]);
 
-  const submit = useCallback(async (documentType: string, document: File) => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      setSuccessMessage(null);
+  const submit = useCallback(
+    async (documentType: string, document: File) => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        setSuccessMessage(null);
 
-      await submitVerification({ documentType, document });
-      setSuccessMessage(
-        "Document submitted successfully! It is now under review.",
-      );
-      setRejectionReason(null);
-      setStatus("SUBMITTED");
-      dispatch(updateVerificationStatus("SUBMITTED"));
-    } catch (err) {
-      const apiError = err as ApiError;
-      setError(
-        apiError?.response?.data?.message ||
-          "Failed to submit verification document",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, [dispatch]);
+        await submitVerification({ documentType, document });
+        setSuccessMessage(
+          "Document submitted successfully! It is now under review.",
+        );
+        setRejectionReason(null);
+        setStatus("SUBMITTED");
+        dispatch(updateVerificationStatus("SUBMITTED"));
+      } catch (err) {
+        const apiError = err as ApiError;
+        setError(
+          apiError?.response?.data?.message ||
+            "Failed to submit verification document",
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch],
+  );
 
   return {
     submit,

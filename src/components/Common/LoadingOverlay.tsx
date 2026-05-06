@@ -11,8 +11,9 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
 }) => {
   return (
     <div
-      className={`${fullPage ? "fixed inset-0 z-[9999]" : "absolute inset-0"
-        } bg-[color:var(--color-surface)]/80 backdrop-blur-md flex flex-col items-center justify-center transition-all duration-500`}
+      className={`${
+        fullPage ? "fixed inset-0 z-[9999]" : "absolute inset-0"
+      } bg-[color:var(--color-surface)]/80 backdrop-blur-md flex flex-col items-center justify-center transition-all duration-500`}
     >
       <div className="flex flex-col items-center gap-6">
         <div className="relative w-16 h-16">

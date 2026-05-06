@@ -63,7 +63,7 @@ const PropertyPage: React.FC = () => {
     e.preventDefault();
     const result = propertyFilterSchema.safeParse({ query: searchTerm });
     if (result.success) {
-      setFilters(prev => ({ ...prev, query: searchTerm }));
+      setFilters((prev) => ({ ...prev, query: searchTerm }));
       setPage(1);
     }
   };
@@ -71,7 +71,7 @@ const PropertyPage: React.FC = () => {
   const handleFilterChange = (newFilters: Record<string, unknown>) => {
     const result = propertyFilterSchema.safeParse(newFilters);
     if (result.success) {
-      setFilters(prev => ({ ...prev, ...newFilters }));
+      setFilters((prev) => ({ ...prev, ...newFilters }));
       setPage(1);
     }
   };
@@ -82,8 +82,12 @@ const PropertyPage: React.FC = () => {
     setPage(1);
   };
 
-  const showBhkFilter = !filters.propertyType || ["FLAT", "HOUSE", "PG"].includes(filters.propertyType);
-  const showAreaFilter = !filters.propertyType || ["LAND", "SHOP", "HOUSE", "FLAT"].includes(filters.propertyType);
+  const showBhkFilter =
+    !filters.propertyType ||
+    ["FLAT", "HOUSE", "PG"].includes(filters.propertyType);
+  const showAreaFilter =
+    !filters.propertyType ||
+    ["LAND", "SHOP", "HOUSE", "FLAT"].includes(filters.propertyType);
 
   return (
     <DashboardLayout
@@ -125,10 +129,11 @@ const PropertyPage: React.FC = () => {
                     setStatus(tab.id === "ALL" ? undefined : tab.id);
                     setPage(1);
                   }}
-                  className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all flex items-center gap-2 ${(status || "ALL") === tab.id
+                  className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all flex items-center gap-2 ${
+                    (status || "ALL") === tab.id
                       ? "bg-primary text-white shadow-lg shadow-primary/20"
                       : "text-gray-500 hover:text-gray-900 dark:hover:text-white"
-                    }`}
+                  }`}
                 >
                   {tab.label}
                   {(status || "ALL") === tab.id && (
@@ -158,11 +163,17 @@ const PropertyPage: React.FC = () => {
                   // Optional: Real-time search if preferred, or just rely on the button
                 }}
                 className="w-full pl-12 pr-4 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch(e as unknown as React.FormEvent)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" &&
+                  handleSearch(e as unknown as React.FormEvent)
+                }
               />
               {searchTerm && (
                 <button
-                  onClick={() => { setSearchTerm(""); setFilters(prev => ({ ...prev, query: "" })); }}
+                  onClick={() => {
+                    setSearchTerm("");
+                    setFilters((prev) => ({ ...prev, query: "" }));
+                  }}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-gray-400 hover:text-red-500 uppercase tracking-widest"
                 >
                   Clear
@@ -201,7 +212,9 @@ const PropertyPage: React.FC = () => {
               >
                 <Filter size={18} />
                 <span>Filters</span>
-                {(Object.keys(filters).length > (filters.query ? 1 : 0)) && <span className="ml-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>}
+                {Object.keys(filters).length > (filters.query ? 1 : 0) && (
+                  <span className="ml-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                )}
               </button>
             </div>
           </div>
@@ -209,7 +222,6 @@ const PropertyPage: React.FC = () => {
           {showFilters && (
             <div className="p-8 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-[3rem] shadow-2xl animate-in slide-in-from-top-4 duration-500">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-
                 <div className="space-y-3">
                   <label className="flex items-center gap-2 text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
                     <MapPin size={14} className="text-primary" /> City
@@ -218,17 +230,22 @@ const PropertyPage: React.FC = () => {
                     type="text"
                     placeholder="e.g. Kochi"
                     className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
-                    onChange={(e) => handleFilterChange({ city: e.target.value })}
+                    onChange={(e) =>
+                      handleFilterChange({ city: e.target.value })
+                    }
                     value={filters.city || ""}
                   />
                 </div>
                 <div className="space-y-3">
                   <label className="flex items-center gap-2 text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
-                    <Building size={14} className="text-primary" /> Property Type
+                    <Building size={14} className="text-primary" /> Property
+                    Type
                   </label>
                   <select
                     className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
-                    onChange={(e) => handleFilterChange({ propertyType: e.target.value })}
+                    onChange={(e) =>
+                      handleFilterChange({ propertyType: e.target.value })
+                    }
                     value={filters.propertyType || ""}
                   >
                     <option value="">Any Type</option>
@@ -246,10 +263,14 @@ const PropertyPage: React.FC = () => {
                       BHK Configuration
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {[1, 2, 3, 4].map(n => (
+                      {[1, 2, 3, 4].map((n) => (
                         <button
                           key={n}
-                          onClick={() => handleFilterChange({ bhk: filters.bhk === n ? undefined : n })}
+                          onClick={() =>
+                            handleFilterChange({
+                              bhk: filters.bhk === n ? undefined : n,
+                            })
+                          }
                           className={`w-11 h-11 rounded-xl text-xs font-black transition-all border ${filters.bhk === n ? "bg-primary text-white border-primary" : "bg-[color:var(--color-card)] border-[color:var(--color-border)] text-gray-400 hover:border-primary/40"}`}
                         >
                           {n}
@@ -268,13 +289,21 @@ const PropertyPage: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 pt-8 border-t border-[color:var(--color-border)]">
                 <div className="space-y-3">
-                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Rent Range (₹)</label>
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
+                    Rent Range (₹)
+                  </label>
                   <div className="flex items-center gap-3">
                     <input
                       type="number"
                       placeholder="Min"
                       className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
-                      onChange={(e) => handleFilterChange({ minRent: e.target.value ? Number(e.target.value) : undefined })}
+                      onChange={(e) =>
+                        handleFilterChange({
+                          minRent: e.target.value
+                            ? Number(e.target.value)
+                            : undefined,
+                        })
+                      }
                       value={filters.minRent || ""}
                     />
                     <span className="text-gray-300">-</span>
@@ -282,7 +311,13 @@ const PropertyPage: React.FC = () => {
                       type="number"
                       placeholder="Max"
                       className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
-                      onChange={(e) => handleFilterChange({ maxRent: e.target.value ? Number(e.target.value) : undefined })}
+                      onChange={(e) =>
+                        handleFilterChange({
+                          maxRent: e.target.value
+                            ? Number(e.target.value)
+                            : undefined,
+                        })
+                      }
                       value={filters.maxRent || ""}
                     />
                   </div>
@@ -290,28 +325,50 @@ const PropertyPage: React.FC = () => {
 
                 {showAreaFilter && (
                   <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
-                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Area Range (Sq. Ft.)</label>
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
+                      Area Range (Sq. Ft.)
+                    </label>
                     <div className="flex items-center gap-3">
                       <input
                         type="number"
                         placeholder="Min"
                         className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
-                        onChange={(e) => handleFilterChange({ minArea: e.target.value ? Number(e.target.value) : undefined })}
-                        value={(filters as Record<string, unknown>).minArea as string || ""}
+                        onChange={(e) =>
+                          handleFilterChange({
+                            minArea: e.target.value
+                              ? Number(e.target.value)
+                              : undefined,
+                          })
+                        }
+                        value={
+                          ((filters as Record<string, unknown>)
+                            .minArea as string) || ""
+                        }
                       />
                       <span className="text-gray-300">-</span>
                       <input
                         type="number"
                         placeholder="Max"
                         className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
-                        onChange={(e) => handleFilterChange({ maxArea: e.target.value ? Number(e.target.value) : undefined })}
-                        value={(filters as Record<string, unknown>).maxArea as string || ""}
+                        onChange={(e) =>
+                          handleFilterChange({
+                            maxArea: e.target.value
+                              ? Number(e.target.value)
+                              : undefined,
+                          })
+                        }
+                        value={
+                          ((filters as Record<string, unknown>)
+                            .maxArea as string) || ""
+                        }
                       />
                     </div>
                   </div>
                 )}
 
-                <div className={`${showAreaFilter ? "lg:col-span-1" : "lg:col-span-2"} flex items-end justify-end gap-4`}>
+                <div
+                  className={`${showAreaFilter ? "lg:col-span-1" : "lg:col-span-2"} flex items-end justify-end gap-4`}
+                >
                   <button
                     onClick={resetFilters}
                     className="flex items-center gap-2 px-6 py-3.5 text-xs font-black text-gray-400 hover:text-red-500 uppercase tracking-widest transition-colors"
@@ -356,7 +413,8 @@ const PropertyPage: React.FC = () => {
               No matching properties
             </h3>
             <p className="text-gray-500 max-w-sm text-center font-medium leading-relaxed">
-              We couldn't find any properties matching your criteria. Try adjusting your filters or search terms.
+              We couldn't find any properties matching your criteria. Try
+              adjusting your filters or search terms.
             </p>
           </div>
         ) : (
@@ -398,7 +456,10 @@ const PropertyPage: React.FC = () => {
 
             <div className="flex items-center gap-3">
               <button
-                onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo(0, 0); }}
+                onClick={() => {
+                  setPage((p) => Math.max(1, p - 1));
+                  window.scrollTo(0, 0);
+                }}
                 disabled={page === 1}
                 className="w-12 h-12 flex items-center justify-center border border-[color:var(--color-border)] rounded-2xl hover:bg-primary/5 hover:border-primary/30 disabled:opacity-20 transition-all text-gray-400 hover:text-primary"
               >
@@ -409,11 +470,15 @@ const PropertyPage: React.FC = () => {
                 {[...Array(totalPages)].map((_, i) => (
                   <button
                     key={i + 1}
-                    onClick={() => { setPage(i + 1); window.scrollTo(0, 0); }}
-                    className={`w-12 h-12 rounded-2xl font-black transition-all ${page === i + 1
+                    onClick={() => {
+                      setPage(i + 1);
+                      window.scrollTo(0, 0);
+                    }}
+                    className={`w-12 h-12 rounded-2xl font-black transition-all ${
+                      page === i + 1
                         ? "bg-primary text-white shadow-xl shadow-primary/25 scale-110"
                         : "hover:bg-gray-100 dark:hover:bg-white/5 text-gray-400"
-                      }`}
+                    }`}
                   >
                     {i + 1}
                   </button>
@@ -421,7 +486,10 @@ const PropertyPage: React.FC = () => {
               </div>
 
               <button
-                onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo(0, 0); }}
+                onClick={() => {
+                  setPage((p) => Math.min(totalPages, p + 1));
+                  window.scrollTo(0, 0);
+                }}
                 disabled={page === totalPages}
                 className="w-12 h-12 flex items-center justify-center border border-[color:var(--color-border)] rounded-2xl hover:bg-primary/5 hover:border-primary/30 disabled:opacity-20 transition-all text-gray-400 hover:text-primary"
               >

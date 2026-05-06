@@ -72,9 +72,9 @@ const OwnerVerification = () => {
             our team. You'll be notified once the verification is complete.
           </p>
           <div className="mt-8 pt-8 border-t border-[color:var(--color-border)]">
-             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-xl text-[10px] font-black text-primary uppercase tracking-widest">
-                Real-time Status Updates Enabled
-             </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-xl text-[10px] font-black text-primary uppercase tracking-widest">
+              Real-time Status Updates Enabled
+            </div>
           </div>
         </div>
       </div>
@@ -134,7 +134,9 @@ const OwnerVerification = () => {
               {selectedFile ? (
                 <div className="flex items-center gap-3 text-sm text-[color:var(--color-foreground)] font-black">
                   <CheckCircle className="h-6 w-6 text-green-500" />
-                  <span className="truncate max-w-[200px]">{selectedFile.name}</span>
+                  <span className="truncate max-w-[200px]">
+                    {selectedFile.name}
+                  </span>
                 </div>
               ) : (
                 <>

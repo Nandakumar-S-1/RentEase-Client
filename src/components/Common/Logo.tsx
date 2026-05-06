@@ -13,8 +13,12 @@ export const Logo: React.FC<LogoProps> = ({
   };
 
   return (
-    <div className={`flex items-center gap-3 group cursor-pointer ${className}`}>
-      <div className={`relative flex items-center justify-center transition-transform duration-500 group-hover:scale-110 ${sizes[size].container} text-primary`}>
+    <div
+      className={`flex items-center gap-3 group cursor-pointer ${className}`}
+    >
+      <div
+        className={`relative flex items-center justify-center transition-transform duration-500 group-hover:scale-110 ${sizes[size].container} text-primary`}
+      >
         <svg
           width={sizes[size].icon}
           height={sizes[size].icon}
@@ -38,21 +42,39 @@ export const Logo: React.FC<LogoProps> = ({
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-                    <g className="door-animation">
-
-            <rect x="12" y="16" width="8" height="12" rx="1" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-            <rect 
-              x="12" y="16" width="8" height="12" rx="1" 
-              fill="currentColor" 
+          <g className="door-animation">
+            <rect
+              x="12"
+              y="16"
+              width="8"
+              height="12"
+              rx="1"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+            <rect
+              x="12"
+              y="16"
+              width="8"
+              height="12"
+              rx="1"
+              fill="currentColor"
               className="origin-left transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(-110deg)]"
               style={{
                 perspective: "100px",
                 transformOrigin: "left",
-                animation: "door-cycle 6s infinite ease-in-out"
+                animation: "door-cycle 6s infinite ease-in-out",
               }}
             />
 
-            <circle cx="18.5" cy="22" r="0.5" fill="white" className="group-hover:opacity-0 transition-opacity" />
+            <circle
+              cx="18.5"
+              cy="22"
+              r="0.5"
+              fill="white"
+              className="group-hover:opacity-0 transition-opacity"
+            />
           </g>
 
           <style>{`
@@ -65,7 +87,9 @@ export const Logo: React.FC<LogoProps> = ({
       </div>
 
       {showText && (
-        <span className={`font-black tracking-tighter text-foreground ${sizes[size].text}`}>
+        <span
+          className={`font-black tracking-tighter text-foreground ${sizes[size].text}`}
+        >
           Rent<span className="text-primary">Ease</span>
         </span>
       )}

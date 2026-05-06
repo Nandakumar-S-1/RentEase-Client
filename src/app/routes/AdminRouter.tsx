@@ -9,13 +9,27 @@ import { PATH_ROUTES } from "../../config/routes";
 import { LoadingOverlay } from "../../components/common";
 
 // Lazy load components
-const AdminLogin = lazy(() => import("../../features/admin/components/AdminLogin"));
-const AdminDashboard = lazy(() => import("../../features/admin/components/AdminDashboard"));
-const AdminUserManagement = lazy(() => import("../../features/admin/components/AdminUserManagement"));
-const AdminUserDetail = lazy(() => import("../../features/admin/components/AdminUserDetail"));
-const AdminOwnerVerification = lazy(() => import("../../features/admin/components/AdminOwnerVerification"));
-const AdminProperties = lazy(() => import("../../features/admin/components/AdminProperties"));
-const AdminPropertyDetails = lazy(() => import("../../features/admin/components/AdminPropertyDetails"));
+const AdminLogin = lazy(
+  () => import("../../features/admin/components/AdminLogin"),
+);
+const AdminDashboard = lazy(
+  () => import("../../features/admin/components/AdminDashboard"),
+);
+const AdminUserManagement = lazy(
+  () => import("../../features/admin/components/AdminUserManagement"),
+);
+const AdminUserDetail = lazy(
+  () => import("../../features/admin/components/AdminUserDetail"),
+);
+const AdminOwnerVerification = lazy(
+  () => import("../../features/admin/components/AdminOwnerVerification"),
+);
+const AdminProperties = lazy(
+  () => import("../../features/admin/components/AdminProperties"),
+);
+const AdminPropertyDetails = lazy(
+  () => import("../../features/admin/components/AdminPropertyDetails"),
+);
 const NotFound = lazy(() => import("../../components/common/NotFound"));
 
 function parseStoredUser() {

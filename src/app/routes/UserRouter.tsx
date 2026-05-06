@@ -6,22 +6,44 @@ import { PAGE_ROUTES } from "../../config/routes";
 import { LoadingOverlay } from "../../components/common";
 
 // Lazy load components
-const RoleSelection = lazy(() => import("../../features/auth/components/RoleSelection"));
+const RoleSelection = lazy(
+  () => import("../../features/auth/components/RoleSelection"),
+);
 const Register = lazy(() => import("../../features/auth/components/Register"));
 const Login = lazy(() => import("../../features/auth/components/Login"));
 const VerifyOtp = lazy(() => import("../../features/otp/components/VerifyOtp"));
-const ForgotPassword = lazy(() => import("../../features/auth/components/ForgotPassword"));
+const ForgotPassword = lazy(
+  () => import("../../features/auth/components/ForgotPassword"),
+);
 const Dashboard = lazy(() => import("../../components/pages/Dashboard"));
-const OwnerVerification = lazy(() => import("../../features/verification/components/OwnerVerification"));
-const ProfilePage = lazy(() => import("../../features/profile/components/ProfilePage"));
+const OwnerVerification = lazy(
+  () => import("../../features/verification/components/OwnerVerification"),
+);
+const ProfilePage = lazy(
+  () => import("../../features/profile/components/ProfilePage"),
+);
 const ChatPage = lazy(() => import("../../features/chat/components/ChatPage"));
-const PropertyPage = lazy(() => import("../../features/property/components/PropertyPage"));
-const AddProperty = lazy(() => import("../../features/property/components/AddProperty"));
-const TenantPropertyDetails = lazy(() => import("../../features/property/components/TenantPropertyDetails"));
-const OwnerPropertyDetails = lazy(() => import("../../features/property/components/OwnerPropertyDetails"));
-const EditProperty = lazy(() => import("../../features/property/components/EditProperty"));
-const WishlistPage = lazy(() => import("../../features/property/components/WishlistPage"));
-const ServiceProviderManagement = lazy(() => import("../../features/property/components/ServiceProviderManagement"));
+const PropertyPage = lazy(
+  () => import("../../features/property/components/PropertyPage"),
+);
+const AddProperty = lazy(
+  () => import("../../features/property/components/AddProperty"),
+);
+const TenantPropertyDetails = lazy(
+  () => import("../../features/property/components/TenantPropertyDetails"),
+);
+const OwnerPropertyDetails = lazy(
+  () => import("../../features/property/components/OwnerPropertyDetails"),
+);
+const EditProperty = lazy(
+  () => import("../../features/property/components/EditProperty"),
+);
+const WishlistPage = lazy(
+  () => import("../../features/property/components/WishlistPage"),
+);
+const ServiceProviderManagement = lazy(
+  () => import("../../features/property/components/ServiceProviderManagement"),
+);
 const LandingPage = lazy(() => import("../../components/pages/LandingPage"));
 const NotFound = lazy(() => import("../../components/common/NotFound"));
 

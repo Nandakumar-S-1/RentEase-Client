@@ -29,9 +29,12 @@ const LandingPage: React.FC = () => {
   const getDashboardRoute = () => {
     if (!user) return PAGE_ROUTES.LOGIN;
     switch (user.role) {
-      case RoleTypes.ADMIN_USER: return PAGE_ROUTES.ADMIN_DASHBOARD;
-      case RoleTypes.OWNER_USER: return PAGE_ROUTES.OWNER_DASHBOARD;
-      default: return PAGE_ROUTES.TENANT_DASHBOARD;
+      case RoleTypes.ADMIN_USER:
+        return PAGE_ROUTES.ADMIN_DASHBOARD;
+      case RoleTypes.OWNER_USER:
+        return PAGE_ROUTES.OWNER_DASHBOARD;
+      default:
+        return PAGE_ROUTES.TENANT_DASHBOARD;
     }
   };
   const [properties, setProperties] = useState<PropertyData[]>([]);
@@ -44,7 +47,8 @@ const LandingPage: React.FC = () => {
 
   const handleSearch = () => {
     const params = new URLSearchParams();
-    if (searchFilters.location) params.append("location", searchFilters.location);
+    if (searchFilters.location)
+      params.append("location", searchFilters.location);
     if (searchFilters.type) params.append("type", searchFilters.type);
     if (searchFilters.budget) params.append("budget", searchFilters.budget);
 
@@ -169,7 +173,12 @@ const LandingPage: React.FC = () => {
                       type="text"
                       placeholder="Enter City"
                       value={searchFilters.location}
-                      onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
+                      onChange={(e) =>
+                        setSearchFilters({
+                          ...searchFilters,
+                          location: e.target.value,
+                        })
+                      }
                       className="w-full text-sm font-semibold focus:outline-none placeholder:text-gray-300 dark:placeholder:text-gray-600 bg-transparent dark:text-white"
                     />
                   </div>
@@ -185,13 +194,26 @@ const LandingPage: React.FC = () => {
                     </p>
                     <select
                       value={searchFilters.type}
-                      onChange={(e) => setSearchFilters({ ...searchFilters, type: e.target.value })}
+                      onChange={(e) =>
+                        setSearchFilters({
+                          ...searchFilters,
+                          type: e.target.value,
+                        })
+                      }
                       className="w-full text-sm font-semibold focus:outline-none bg-transparent dark:text-white appearance-none"
                     >
-                      <option value="" className="dark:bg-[#111c2e]">All Types</option>
-                      <option value="HOUSE" className="dark:bg-[#111c2e]">House</option>
-                      <option value="FLAT" className="dark:bg-[#111c2e]">Flat/Apartment</option>
-                      <option value="PG" className="dark:bg-[#111c2e]">PG/Hostel</option>
+                      <option value="" className="dark:bg-[#111c2e]">
+                        All Types
+                      </option>
+                      <option value="HOUSE" className="dark:bg-[#111c2e]">
+                        House
+                      </option>
+                      <option value="FLAT" className="dark:bg-[#111c2e]">
+                        Flat/Apartment
+                      </option>
+                      <option value="PG" className="dark:bg-[#111c2e]">
+                        PG/Hostel
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -206,14 +228,29 @@ const LandingPage: React.FC = () => {
                     </p>
                     <select
                       value={searchFilters.budget}
-                      onChange={(e) => setSearchFilters({ ...searchFilters, budget: e.target.value })}
+                      onChange={(e) =>
+                        setSearchFilters({
+                          ...searchFilters,
+                          budget: e.target.value,
+                        })
+                      }
                       className="w-full text-sm font-semibold focus:outline-none bg-transparent dark:text-white appearance-none"
                     >
-                      <option value="" className="dark:bg-[#111c2e]">Any Budget</option>
-                      <option value="0-5000" className="dark:bg-[#111c2e]">Under 5k</option>
-                      <option value="5000-15000" className="dark:bg-[#111c2e]">5k - 15k</option>
-                      <option value="15000-30000" className="dark:bg-[#111c2e]">15k - 30k</option>
-                      <option value="30000+" className="dark:bg-[#111c2e]">30k+</option>
+                      <option value="" className="dark:bg-[#111c2e]">
+                        Any Budget
+                      </option>
+                      <option value="0-5000" className="dark:bg-[#111c2e]">
+                        Under 5k
+                      </option>
+                      <option value="5000-15000" className="dark:bg-[#111c2e]">
+                        5k - 15k
+                      </option>
+                      <option value="15000-30000" className="dark:bg-[#111c2e]">
+                        15k - 30k
+                      </option>
+                      <option value="30000+" className="dark:bg-[#111c2e]">
+                        30k+
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -252,25 +289,33 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center p-6 bg-white dark:bg-[#111c2e] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm transition-all">
-              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">5,000+</p>
+              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">
+                5,000+
+              </p>
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Properties Listed
               </p>
             </div>
             <div className="text-center p-6 bg-white dark:bg-[#111c2e] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm transition-all">
-              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">3,200+</p>
+              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">
+                3,200+
+              </p>
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Happy Tenants
               </p>
             </div>
             <div className="text-center p-6 bg-white dark:bg-[#111c2e] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm transition-all">
-              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">₹50L+</p>
+              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">
+                ₹50L+
+              </p>
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Rent Collected
               </p>
             </div>
             <div className="text-center p-6 bg-white dark:bg-[#111c2e] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm transition-all">
-              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">4.8★</p>
+              <p className="text-3xl font-black text-gray-900 dark:text-white mb-1">
+                4.8★
+              </p>
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Average Rating
               </p>
@@ -303,7 +348,10 @@ const LandingPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {loading ? (
               [...Array(4)].map((_, i) => (
-                <div key={i} className="animate-pulse bg-gray-50 dark:bg-white/5 rounded-[2rem] aspect-[4/3]" />
+                <div
+                  key={i}
+                  className="animate-pulse bg-gray-50 dark:bg-white/5 rounded-[2rem] aspect-[4/3]"
+                />
               ))
             ) : properties.length === 0 ? (
               <div className="col-span-full text-center py-10 text-gray-400 font-medium">
@@ -317,7 +365,10 @@ const LandingPage: React.FC = () => {
                 >
                   <div className="relative aspect-[4/3] overflow-hidden grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500">
                     <img
-                      src={property.photos[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800"}
+                      src={
+                        property.photos[0] ||
+                        "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800"
+                      }
                       alt={property.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
@@ -337,14 +388,26 @@ const LandingPage: React.FC = () => {
                       <span className="flex items-center gap-1">
                         {/* <Home size={10} /> {property.bhk} BHK */}
                       </span>
-                      <span className="flex items-center gap-1">{property.areaSqft} SQFT</span>
+                      <span className="flex items-center gap-1">
+                        {property.areaSqft} SQFT
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1">
-                        <Star size={14} className="text-amber-400 fill-amber-400" />
+                        <Star
+                          size={14}
+                          className="text-amber-400 fill-amber-400"
+                        />
                       </div>
                       <button
-                        onClick={() => navigate(PAGE_ROUTES.PROPERTY_DETAIL.replace(":id", property.id))}
+                        onClick={() =>
+                          navigate(
+                            PAGE_ROUTES.PROPERTY_DETAIL.replace(
+                              ":id",
+                              property.id,
+                            ),
+                          )
+                        }
                         className="text-xs font-black uppercase tracking-widest text-primary hover:tracking-[0.15em] transition-all"
                       >
                         View Details
@@ -377,7 +440,9 @@ const LandingPage: React.FC = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 mx-auto text-primary">
               <Zap size={32} />
             </div>
-            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">List Your Property</h3>
+            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">
+              List Your Property
+            </h3>
             <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
               Add your property details, photos, and set your rent in just 5
               minutes. Our verification ensures quality listings.
@@ -391,7 +456,9 @@ const LandingPage: React.FC = () => {
             <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-8 mx-auto text-emerald-600">
               <Users size={32} />
             </div>
-            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">Connect with Tenants</h3>
+            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">
+              Connect with Tenants
+            </h3>
             <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
               Receive inquiries, conduct virtual tours, and chat with verified
               tenants. Find the perfect match for your property.
@@ -405,7 +472,9 @@ const LandingPage: React.FC = () => {
             <div className="w-16 h-16 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-center justify-center mb-8 mx-auto text-blue-600">
               <ShieldCheck size={32} />
             </div>
-            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">Manage Everything</h3>
+            <h3 className="text-xl font-black mb-4 text-gray-900 dark:text-white">
+              Manage Everything
+            </h3>
             <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
               Digital agreements, automated rent collection, and maintenance
               tracking. Your complete rental solution.
@@ -452,7 +521,9 @@ const LandingPage: React.FC = () => {
                 />
               </div>
               <div>
-                <h4 className="font-black text-sm text-gray-900 dark:text-white">Arjun Menon</h4>
+                <h4 className="font-black text-sm text-gray-900 dark:text-white">
+                  Arjun Menon
+                </h4>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                   Property Owner • Ernakulam
                 </p>
@@ -485,7 +556,9 @@ const LandingPage: React.FC = () => {
                 />
               </div>
               <div>
-                <h4 className="font-black text-sm text-gray-900 dark:text-white">Priya Nair</h4>
+                <h4 className="font-black text-sm text-gray-900 dark:text-white">
+                  Priya Nair
+                </h4>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                   Tenant • Trivandrum
                 </p>
@@ -518,7 +591,9 @@ const LandingPage: React.FC = () => {
                 />
               </div>
               <div>
-                <h4 className="font-black text-sm text-gray-900 dark:text-white">Rajesh Kumar</h4>
+                <h4 className="font-black text-sm text-gray-900 dark:text-white">
+                  Rajesh Kumar
+                </h4>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                   Property Owner • Kozhikode
                 </p>
@@ -550,10 +625,20 @@ const LandingPage: React.FC = () => {
                 List your property and connect with verified tenants
               </p>
               <button
-                onClick={() => navigate(user?.role === RoleTypes.OWNER_USER ? PAGE_ROUTES.OWNER_ADD_PROPERTY : (user ? getDashboardRoute() : "/onboarding"))}
+                onClick={() =>
+                  navigate(
+                    user?.role === RoleTypes.OWNER_USER
+                      ? PAGE_ROUTES.OWNER_ADD_PROPERTY
+                      : user
+                        ? getDashboardRoute()
+                        : "/onboarding",
+                  )
+                }
                 className="w-full py-4 bg-white text-primary font-black rounded-2xl hover:scale-[1.02] active:scale-95 transition-all"
               >
-                {user?.role === RoleTypes.OWNER_USER ? "Add Property" : "Get Started"}
+                {user?.role === RoleTypes.OWNER_USER
+                  ? "Add Property"
+                  : "Get Started"}
               </button>
             </div>
 
@@ -565,10 +650,20 @@ const LandingPage: React.FC = () => {
                 Find your perfect home from thousands of listings
               </p>
               <button
-                onClick={() => navigate(user?.role === RoleTypes.TENANT_USER ? PAGE_ROUTES.SEARCH_PROPERTIES : (user ? getDashboardRoute() : PAGE_ROUTES.LOGIN))}
+                onClick={() =>
+                  navigate(
+                    user?.role === RoleTypes.TENANT_USER
+                      ? PAGE_ROUTES.SEARCH_PROPERTIES
+                      : user
+                        ? getDashboardRoute()
+                        : PAGE_ROUTES.LOGIN,
+                  )
+                }
                 className="w-full py-4 bg-white text-primary font-black rounded-2xl hover:scale-[1.02] active:scale-95 transition-all"
               >
-                {user?.role === RoleTypes.TENANT_USER ? "Search Now" : "Start Searching"}
+                {user?.role === RoleTypes.TENANT_USER
+                  ? "Search Now"
+                  : "Start Searching"}
               </button>
             </div>
           </div>

@@ -1,10 +1,9 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { ThemeContext, type ThemeMode, type ThemeContextValue } from "./ThemeContext";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  ThemeContext,
+  type ThemeMode,
+  type ThemeContextValue,
+} from "./ThemeContext";
 
 const STORAGE_KEY = "rentease-theme";
 

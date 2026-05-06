@@ -5,7 +5,7 @@ import {
   deleteServiceProvider,
   toggleServiceProviderStatus,
   type ServiceProvider,
-  updateServiceProvider
+  updateServiceProvider,
 } from "../services/serviceProviderService";
 import { toast } from "react-hot-toast";
 
@@ -83,6 +83,6 @@ export const useServiceProviders = (propertyId: string) => {
     removeProvider,
     updateProvider,
     toggleStatus,
-    refresh: fetchProviders
+    refresh: fetchProviders,
   };
 };

@@ -48,10 +48,14 @@ const AdminPropertyDetails = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "PENDING_APPROVAL": return "bg-amber-500/10 text-amber-500 border-amber-500/20";
-      case "ACTIVE": return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "REJECTED": return "bg-red-500/10 text-red-500 border-red-500/20";
-      default: return "bg-gray-500/10 text-gray-500 border-gray-500/20";
+      case "PENDING_APPROVAL":
+        return "bg-amber-500/10 text-amber-500 border-amber-500/20";
+      case "ACTIVE":
+        return "bg-green-500/10 text-green-500 border-green-500/20";
+      case "REJECTED":
+        return "bg-red-500/10 text-red-500 border-red-500/20";
+      default:
+        return "bg-gray-500/10 text-gray-500 border-gray-500/20";
     }
   };
 
@@ -72,14 +76,18 @@ const AdminPropertyDetails = () => {
           </button>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest border ${getStatusColor(property.status)}`}>
+              <span
+                className={`px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest border ${getStatusColor(property.status)}`}
+              >
                 {property.status.replace("_", " ")}
               </span>
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                 ID: {property.id.toUpperCase()}
               </span>
             </div>
-            <h1 className="text-2xl font-black text-[color:var(--color-foreground)] line-clamp-1">{property.title}</h1>
+            <h1 className="text-2xl font-black text-[color:var(--color-foreground)] line-clamp-1">
+              {property.title}
+            </h1>
           </div>
         </div>
 
@@ -132,14 +140,20 @@ const AdminPropertyDetails = () => {
                 <button
                   key={i}
                   onClick={() => setActivePhotoIndex(i)}
-                  className={`relative flex-shrink-0 aspect-video md:aspect-square rounded-2xl overflow-hidden shadow-lg border-2 transition-all ${activePhotoIndex === i ? 'border-primary ring-4 ring-primary/20 scale-95' : 'border-[color:var(--color-surface)] opacity-70 hover:opacity-100'}`}
+                  className={`relative flex-shrink-0 aspect-video md:aspect-square rounded-2xl overflow-hidden shadow-lg border-2 transition-all ${activePhotoIndex === i ? "border-primary ring-4 ring-primary/20 scale-95" : "border-[color:var(--color-surface)] opacity-70 hover:opacity-100"}`}
                 >
-                  <img src={photo} className="w-full h-full object-cover" alt={`Thumbnail ${i}`} />
+                  <img
+                    src={photo}
+                    className="w-full h-full object-cover"
+                    alt={`Thumbnail ${i}`}
+                  />
                 </button>
               ))}
               {property.photos.length === 1 && (
                 <div className="flex-1 rounded-3xl bg-gray-50/50 dark:bg-white/5 flex items-center justify-center border-2 border-dashed border-[color:var(--color-border)]">
-                  <p className="text-[10px] font-black text-gray-400 uppercase text-center p-4">No additional photos</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase text-center p-4">
+                    No additional photos
+                  </p>
                 </div>
               )}
             </div>
@@ -151,38 +165,51 @@ const AdminPropertyDetails = () => {
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-3 text-gray-500 font-bold bg-gray-50/50 dark:bg-white/5 w-fit px-4 py-2 rounded-2xl border border-[color:var(--color-border)]">
                   <MapPin size={20} className="text-primary" />
-                  <span className="text-sm font-black">{property.fullAddress || `${property.locationCity}, ${property.locationDistrict}`}</span>
+                  <span className="text-sm font-black">
+                    {property.fullAddress ||
+                      `${property.locationCity}, ${property.locationDistrict}`}
+                  </span>
                 </div>
               </div>
 
               {/* Core Features Grid */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="p-5 bg-[color:var(--color-card)] rounded-3xl border border-[color:var(--color-border)] space-y-2">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Type</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Type
+                  </p>
                   <div className="flex items-center gap-2 text-[color:var(--color-foreground)] font-black">
                     <HomeIcon size={18} className="text-primary" />
                     {property.propertyType}
                   </div>
                 </div>
                 <div className="p-5 bg-[color:var(--color-card)] rounded-3xl border border-[color:var(--color-border)] space-y-2">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Build Area</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Build Area
+                  </p>
                   <div className="flex items-center gap-2 text-[color:var(--color-foreground)] font-black">
                     <Maximize2 size={18} className="text-primary" />
                     {property.areaSqft || "N/A"} SQFT
                   </div>
                 </div>
                 <div className="p-5 bg-[color:var(--color-card)] rounded-3xl border border-[color:var(--color-border)] space-y-2">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Config</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Config
+                  </p>
                   <div className="flex items-center gap-2 text-[color:var(--color-foreground)] font-black">
                     <Bed size={18} className="text-primary" />
                     {property.bhk || 0} BHK
                   </div>
                 </div>
                 <div className="p-5 bg-[color:var(--color-card)] rounded-3xl border border-[color:var(--color-border)] space-y-2">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Verified</p>
-                  <div className={`flex items-center gap-2 font-black ${isApproved ? 'text-green-500' : 'text-amber-500'}`}>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Verified
+                  </p>
+                  <div
+                    className={`flex items-center gap-2 font-black ${isApproved ? "text-green-500" : "text-amber-500"}`}
+                  >
                     <ShieldCheck size={18} />
-                    {isApproved ? 'YES' : 'PENDING'}
+                    {isApproved ? "YES" : "PENDING"}
                   </div>
                 </div>
               </div>
@@ -190,16 +217,28 @@ const AdminPropertyDetails = () => {
               {/* More Technical Details */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-[color:var(--color-border)]">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Furnishing</p>
-                  <p className="text-sm font-black text-[color:var(--color-foreground)]">{property.furnishingStatus || "Not Specified"}</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Furnishing
+                  </p>
+                  <p className="text-sm font-black text-[color:var(--color-foreground)]">
+                    {property.furnishingStatus || "Not Specified"}
+                  </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Property Age</p>
-                  <p className="text-sm font-black text-[color:var(--color-foreground)]">{property.propertyAge || "New Build"}</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Property Age
+                  </p>
+                  <p className="text-sm font-black text-[color:var(--color-foreground)]">
+                    {property.propertyAge || "New Build"}
+                  </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Facing</p>
-                  <p className="text-sm font-black text-[color:var(--color-foreground)]">{property.facingDirection || "Not Specified"}</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Facing
+                  </p>
+                  <p className="text-sm font-black text-[color:var(--color-foreground)]">
+                    {property.facingDirection || "Not Specified"}
+                  </p>
                 </div>
               </div>
 
@@ -208,15 +247,22 @@ const AdminPropertyDetails = () => {
                   Description
                   <div className="h-1 w-12 bg-primary/20 rounded-full"></div>
                 </h3>
-                <p className="text-gray-500 leading-[1.8] text-sm lg:text-base font-medium">{property.description}</p>
+                <p className="text-gray-500 leading-[1.8] text-sm lg:text-base font-medium">
+                  {property.description}
+                </p>
               </div>
 
               {property.amenities && property.amenities.length > 0 && (
                 <div className="space-y-4 pt-6 border-t border-[color:var(--color-border)]">
-                  <h3 className="text-xl font-black text-[color:var(--color-foreground)]">Amenities</h3>
+                  <h3 className="text-xl font-black text-[color:var(--color-foreground)]">
+                    Amenities
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {property.amenities.map((a: string) => (
-                      <span key={a} className="px-5 py-2.5 bg-primary/5 dark:bg-white/5 rounded-2xl text-xs font-black text-gray-600 dark:text-gray-400 border border-primary/10">
+                      <span
+                        key={a}
+                        className="px-5 py-2.5 bg-primary/5 dark:bg-white/5 rounded-2xl text-xs font-black text-gray-600 dark:text-gray-400 border border-primary/10"
+                      >
                         {a}
                       </span>
                     ))}
@@ -227,43 +273,63 @@ const AdminPropertyDetails = () => {
               {/* Rules & Occupancy */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-[color:var(--color-border)]">
                 <div className="space-y-4">
-                  <h3 className="text-xl font-black text-[color:var(--color-foreground)]">House Rules</h3>
+                  <h3 className="text-xl font-black text-[color:var(--color-foreground)]">
+                    House Rules
+                  </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-[color:var(--color-border)]">
-                      <span className="text-sm font-bold text-gray-500">Pets Allowed</span>
-                      <span className={`text-xs font-black uppercase ${property.petsAllowed ? 'text-green-500' : 'text-red-500'}`}>
-                        {property.petsAllowed ? 'YES' : 'NO'}
+                      <span className="text-sm font-bold text-gray-500">
+                        Pets Allowed
+                      </span>
+                      <span
+                        className={`text-xs font-black uppercase ${property.petsAllowed ? "text-green-500" : "text-red-500"}`}
+                      >
+                        {property.petsAllowed ? "YES" : "NO"}
                       </span>
                     </div>
                     <div className="flex justify-between items-center p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-[color:var(--color-border)]">
-                      <span className="text-sm font-bold text-gray-500">Smoking Allowed</span>
-                      <span className={`text-xs font-black uppercase ${property.smokingAllowed ? 'text-green-500' : 'text-red-500'}`}>
-                        {property.smokingAllowed ? 'YES' : 'NO'}
+                      <span className="text-sm font-bold text-gray-500">
+                        Smoking Allowed
+                      </span>
+                      <span
+                        className={`text-xs font-black uppercase ${property.smokingAllowed ? "text-green-500" : "text-red-500"}`}
+                      >
+                        {property.smokingAllowed ? "YES" : "NO"}
                       </span>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-xl font-black text-[color:var(--color-foreground)]">Occupancy</h3>
+                  <h3 className="text-xl font-black text-[color:var(--color-foreground)]">
+                    Occupancy
+                  </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-[color:var(--color-border)]">
-                      <span className="text-sm font-bold text-gray-500">Max Occupants</span>
+                      <span className="text-sm font-bold text-gray-500">
+                        Max Occupants
+                      </span>
                       <span className="text-sm font-black text-[color:var(--color-foreground)]">
                         {property.maximumOccupants || "Not Specified"}
                       </span>
                     </div>
-                    {property.preferredTenantType && property.preferredTenantType.length > 0 && (
-                      <div className="p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-[color:var(--color-border)]">
-                        <p className="text-xs font-bold text-gray-500 uppercase mb-2">Preferred Tenants</p>
-                        <div className="flex flex-wrap gap-2">
-                          {property.preferredTenantType.map((t: string) => (
-                            <span key={t} className="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg uppercase">
-                              {t}
-                            </span>
-                          ))}
+                    {property.preferredTenantType &&
+                      property.preferredTenantType.length > 0 && (
+                        <div className="p-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-[color:var(--color-border)]">
+                          <p className="text-xs font-bold text-gray-500 uppercase mb-2">
+                            Preferred Tenants
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {property.preferredTenantType.map((t: string) => (
+                              <span
+                                key={t}
+                                className="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg uppercase"
+                              >
+                                {t}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                 </div>
               </div>
@@ -279,21 +345,34 @@ const AdminPropertyDetails = () => {
               <IndianRupee size={120} />
             </div>
             <h3 className="font-black text-xs uppercase tracking-[0.2em] text-gray-400 mb-8 flex items-center gap-2">
-              <CheckCircle size={16} className="text-primary" /> Financial Overview
+              <CheckCircle size={16} className="text-primary" /> Financial
+              Overview
             </h3>
             <div className="space-y-4">
               <div className="p-6 bg-primary text-white rounded-3xl shadow-xl shadow-primary/20">
-                <p className="text-xs font-bold opacity-80 mb-1 uppercase tracking-widest">Monthly Rent</p>
-                <p className="text-4xl font-black">₹{property.monthlyRent?.toLocaleString()}</p>
+                <p className="text-xs font-bold opacity-80 mb-1 uppercase tracking-widest">
+                  Monthly Rent
+                </p>
+                <p className="text-4xl font-black">
+                  ₹{property.monthlyRent?.toLocaleString()}
+                </p>
               </div>
               <div className="grid grid-cols-1 gap-3">
                 <div className="flex justify-between items-center p-5 bg-[color:var(--color-card)] rounded-2xl border border-[color:var(--color-border)]">
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Security Deposit</p>
-                  <p className="text-lg font-black text-[color:var(--color-foreground)]">₹{property.depositAmount?.toLocaleString() || "0"}</p>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                    Security Deposit
+                  </p>
+                  <p className="text-lg font-black text-[color:var(--color-foreground)]">
+                    ₹{property.depositAmount?.toLocaleString() || "0"}
+                  </p>
                 </div>
                 <div className="flex justify-between items-center p-5 bg-[color:var(--color-card)] rounded-2xl border border-[color:var(--color-border)]">
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Maintenance</p>
-                  <p className="text-lg font-black text-[color:var(--color-foreground)]">₹{property.maintenanceCharges?.toLocaleString() || "0"}</p>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                    Maintenance
+                  </p>
+                  <p className="text-lg font-black text-[color:var(--color-foreground)]">
+                    ₹{property.maintenanceCharges?.toLocaleString() || "0"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -309,14 +388,21 @@ const AdminPropertyDetails = () => {
                 {property.ownerId?.slice(-2).toUpperCase() || "OW"}
               </div>
               <div>
-                <p className="text-sm font-black text-[color:var(--color-foreground)]">Owner ID: {property.ownerId?.slice(-6).toUpperCase()}</p>
-                <p className="text-[10px] font-bold text-gray-500 uppercase">Registered Partner</p>
+                <p className="text-sm font-black text-[color:var(--color-foreground)]">
+                  Owner ID: {property.ownerId?.slice(-6).toUpperCase()}
+                </p>
+                <p className="text-[10px] font-bold text-gray-500 uppercase">
+                  Registered Partner
+                </p>
               </div>
             </div>
             <div className="mt-6 space-y-3">
               <div className="flex items-center gap-3 text-xs font-bold text-gray-500">
                 <Calendar size={14} className="text-primary" />
-                <span>Submitted on {new Date(property.createdAt).toLocaleDateString()}</span>
+                <span>
+                  Submitted on{" "}
+                  {new Date(property.createdAt).toLocaleDateString()}
+                </span>
               </div>
             </div>
           </div>
@@ -328,7 +414,9 @@ const AdminPropertyDetails = () => {
             </div>
             <div className="flex items-center gap-3 text-amber-600 dark:text-amber-500">
               <Info size={20} />
-              <h4 className="font-black text-sm uppercase tracking-widest">Auditor's Note</h4>
+              <h4 className="font-black text-sm uppercase tracking-widest">
+                Auditor's Note
+              </h4>
             </div>
             <ul className="space-y-2">
               <li className="flex items-start gap-2 text-[11px] font-bold text-amber-900/70 dark:text-amber-500/70 leading-relaxed">
@@ -356,8 +444,12 @@ const AdminPropertyDetails = () => {
               <div className="w-20 h-20 bg-red-500/10 text-red-600 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-red-500/20">
                 <XCircle size={40} />
               </div>
-              <h2 className="text-3xl font-black text-[color:var(--color-foreground)]">Reject Listing</h2>
-              <p className="text-sm text-gray-500 font-medium">Provide a clear reason for rejecting this property.</p>
+              <h2 className="text-3xl font-black text-[color:var(--color-foreground)]">
+                Reject Listing
+              </h2>
+              <p className="text-sm text-gray-500 font-medium">
+                Provide a clear reason for rejecting this property.
+              </p>
             </div>
 
             <div className="space-y-6">
@@ -394,8 +486,13 @@ const AdminPropertyDetails = () => {
               <div className="w-20 h-20 bg-primary/10 text-primary rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-primary/20">
                 <ShieldCheck size={40} />
               </div>
-              <h2 className="text-3xl font-black text-[color:var(--color-foreground)]">Approve Listing</h2>
-              <p className="text-sm text-gray-500 font-medium">Are you sure you want to approve this property listing? It will become visible to all tenants.</p>
+              <h2 className="text-3xl font-black text-[color:var(--color-foreground)]">
+                Approve Listing
+              </h2>
+              <p className="text-sm text-gray-500 font-medium">
+                Are you sure you want to approve this property listing? It will
+                become visible to all tenants.
+              </p>
             </div>
 
             <div className="flex gap-4">
@@ -425,7 +522,10 @@ const AdminPropertyDetails = () => {
         >
           <button
             className="absolute top-8 right-8 p-4 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all z-[210]"
-            onClick={(e) => { e.stopPropagation(); setIsZoomOpen(false); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsZoomOpen(false);
+            }}
           >
             <X size={32} />
           </button>

@@ -45,7 +45,8 @@
     @apply bg-[color:var(--color-background)] text-[color:var(--color-foreground)];
   }
 
-  select, option {
+  select,
+  option {
     color: var(--color-foreground);
     background-color: var(--color-surface);
   }

@@ -20,4 +20,3 @@ export const LABELS = {
   LOGOUT_DESCRIPTION: "Are you sure you want to log out of your account?",
   LOGOUT: "Log Out",
 } as const;
-

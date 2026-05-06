@@ -17,7 +17,8 @@ import { LoadingOverlay } from "../../../components/common";
 
 const AdminProperties = () => {
   const navigate = useNavigate();
-  const { properties, loading, error, pagination, fetchProperties } = useAdminProperties();
+  const { properties, loading, error, pagination, fetchProperties } =
+    useAdminProperties();
 
   useEffect(() => {
     fetchProperties(pagination.page, pagination.status);
@@ -75,8 +76,13 @@ const AdminProperties = () => {
           <div className="w-24 h-24 bg-gray-50 dark:bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-[color:var(--color-border)]">
             <CheckCircle2 size={48} className="text-gray-200" />
           </div>
-          <h3 className="text-2xl font-black text-[color:var(--color-foreground)] mb-2">Inventory is clean</h3>
-          <p className="text-gray-500 font-medium">No properties are currently in {pagination.status.toLowerCase().replace('_', ' ')} status.</p>
+          <h3 className="text-2xl font-black text-[color:var(--color-foreground)] mb-2">
+            Inventory is clean
+          </h3>
+          <p className="text-gray-500 font-medium">
+            No properties are currently in{" "}
+            {pagination.status.toLowerCase().replace("_", " ")} status.
+          </p>
         </div>
       ) : (
         <>
@@ -84,23 +90,40 @@ const AdminProperties = () => {
             {properties.map((property) => (
               <div
                 key={property.id}
-                onClick={() => navigate(PAGE_ROUTES.ADMIN_PROPERTY_DETAIL.replace(":id", property.id))}
+                onClick={() =>
+                  navigate(
+                    PAGE_ROUTES.ADMIN_PROPERTY_DETAIL.replace(
+                      ":id",
+                      property.id,
+                    ),
+                  )
+                }
                 className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:border-primary/30 transition-all duration-500 cursor-pointer group shadow-lg"
               >
                 <div className="relative h-60 overflow-hidden">
                   <img
-                    src={property.photos[property.primaryPhotoIndex] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"}
+                    src={
+                      property.photos[property.primaryPhotoIndex] ||
+                      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"
+                    }
                     alt={property.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute top-5 left-5">
-                    <span className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl shadow-2xl backdrop-blur-md border ${
-                      property.status === 'ACTIVE' ? 'bg-green-500/90 text-white border-green-400' :
-                      property.status === 'REJECTED' ? 'bg-red-500/90 text-white border-red-400' :
-                      'bg-amber-500/90 text-white border-amber-400'
-                    }`}>
-                      {property.status === 'ACTIVE' ? 'Approved' : 
-                       property.status === 'REJECTED' ? 'Rejected' : 'Pending Review'}
+                    <span
+                      className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl shadow-2xl backdrop-blur-md border ${
+                        property.status === "ACTIVE"
+                          ? "bg-green-500/90 text-white border-green-400"
+                          : property.status === "REJECTED"
+                            ? "bg-red-500/90 text-white border-red-400"
+                            : "bg-amber-500/90 text-white border-amber-400"
+                      }`}
+                    >
+                      {property.status === "ACTIVE"
+                        ? "Approved"
+                        : property.status === "REJECTED"
+                          ? "Rejected"
+                          : "Pending Review"}
                     </span>
                   </div>
                 </div>
@@ -112,24 +135,30 @@ const AdminProperties = () => {
 
                   <div className="flex items-center gap-2 text-gray-500 text-sm mb-6 bg-gray-50/50 dark:bg-white/5 w-fit px-3 py-1.5 rounded-xl border border-[color:var(--color-border)]">
                     <MapPin size={16} className="text-primary" />
-                    <span className="truncate font-bold">{property.locationCity}</span>
+                    <span className="truncate font-bold">
+                      {property.locationCity}
+                    </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     <div className="flex items-center gap-2 text-xs font-black text-gray-400 uppercase tracking-widest">
-                       <Home size={16} className="text-primary/60" /> 
-                       {property.propertyType}
+                      <Home size={16} className="text-primary/60" />
+                      {property.propertyType}
                     </div>
                     <div className="flex items-center gap-2 text-xs font-black text-gray-400 uppercase tracking-widest">
-                       <Maximize2 size={16} className="text-primary/60" /> 
-                       {property.areaSqft} SQFT
+                      <Maximize2 size={16} className="text-primary/60" />
+                      {property.areaSqft} SQFT
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between pt-6 border-t border-[color:var(--color-border)]">
                     <div>
-                       <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Monthly Rent</p>
-                       <span className="text-2xl font-black text-primary">₹{property.monthlyRent.toLocaleString()}</span>
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                        Monthly Rent
+                      </p>
+                      <span className="text-2xl font-black text-primary">
+                        ₹{property.monthlyRent.toLocaleString()}
+                      </span>
                     </div>
                     <div className="w-12 h-12 bg-primary/5 text-primary rounded-2xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                       <ArrowRight size={20} />
@@ -149,7 +178,10 @@ const AdminProperties = () => {
                 </span>{" "}
                 to{" "}
                 <span className="text-[color:var(--color-foreground)]">
-                  {Math.min(pagination.page * pagination.limit, pagination.total)}
+                  {Math.min(
+                    pagination.page * pagination.limit,
+                    pagination.total,
+                  )}
                 </span>{" "}
                 of{" "}
                 <span className="text-[color:var(--color-foreground)]">
@@ -160,7 +192,13 @@ const AdminProperties = () => {
 
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => { fetchProperties(Math.max(1, pagination.page - 1), pagination.status); window.scrollTo(0, 0); }}
+                  onClick={() => {
+                    fetchProperties(
+                      Math.max(1, pagination.page - 1),
+                      pagination.status,
+                    );
+                    window.scrollTo(0, 0);
+                  }}
                   disabled={pagination.page === 1}
                   className="w-12 h-12 flex items-center justify-center bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl hover:bg-primary/5 hover:border-primary/30 disabled:opacity-20 transition-all text-gray-400 hover:text-primary shadow-sm"
                 >
@@ -171,11 +209,15 @@ const AdminProperties = () => {
                   {[...Array(pagination.pages)].map((_, i) => (
                     <button
                       key={i + 1}
-                      onClick={() => { fetchProperties(i + 1, pagination.status); window.scrollTo(0, 0); }}
-                      className={`w-12 h-12 rounded-2xl font-black transition-all shadow-sm ${pagination.page === i + 1
+                      onClick={() => {
+                        fetchProperties(i + 1, pagination.status);
+                        window.scrollTo(0, 0);
+                      }}
+                      className={`w-12 h-12 rounded-2xl font-black transition-all shadow-sm ${
+                        pagination.page === i + 1
                           ? "bg-primary text-white shadow-xl shadow-primary/25 scale-110"
                           : "bg-[color:var(--color-surface)] border border-[color:var(--color-border)] hover:bg-gray-100 dark:hover:bg-white/5 text-gray-400"
-                        }`}
+                      }`}
                     >
                       {i + 1}
                     </button>
@@ -183,7 +225,13 @@ const AdminProperties = () => {
                 </div>
 
                 <button
-                  onClick={() => { fetchProperties(Math.min(pagination.pages, pagination.page + 1), pagination.status); window.scrollTo(0, 0); }}
+                  onClick={() => {
+                    fetchProperties(
+                      Math.min(pagination.pages, pagination.page + 1),
+                      pagination.status,
+                    );
+                    window.scrollTo(0, 0);
+                  }}
                   disabled={pagination.page === pagination.pages}
                   className="w-12 h-12 flex items-center justify-center bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl hover:bg-primary/5 hover:border-primary/30 disabled:opacity-20 transition-all text-gray-400 hover:text-primary shadow-sm"
                 >

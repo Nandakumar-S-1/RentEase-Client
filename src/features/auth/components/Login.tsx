@@ -30,7 +30,8 @@ const Login = () => {
   const urlMessage = searchParams.get("message");
 
   const isLoading = loginLoading || googleLoading;
-  const message = successMessage || loginError || googleError || urlMessage || "";
+  const message =
+    successMessage || loginError || googleError || urlMessage || "";
   const isError = !!(loginError || googleError || urlMessage);
 
   const [formData, setFormData] = useState<LoginData>({

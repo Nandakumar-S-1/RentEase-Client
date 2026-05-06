@@ -120,8 +120,10 @@ const AdminUserManagement = () => {
 
   const getStatusStyles = (user: UserResponse) => {
     if (user.isSuspended) return "bg-red-500/10 text-red-500 border-red-500/20";
-    if (!user.isActive) return "bg-gray-500/10 text-gray-500 border-gray-500/20";
-    if (user.isEmailVerified) return "bg-green-500/10 text-green-500 border-green-500/20";
+    if (!user.isActive)
+      return "bg-gray-500/10 text-gray-500 border-gray-500/20";
+    if (user.isEmailVerified)
+      return "bg-green-500/10 text-green-500 border-green-500/20";
     return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
   };
 
@@ -141,21 +143,24 @@ const AdminUserManagement = () => {
 
   return (
     <div className="bg-[color:var(--color-surface)] rounded-[2.5rem] p-6 lg:p-10 border border-[color:var(--color-border)] shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
-          <div className="space-y-1">
-            <h1 className="text-4xl font-black text-[color:var(--color-foreground)] tracking-tight flex items-center gap-4">
-              User Management
-              <Users className="text-primary/40" size={32} />
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400 font-medium tracking-wide">
-              Manage all platform users and their permissions.
-            </p>
-          </div>
-          <button className="flex items-center gap-2 px-8 py-4 bg-[color:var(--color-card)] border border-[color:var(--color-border)] text-[color:var(--color-foreground)] font-black rounded-2xl hover:bg-primary/5 hover:border-primary/30 transition-all text-sm group">
-             <Download size={18} className="group-hover:translate-y-0.5 transition-transform" />
-             Export Users
-          </button>
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+        <div className="space-y-1">
+          <h1 className="text-4xl font-black text-[color:var(--color-foreground)] tracking-tight flex items-center gap-4">
+            User Management
+            <Users className="text-primary/40" size={32} />
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 font-medium tracking-wide">
+            Manage all platform users and their permissions.
+          </p>
         </div>
+        <button className="flex items-center gap-2 px-8 py-4 bg-[color:var(--color-card)] border border-[color:var(--color-border)] text-[color:var(--color-foreground)] font-black rounded-2xl hover:bg-primary/5 hover:border-primary/30 transition-all text-sm group">
+          <Download
+            size={18}
+            className="group-hover:translate-y-0.5 transition-transform"
+          />
+          Export Users
+        </button>
+      </div>
 
       <div className="flex gap-2 border-b border-[color:var(--color-border)] mb-6">
         <button
@@ -198,14 +203,17 @@ const AdminUserManagement = () => {
             />
           </div>
           <button className="p-3 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group">
-            <Filter size={18} className="text-gray-400 group-hover:text-primary" />
+            <Filter
+              size={18}
+              className="text-gray-400 group-hover:text-primary"
+            />
           </button>
-          
+
           <div className="ml-auto flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-             <Info size={14} className="text-amber-500" />
-             <p className="text-[10px] font-bold text-amber-600 dark:text-amber-500 uppercase tracking-tight">
-               User ID is the last 6 chars of system ID
-             </p>
+            <Info size={14} className="text-amber-500" />
+            <p className="text-[10px] font-bold text-amber-600 dark:text-amber-500 uppercase tracking-tight">
+              User ID is the last 6 chars of system ID
+            </p>
           </div>
         </div>
 
@@ -239,10 +247,12 @@ const AdminUserManagement = () => {
                       {user.fullname}
                     </p>
                     <div className="flex items-center gap-1">
-                       <span className="text-[10px] font-bold text-gray-400 uppercase">ID:</span>
-                       <span className="text-[10px] font-black text-primary bg-primary/5 px-1.5 py-0.5 rounded-md">
-                         {user.id.slice(-6).toUpperCase()}
-                       </span>
+                      <span className="text-[10px] font-bold text-gray-400 uppercase">
+                        ID:
+                      </span>
+                      <span className="text-[10px] font-black text-primary bg-primary/5 px-1.5 py-0.5 rounded-md">
+                        {user.id.slice(-6).toUpperCase()}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -253,8 +263,12 @@ const AdminUserManagement = () => {
               key: "contact",
               render: (user) => (
                 <div className="space-y-0.5">
-                  <p className="text-xs font-medium text-[color:var(--color-foreground)]">{user.email}</p>
-                  <p className="text-[10px] font-bold text-gray-500">{user.phone}</p>
+                  <p className="text-xs font-medium text-[color:var(--color-foreground)]">
+                    {user.email}
+                  </p>
+                  <p className="text-[10px] font-bold text-gray-500">
+                    {user.phone}
+                  </p>
                 </div>
               ),
             },
@@ -302,7 +316,7 @@ const AdminUserManagement = () => {
                     {new Date(user.createdAt).toLocaleDateString("en-GB", {
                       day: "2-digit",
                       month: "short",
-                      year: "numeric"
+                      year: "numeric",
                     })}
                   </span>
                 </div>
@@ -357,7 +371,15 @@ const AdminUserManagement = () => {
 
         <div className="p-6 bg-gray-50/50 dark:bg-white/5 flex flex-col sm:flex-row items-center justify-between border-t border-[color:var(--color-border)] gap-4">
           <p className="text-xs font-bold text-gray-500">
-            Showing <span className="text-[color:var(--color-foreground)]">{filteredUsers.length}</span> of <span className="text-[color:var(--color-foreground)]">{pagination.total}</span> {userType.toLowerCase()}
+            Showing{" "}
+            <span className="text-[color:var(--color-foreground)]">
+              {filteredUsers.length}
+            </span>{" "}
+            of{" "}
+            <span className="text-[color:var(--color-foreground)]">
+              {pagination.total}
+            </span>{" "}
+            {userType.toLowerCase()}
           </p>
           <div className="flex gap-2">
             <button

@@ -201,10 +201,16 @@ const Sidebar: React.FC<SidebarProps> = ({
               }`}
             >
               <div className="flex items-center gap-3.5">
-                <div className={`transition-transform duration-200 group-hover/item:scale-110 ${isActive ? "text-white" : "text-slate-400 group-hover/item:text-primary dark:text-gray-500"}`}>
+                <div
+                  className={`transition-transform duration-200 group-hover/item:scale-110 ${isActive ? "text-white" : "text-slate-400 group-hover/item:text-primary dark:text-gray-500"}`}
+                >
                   {item.icon}
                 </div>
-                <span className={`text-sm tracking-tight ${isActive ? "font-black" : "font-bold"}`}>{item.label}</span>
+                <span
+                  className={`text-sm tracking-tight ${isActive ? "font-black" : "font-bold"}`}
+                >
+                  {item.label}
+                </span>
               </div>
             </button>
           );
@@ -215,7 +221,13 @@ const Sidebar: React.FC<SidebarProps> = ({
         {role !== RoleTypes.ADMIN_USER && (
           <div className="flex items-center gap-3 px-3 py-2 mb-2">
             <button
-              onClick={() => navigate(role === RoleTypes.ADMIN_USER ? PAGE_ROUTES.ADMIN_SETTINGS : PAGE_ROUTES.PROFILE)}
+              onClick={() =>
+                navigate(
+                  role === RoleTypes.ADMIN_USER
+                    ? PAGE_ROUTES.ADMIN_SETTINGS
+                    : PAGE_ROUTES.PROFILE,
+                )
+              }
               className="flex items-center gap-3 flex-1 min-w-0 text-left hover:bg-gray-100 dark:hover:bg-white/10 p-1 rounded-lg transition-colors group"
             >
               <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#4338ca] text-white font-bold text-sm overflow-hidden group-hover:scale-105 transition-transform">
@@ -258,8 +270,12 @@ const Sidebar: React.FC<SidebarProps> = ({
                 AD
               </div>
               <div>
-                <p className="text-sm font-black text-slate-900 dark:text-white">Admin</p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-red-500">System</p>
+                <p className="text-sm font-black text-slate-900 dark:text-white">
+                  Admin
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-red-500">
+                  System
+                </p>
               </div>
             </div>
             <button
@@ -284,7 +300,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         confirmText={LABELS.LOGOUT}
         isDestructive={true}
       />
-
     </div>
   );
 };

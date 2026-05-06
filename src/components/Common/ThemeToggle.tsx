@@ -20,7 +20,7 @@ export const ThemeToggle: React.FC<Props> = ({ className }) => {
     const y = event.clientY;
     const endRadius = Math.hypot(
       Math.max(x, innerWidth - x),
-      Math.max(y, innerHeight - y)
+      Math.max(y, innerHeight - y),
     );
 
     const transition = document.startViewTransition(() => {
@@ -39,7 +39,7 @@ export const ThemeToggle: React.FC<Props> = ({ className }) => {
           duration: 500,
           easing: "ease-in-out",
           pseudoElement: "::view-transition-new(root)",
-        }
+        },
       );
     });
   };

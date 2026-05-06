@@ -47,7 +47,6 @@ export const PAGE_ROUTES = {
   TENANT_DASHBOARD: "/tenant/dashboard",
 } as const;
 
-
 export const API_ROUTES = {
   REGISTER: "/users/register",
   LOGIN: "/users/login",
@@ -98,7 +97,7 @@ export const PATH_ROUTES = {
   PATH_USERS: "/users",
   PATH_DASHBOARD: "/dashboard",
   PATH_OWNERS: "/owners",
-  PATH_PROPERTIES: 'properties',
+  PATH_PROPERTIES: "properties",
   PATH_PROPERTY_DETAILS: "/properties/:id",
   PATH_USER_DETAILS: "/users/:id",
 };

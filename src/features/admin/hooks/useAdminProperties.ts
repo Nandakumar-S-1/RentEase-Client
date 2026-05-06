@@ -1,5 +1,9 @@
 import { useState, useCallback } from "react";
-import { approveProperty, rejectProperty, getAllPropertiesForAdmin } from "../services/adminPropertyService";
+import {
+  approveProperty,
+  rejectProperty,
+  getAllPropertiesForAdmin,
+} from "../services/adminPropertyService";
 import type { PropertyData } from "../../property/types/propertyTypes";
 import { toast } from "react-hot-toast";
 import { getApiErrorMessage } from "../../../types/common";
@@ -13,31 +17,39 @@ export const useAdminProperties = () => {
     limit: 6,
     total: 0,
     pages: 1,
-    status: "PENDING_APPROVAL" as string
+    status: "PENDING_APPROVAL" as string,
   });
 
-  const fetchProperties = useCallback(async (page: number = 1, status: string = "PENDING_APPROVAL") => {
-    try {
-      setLoading(true);
-      const response = await getAllPropertiesForAdmin(page, pagination.limit, status);
-      if (response.success) {
-        setProperties(response.data.properties);
-        setPagination((prev) => ({
-          ...prev,
-          page: response.data.page,
-          total: response.data.total,
-          pages: Math.ceil(response.data.total / response.data.limit),
-          status
-        }));
+  const fetchProperties = useCallback(
+    async (page: number = 1, status: string = "PENDING_APPROVAL") => {
+      try {
+        setLoading(true);
+        const response = await getAllPropertiesForAdmin(
+          page,
+          pagination.limit,
+          status,
+        );
+        if (response.success) {
+          setProperties(response.data.properties);
+          setPagination((prev) => ({
+            ...prev,
+            page: response.data.page,
+            total: response.data.total,
+            pages: Math.ceil(response.data.total / response.data.limit),
+            status,
+          }));
+        }
+        setError(null);
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to fetch properties";
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
       }
-      setError(null);
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to fetch properties";
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  }, [pagination.limit]);
+    },
+    [pagination.limit],
+  );
 
   const approve = async (id: string) => {
     try {

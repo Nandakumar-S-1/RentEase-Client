@@ -11,7 +11,9 @@ const Register = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const role = (searchParams.get("role") || RoleTypes.TENANT_USER) as typeof RoleTypes.TENANT_USER | typeof RoleTypes.OWNER_USER;
+  const role = (searchParams.get("role") || RoleTypes.TENANT_USER) as
+    | typeof RoleTypes.TENANT_USER
+    | typeof RoleTypes.OWNER_USER;
 
   const {
     register,

@@ -14,7 +14,8 @@ export const usePropertyDetail = (id?: string) => {
       setProperty(response.data);
       setError(null);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to fetch property details";
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch property details";
       setError(errorMessage);
     } finally {
       setLoading(false);

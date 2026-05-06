@@ -40,7 +40,7 @@ export interface PropertyData {
   roadWidthFeet?: number | null;
   shopType?: string | null;
   hasParking?: boolean | null;
-  
+
   // Analytics
   viewsCount?: number;
   wishlistCount?: number;

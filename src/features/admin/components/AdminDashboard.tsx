@@ -13,7 +13,10 @@ const AdminDashboard = () => {
           </h1>
           <p className="text-gray-500 dark:text-gray-400 font-medium max-w-sm mx-auto leading-relaxed">
             Welcome to the RentEase Admin Control Center.
-            <br /> <span className="text-primary/80">Manage users and platform activity in real-time.</span>
+            <br />{" "}
+            <span className="text-primary/80">
+              Manage users and platform activity in real-time.
+            </span>
           </p>
         </div>
       </div>

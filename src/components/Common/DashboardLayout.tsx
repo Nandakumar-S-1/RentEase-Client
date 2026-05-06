@@ -85,7 +85,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </span>
             </button>
             <button
-              onClick={() => navigate(role === RoleTypes.ADMIN_USER ? PAGE_ROUTES.ADMIN_SETTINGS : PAGE_ROUTES.PROFILE)}
+              onClick={() =>
+                navigate(
+                  role === RoleTypes.ADMIN_USER
+                    ? PAGE_ROUTES.ADMIN_SETTINGS
+                    : PAGE_ROUTES.PROFILE,
+                )
+              }
               className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/10 rounded-lg transition-all"
             >
               <Settings size={20} />

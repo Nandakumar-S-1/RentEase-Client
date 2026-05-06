@@ -6,7 +6,8 @@ export const PropertyStatus = {
   PENDING: "PENDING", // Used for some internal states or compatibility
 } as const;
 
-export type PropertyStatusType = (typeof PropertyStatus)[keyof typeof PropertyStatus];
+export type PropertyStatusType =
+  (typeof PropertyStatus)[keyof typeof PropertyStatus];
 
 export const PropertyTypes = {
   FLAT: "FLAT",

@@ -19,7 +19,10 @@ const RoleSelection = () => {
         onClick={() => navigate(PAGE_ROUTES.HOME)}
         className="mb-6 flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-primary transition-colors group"
       >
-        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+        <ArrowLeft
+          size={16}
+          className="group-hover:-translate-x-1 transition-transform"
+        />
         Back to Home
       </button>
 

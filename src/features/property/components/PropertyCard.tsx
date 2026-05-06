@@ -1,5 +1,20 @@
-import { MapPin, Home, Maximize2, ExternalLink, Edit, Trash2, EyeOff, MoreVertical, Heart, Eye } from "lucide-react";
-import { unlistProperty, relistProperty, deleteProperty } from "../services/propertyService";
+import {
+  MapPin,
+  Home,
+  Maximize2,
+  ExternalLink,
+  Edit,
+  Trash2,
+  EyeOff,
+  MoreVertical,
+  Heart,
+  Eye,
+} from "lucide-react";
+import {
+  unlistProperty,
+  relistProperty,
+  deleteProperty,
+} from "../services/propertyService";
 import { useWishlist } from "../hooks/useWishlist";
 import { toast } from "react-hot-toast";
 import { Modal } from "../../../components/common";
@@ -20,7 +35,12 @@ interface PropertyCardProps {
   onToggleWishlist?: () => void;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchMode, onToggleWishlist }) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({
+  property,
+  layout,
+  isSearchMode,
+  onToggleWishlist,
+}) => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
   const { isSaved, toggle } = useWishlist(property.id);
@@ -31,7 +51,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
   const [isUnlistModalOpen, setIsUnlistModalOpen] = useState(false);
   const [isRelistModalOpen, setIsRelistModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isWishlistConfirmModalOpen, setIsWishlistConfirmModalOpen] = useState(false);
+  const [isWishlistConfirmModalOpen, setIsWishlistConfirmModalOpen] =
+    useState(false);
 
   const handleDetailsClick = () => {
     const route = isSearchMode
@@ -96,8 +117,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
   };
 
   const getStatusLabel = (status: string) => {
-    if (status === PropertyStatus.ACTIVE || status === "APPROVED") return "Listed";
-    if (status === PropertyStatus.PENDING_APPROVAL) return "Verification Pending";
+    if (status === PropertyStatus.ACTIVE || status === "APPROVED")
+      return "Listed";
+    if (status === PropertyStatus.PENDING_APPROVAL)
+      return "Verification Pending";
     return status.charAt(0) + status.slice(1).toLowerCase();
   };
 
@@ -137,7 +160,11 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
             }}
             className={`absolute top-4 right-4 p-2.5 rounded-2xl shadow-lg transition-all hover:scale-110 active:scale-95 ${isSaved ? "bg-red-500 text-white" : "bg-white/80 backdrop-blur-md text-gray-600 hover:bg-white"}`}
           >
-            <Heart size={20} fill={isSaved ? "currentColor" : "none"} className={isSaved ? "animate-pulse" : ""} />
+            <Heart
+              size={20}
+              fill={isSaved ? "currentColor" : "none"}
+              className={isSaved ? "animate-pulse" : ""}
+            />
           </button>
         )}
 
@@ -171,8 +198,12 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
 
         {property.status === "REJECTED" && property.rejectionReason && (
           <div className="px-3 py-2 bg-red-50 border border-red-100 rounded-xl mb-4">
-            <p className="text-[10px] font-black text-red-400 uppercase tracking-tight mb-1">Rejection Reason</p>
-            <p className="text-xs text-red-600 line-clamp-2">{property.rejectionReason}</p>
+            <p className="text-[10px] font-black text-red-400 uppercase tracking-tight mb-1">
+              Rejection Reason
+            </p>
+            <p className="text-xs text-red-600 line-clamp-2">
+              {property.rejectionReason}
+            </p>
           </div>
         )}
 
@@ -222,7 +253,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
             </button>
             {property.status === "UNLISTED" ? (
               <button
-                onClick={(e) => { e.stopPropagation(); setIsRelistModalOpen(true); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsRelistModalOpen(true);
+                }}
                 className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-xl transition-all"
                 title="List Property"
               >
@@ -230,7 +264,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
               </button>
             ) : (
               <button
-                onClick={(e) => { e.stopPropagation(); setIsUnlistModalOpen(true); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsUnlistModalOpen(true);
+                }}
                 className="p-2 text-gray-400 hover:text-orange-500 hover:bg-orange-50 rounded-xl transition-all"
                 title="Unlist Property"
               >
@@ -238,7 +275,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout, isSearchM
               </button>
             )}
             <button
-              onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDeleteModalOpen(true);
+              }}
               className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
               title="Delete Property"
             >

@@ -158,7 +158,8 @@ const VerifyOtp = () => {
               <div className="flex items-center gap-2 px-6 py-3 bg-gray-50 rounded-2xl border border-gray-100">
                 <Clock className="h-4 w-4 text-primary animate-pulse" />
                 <span className="text-sm font-black text-gray-600">
-                  Resend available in <span className="text-primary">{resendCooldown}s</span>
+                  Resend available in{" "}
+                  <span className="text-primary">{resendCooldown}s</span>
                 </span>
               </div>
             ) : (
@@ -167,7 +168,9 @@ const VerifyOtp = () => {
                 disabled={resendLoading}
                 className="flex items-center gap-2 px-8 py-3 text-primary font-black hover:bg-primary/5 rounded-2xl transition-all"
               >
-                <RotateCcw className={`h-4 w-4 ${resendLoading ? 'animate-spin' : ''}`} />
+                <RotateCcw
+                  className={`h-4 w-4 ${resendLoading ? "animate-spin" : ""}`}
+                />
                 Resend Code
               </button>
             )}

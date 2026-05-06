@@ -26,7 +26,10 @@ export const getAllProperties = async (
 };
 
 export const updateProperty = (id: string, data: Partial<PropertyData>) => {
-  return axiosApi.put<PropertyData>(`${API_ROUTES.SEARCH_PROPERTIES}/${id}`, data);
+  return axiosApi.put<PropertyData>(
+    `${API_ROUTES.SEARCH_PROPERTIES}/${id}`,
+    data,
+  );
 };
 
 export const unlistProperty = (id: string) => {
@@ -57,7 +60,24 @@ export const getPropertyPhotoUploadUrls = async (
   return response.data;
 };
 
-export const getPropertyById = async (id: string): Promise<{ success: boolean; data: PropertyData & { bhk?: number; bathrooms?: number; floorNumber?: string; totalFloors?: number; propertyAge?: string; facingDirection?: string; furnishingStatus?: string; amenities?: string[]; preferredTenantType?: string[]; maintenanceCharges?: number; maintenanceIncluded?: boolean; } }> => {
+export const getPropertyById = async (
+  id: string,
+): Promise<{
+  success: boolean;
+  data: PropertyData & {
+    bhk?: number;
+    bathrooms?: number;
+    floorNumber?: string;
+    totalFloors?: number;
+    propertyAge?: string;
+    facingDirection?: string;
+    furnishingStatus?: string;
+    amenities?: string[];
+    preferredTenantType?: string[];
+    maintenanceCharges?: number;
+    maintenanceIncluded?: boolean;
+  };
+}> => {
   const response = await axiosApi.get(API_ROUTES.GET_PROPERTY_BY_ID(id));
   return response.data;
 };

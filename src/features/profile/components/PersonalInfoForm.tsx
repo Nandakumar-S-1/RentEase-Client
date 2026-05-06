@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Input } from "../../../components/common/Input";
-import type { ProfileData, UpdateProfileData, UpdateProfileResponse } from "../types/profileTypes";
+import type {
+  ProfileData,
+  UpdateProfileData,
+  UpdateProfileResponse,
+} from "../types/profileTypes";
 
 import { Toast } from "../../../components/common/Toast";
 
@@ -10,8 +14,11 @@ interface PersonalInfoFormProps {
   isSaving: boolean;
 }
 
-const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ profile, saveProfile, isSaving }) => {
-
+const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
+  profile,
+  saveProfile,
+  isSaving,
+}) => {
   const [formData, setFormData] = useState<UpdateProfileData>({
     fullName: profile.fullName ?? "",
     phone: profile.phone ?? "",
@@ -22,9 +29,9 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ profile, saveProfil
   const [isOtherOccupation, setIsOtherOccupation] = useState(
     profile.occupation
       ? !["Working Professional", "Student", "Business Owner"].includes(
-        profile.occupation
-      )
-      : false
+          profile.occupation,
+        )
+      : false,
   );
   const [toast, setToast] = useState<{
     message: string;
@@ -34,7 +41,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ profile, saveProfil
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -146,7 +153,9 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ profile, saveProfil
                   }}
                   className="w-full py-4 px-6 rounded-2xl border border-gray-200 dark:bg-zinc-900 dark:text-white dark:border-white/10"
                 >
-                  <option value="" disabled hidden>Select Category</option>
+                  <option value="" disabled hidden>
+                    Select Category
+                  </option>
                   <option value="Working Professional">
                     Working Professional
                   </option>

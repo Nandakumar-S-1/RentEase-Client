@@ -1,7 +1,7 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { ENV } from "../../config/env";
 import { API_ROUTES, PAGE_ROUTES } from "../../config/routes";
-import { ErrorCodes } from "../../types/constants/error.constant"; 
+import { ErrorCodes } from "../../types/constants/error.constant";
 import { store } from "../../app/store/store";
 import {
   logout,
@@ -44,13 +44,15 @@ axiosApi.interceptors.response.use(
 
     const status = error.response?.status;
     // const responseData = error.response?.data ||{}
-    const responseData = error.response?.data as 
+    const responseData = error.response?.data as
       | { message?: string; code?: string }
       | undefined;
     const message = responseData?.message || "";
     const errorCode = responseData?.code;
 
-    const isRefreshCall = originalRequest.url?.includes(API_ROUTES.REFRESH_TOKEN);
+    const isRefreshCall = originalRequest.url?.includes(
+      API_ROUTES.REFRESH_TOKEN,
+    );
     const isLoginCall = originalRequest.url?.includes("login");
     const isLogoutCall = originalRequest.url?.includes(API_ROUTES.LOGOUT);
 
@@ -59,7 +61,7 @@ axiosApi.interceptors.response.use(
       errorCode === ErrorCodes.ACCOUNT_DEACTIVATED ||
       message.toLowerCase().includes("blocked")
     ) {
-      void axiosApi.post(API_ROUTES.LOGOUT, {}).catch(() => { });
+      void axiosApi.post(API_ROUTES.LOGOUT, {}).catch(() => {});
       store.dispatch(logout());
 
       const currentPath = window.location.pathname;
@@ -74,9 +76,13 @@ axiosApi.interceptors.response.use(
     }
 
     // get new access token using the refresh token in cookie.
-    if (status === 401 && !originalRequest._retry &&
-      !isRefreshCall && !isLoginCall && !isLogoutCall) {
-
+    if (
+      status === 401 &&
+      !originalRequest._retry &&
+      !isRefreshCall &&
+      !isLoginCall &&
+      !isLogoutCall
+    ) {
       originalRequest._retry = true;
       try {
         // const resp = await axiosApi.post(API_ROUTES.REFRESH_TOKEN);
@@ -98,7 +104,7 @@ axiosApi.interceptors.response.use(
         //refresh token is also expired
         toast.error("your session has been expired, please login again.");
         //tell the server that the user is loging out by clling backend api for logiout
-        void axiosApi.post(API_ROUTES.LOGOUT, {}).catch(() => { });
+        void axiosApi.post(API_ROUTES.LOGOUT, {}).catch(() => {});
         store.dispatch(logout());
         window.location.href = PAGE_ROUTES.LOGIN;
       }

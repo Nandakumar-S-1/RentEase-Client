@@ -47,7 +47,7 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
             if (currentUser) {
               dispatch(setCredentials({ user: currentUser, accessToken }));
             }
-          } catch (e) { 
+          } catch (e) {
             console.error("Failed to fetch user profile:", e);
           }
 
@@ -58,9 +58,10 @@ export const AuthInitializer: React.FC<AuthInitializerProps> = ({
             initialPath === PAGE_ROUTES.HOME;
 
           if (isAuthPage) {
-            const target = currentUser?.role === RoleTypes.ADMIN_USER
-              ? PAGE_ROUTES.ADMIN_DASHBOARD
-              : PAGE_ROUTES.DASHBOARD;
+            const target =
+              currentUser?.role === RoleTypes.ADMIN_USER
+                ? PAGE_ROUTES.ADMIN_DASHBOARD
+                : PAGE_ROUTES.DASHBOARD;
 
             if (window.location.pathname !== target) {
               navigate(target, { replace: true });
