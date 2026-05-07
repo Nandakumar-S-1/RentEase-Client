@@ -63,6 +63,9 @@ const ServiceProviderManagement: React.FC = () => {
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
+  const parseOptionalNumber = (v: string) =>
+    v.trim() === "" ? undefined : Number(v);
+
   const validateForm = () => {
     const result = serviceProviderSchema.safeParse(newProvider);
     if (!result.success) {
@@ -85,14 +88,14 @@ const ServiceProviderManagement: React.FC = () => {
     if (editingProviderId) {
       await updateProvider(editingProviderId, {
         ...newProvider,
-        typicalChargesMin: Number(newProvider.typicalChargesMin) || 0,
-        typicalChargesMax: Number(newProvider.typicalChargesMax) || 0,
+        typicalChargesMin: parseOptionalNumber(newProvider.typicalChargesMin),
+        typicalChargesMax: parseOptionalNumber(newProvider.typicalChargesMax),
       });
     } else {
       await addProvider({
         ...newProvider,
-        typicalChargesMin: Number(newProvider.typicalChargesMin) || 0,
-        typicalChargesMax: Number(newProvider.typicalChargesMax) || 0,
+        typicalChargesMin: parseOptionalNumber(newProvider.typicalChargesMin),
+        typicalChargesMax: parseOptionalNumber(newProvider.typicalChargesMax),
       });
     }
 

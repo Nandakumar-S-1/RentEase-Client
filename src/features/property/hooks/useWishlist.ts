@@ -52,7 +52,11 @@ export const useWishlist = (propertyId?: string) => {
       const res = await toggleWishlistApi(propertyId);
       const newStatus = !!res.data?.isWishlisted;
       setIsSaved(newStatus);
-      toast.success(newStatus ? "Saved to wishlist" : "Removed from wishlist");
+      toast.success(
+        newStatus
+          ? "Property has been added to wishlist"
+          : "Property has been removed from wishlist",
+      );
       return newStatus;
     } catch (err) {
       console.error("Failed to update wishlist", err);

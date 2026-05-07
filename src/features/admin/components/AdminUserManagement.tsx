@@ -7,7 +7,6 @@ import {
   UserCheck,
   UserX,
   Users,
-  Info,
 } from "lucide-react";
 import {
   getAllUsers,
@@ -209,12 +208,12 @@ const AdminUserManagement = () => {
             />
           </button>
 
-          <div className="ml-auto flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-xl">
+          {/* <div className="ml-auto flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-xl">
             <Info size={14} className="text-amber-500" />
             <p className="text-[10px] font-bold text-amber-600 dark:text-amber-500 uppercase tracking-tight">
               User ID is the last 6 chars of system ID
             </p>
-          </div>
+          </div> */}
         </div>
 
         <Table<UserResponse>
@@ -246,14 +245,14 @@ const AdminUserManagement = () => {
                     <p className="text-sm font-black text-[color:var(--color-foreground)]">
                       {user.fullname}
                     </p>
-                    <div className="flex items-center gap-1">
+                    {/* <div className="flex items-center gap-1">
                       <span className="text-[10px] font-bold text-gray-400 uppercase">
                         ID:
                       </span>
                       <span className="text-[10px] font-black text-primary bg-primary/5 px-1.5 py-0.5 rounded-md">
                         {user.id.slice(-6).toUpperCase()}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               ),

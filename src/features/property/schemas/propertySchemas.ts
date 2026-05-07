@@ -1,6 +1,19 @@
 import { z } from "zod";
 import { PropertyTypes } from "../../../types/constants/property.constant";
 
+const PROVIDER_TYPES = [
+  "Electrician",
+  "Plumber",
+  "Cleaner",
+  "Painter",
+  "Carpenter",
+  "Pest Control",
+  "AC Service",
+  "Gardener",
+  "Security",
+  "Other",
+] as const;
+
 export const propertySchema = z.object({
   title: z
     .string()
@@ -57,20 +70,29 @@ export const serviceProviderSchema = z
   .object({
     providerName: z
       .string()
+      .trim()
       .min(3, "Name must be at least 3 characters")
       .max(100, "Name is too long"),
-    providerType: z.string().min(1, "Service category is required"),
+    providerType: z
+      .string()
+      .trim()
+      .min(1, "Service category is required")
+      .refine(
+        (v) => (PROVIDER_TYPES as readonly string[]).includes(v),
+        "Invalid service category",
+      ),
     phone: z
       .string()
+      .trim()
       .regex(/^\+?[\d\s-]{10,}$/, "Invalid phone number (minimum 10 digits)"),
-    typicalChargesMin: z.coerce
-      .number()
-      .nonnegative("Charges cannot be negative")
-      .optional(),
-    typicalChargesMax: z.coerce
-      .number()
-      .nonnegative("Charges cannot be negative")
-      .optional(),
+    typicalChargesMin: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().nonnegative("Charges cannot be negative").optional(),
+    ),
+    typicalChargesMax: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().nonnegative("Charges cannot be negative").optional(),
+    ),
   })
   .refine(
     (data) => {
@@ -78,12 +100,12 @@ export const serviceProviderSchema = z
         data.typicalChargesMin !== undefined &&
         data.typicalChargesMax !== undefined
       ) {
-        return data.typicalChargesMax >= data.typicalChargesMin;
+        return data.typicalChargesMax > data.typicalChargesMin;
       }
       return true;
     },
     {
-      message: "Max charge must be greater than or equal to min charge",
+      message: "Max charge must be greater than min charge",
       path: ["typicalChargesMax"],
     },
   );

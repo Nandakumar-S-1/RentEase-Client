@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../../components/common/DashboardLayout";
 import { useProperty } from "../hooks/useProperty";
 import PropertyCard from "./PropertyCard";
@@ -48,6 +48,9 @@ const PropertyPage: React.FC = () => {
   const { user } = useAppSelector((state: RootState) => state.auth);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [cityInput, setCityInput] = useState("");
+  const [debouncedCityInput, setDebouncedCityInput] = useState("");
 
   const tabs = [
     { id: "ALL", label: "All Properties" },
@@ -68,6 +71,23 @@ const PropertyPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm.trim());
+    }, 500);
+
+    return () => clearTimeout(id);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    const value = debouncedSearchTerm;
+    const result = propertyFilterSchema.safeParse({ query: value });
+    if (result.success) {
+      setFilters((prev) => ({ ...prev, query: value }));
+      setPage(1);
+    }
+  }, [debouncedSearchTerm]);
+
   const handleFilterChange = (newFilters: Record<string, unknown>) => {
     const result = propertyFilterSchema.safeParse(newFilters);
     if (result.success) {
@@ -79,8 +99,23 @@ const PropertyPage: React.FC = () => {
   const resetFilters = () => {
     setFilters({});
     setSearchTerm("");
+    setCityInput("");
     setPage(1);
   };
+
+  // Debounce city filter as well
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setDebouncedCityInput(cityInput.trim());
+    }, 500);
+
+    return () => clearTimeout(id);
+  }, [cityInput]);
+
+  useEffect(() => {
+    const value = debouncedCityInput || undefined;
+    handleFilterChange({ city: value });
+  }, [debouncedCityInput]);
 
   const showBhkFilter =
     !filters.propertyType ||
@@ -230,10 +265,8 @@ const PropertyPage: React.FC = () => {
                     type="text"
                     placeholder="e.g. Kochi"
                     className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
-                    onChange={(e) =>
-                      handleFilterChange({ city: e.target.value })
-                    }
-                    value={filters.city || ""}
+                    onChange={(e) => setCityInput(e.target.value)}
+                    value={cityInput}
                   />
                 </div>
                 <div className="space-y-3">
