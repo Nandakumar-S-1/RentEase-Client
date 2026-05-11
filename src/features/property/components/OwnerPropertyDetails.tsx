@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Edit3,
-  Trash2,
   Clock,
   MapPin,
   Maximize2,
@@ -184,13 +183,13 @@ const OwnerPropertyDetails = () => {
                 <EyeOff size={20} />
               </button>
             )}
-            <button
+            {/* <button
               onClick={() => setIsDeleteModalOpen(true)}
               className="p-3.5 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-100 transition-colors"
               title="Delete Permanently"
             >
               <Trash2 size={20} />
-            </button>
+            </button> */}
           </div>
         </div>
 

@@ -3,7 +3,7 @@ export const PropertyStatus = {
   ACTIVE: "ACTIVE",
   UNLISTED: "UNLISTED",
   REJECTED: "REJECTED",
-  PENDING: "PENDING", // Used for some internal states or compatibility
+  PENDING: "PENDING",
 } as const;
 
 export type PropertyStatusType =
@@ -24,6 +24,14 @@ export const FurnishingStatus = {
   SEMI_FURNISHED: "Semi-Furnished",
   FULLY_FURNISHED: "Fully Furnished",
 } as const;
+
+export const FACING_DIRECTIONS = [
+  "North",
+  "South",
+  "East",
+  "West",
+] as const;
+
 
 export const TenantTypePref = {
   FAMILY: "Family",

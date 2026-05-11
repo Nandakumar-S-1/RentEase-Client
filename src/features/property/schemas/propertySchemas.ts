@@ -21,13 +21,13 @@ export const propertySchema = z.object({
     .max(100, "Title cannot exceed 100 characters"),
   description: z
     .string()
-    .min(20, "Description must be at least 20 characters")
+    .min(5, "Description must be at least 5 characters")
     .max(2000, "Description is too long"),
   propertyType: z.nativeEnum(PropertyTypes),
-  bhk: z.coerce.number().int().positive().optional().nullable(),
-  bathrooms: z.coerce.number().int().positive().optional().nullable(),
+  bhk: z.preprocess(v => (typeof v === 'string' && v.trim() === '' ? undefined : v), z.coerce.number().int().positive().optional().nullable()),
+  bathrooms: z.preprocess(v => (typeof v === 'string' && v.trim() === '' ? undefined : v), z.coerce.number().int().positive().optional().nullable()),
   floorNumber: z.string().optional().nullable(),
-  totalFloors: z.coerce.number().int().positive().optional().nullable(),
+  totalFloors: z.preprocess(v => (typeof v === 'string' && v.trim() === '' ? undefined : v), z.coerce.number().int().positive().optional().nullable()),
   propertyAge: z.string().optional().nullable(),
   facingDirection: z.string().optional().nullable(),
   furnishingStatus: z.string().optional().nullable(),
@@ -49,21 +49,21 @@ export const propertySchema = z.object({
   maximumOccupants: z.coerce.number().int().positive().optional().nullable(),
   landType: z.string().optional().nullable(),
   isCornerPlot: z.boolean().optional().nullable(),
-  roadWidthFeet: z.coerce.number().nonnegative().optional().nullable(),
+  roadWidthFeet: z.preprocess(v => (typeof v === 'string' && v.trim() === '' ? undefined : v), z.coerce.number().nonnegative().optional().nullable()),
   shopType: z.string().optional().nullable(),
   hasParking: z.boolean().optional().nullable(),
 
-  monthlyRent: z.coerce.number().positive("Rent must be a positive number"),
-  depositAmount: z.coerce
+  monthlyRent: z.preprocess(v => (typeof v === 'string' && v.trim() === '' ? undefined : v), z.coerce.number().positive("Rent must be a positive number")),
+  depositAmount: z.preprocess(v => (typeof v === 'string' && v.trim() === '' ? undefined : v), z.coerce
     .number()
-    .positive("Deposit must be a positive number"),
+    .positive("Deposit must be a positive number")),
   maintenanceCharges: z.coerce.number().nonnegative().optional().default(0),
   maintenanceIncluded: z.boolean().optional().default(false),
-  areaSqft: z.coerce
+  areaSqft: z.preprocess(v => (typeof v === 'string' && v.trim() === '' ? undefined : v), z.coerce
     .number()
     .positive("Area must be positive")
     .optional()
-    .nullable(),
+    .nullable()),
 });
 
 export const serviceProviderSchema = z

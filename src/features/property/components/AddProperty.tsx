@@ -213,6 +213,7 @@ const AddProperty: React.FC = () => {
         errors[issue.path[0]?.toString() || "unknown"] = issue.message;
       });
       setValidationErrors(errors);
+      console.error('Validation errors on submit:', errors);
       toast.error("Please fix the errors before submitting");
       return;
     }
