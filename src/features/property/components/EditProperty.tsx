@@ -24,6 +24,7 @@ import { propertySchema } from "../schemas/propertySchemas";
 import { toast } from "react-hot-toast";
 import { LoadingOverlay } from "../../../components/common";
 import type { PropertyData } from "../types/propertyTypes";
+import { PropertyLocationMap } from "./PropertyLocationMap";
 
 const PROPERTY_TYPE_OPTIONS = Object.values(PropertyTypes);
 const FURNISHING_OPTIONS = Object.values(FurnishingStatus);
@@ -553,8 +554,30 @@ const EditProperty: React.FC = () => {
           {step === 2 && (
             <div className="space-y-6">
               <h3 className="text-xl font-black mb-6">Location Details</h3>
-              <div className="h-72 rounded-3xl overflow-hidden border-2 border-gray-100 relative bg-gray-50 flex items-center justify-center text-gray-400 font-bold">
-                Map functionality temporarily disabled
+              <PropertyLocationMap
+                latitude={formData.latitude}
+                longitude={formData.longitude}
+                onLocationChange={(lat, lng) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    latitude: lat,
+                    longitude: lng,
+                  }))
+                }
+              />
+              <div className="flex flex-wrap gap-4 text-xs text-gray-600">
+                <span>
+                  Lat:{" "}
+                  <span className="font-mono font-semibold">
+                    {formData.latitude.toFixed(6)}
+                  </span>
+                </span>
+                <span>
+                  Lng:{" "}
+                  <span className="font-mono font-semibold">
+                    {formData.longitude.toFixed(6)}
+                  </span>
+                </span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">

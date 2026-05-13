@@ -251,6 +251,7 @@ const OwnerPropertyDetails = () => {
                 </div>
               </div>
             </div>
+            
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
@@ -335,6 +336,7 @@ const OwnerPropertyDetails = () => {
                 </div>
               </div>
             )}
+
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-10 border-t border-gray-100">
               <div className="space-y-6">

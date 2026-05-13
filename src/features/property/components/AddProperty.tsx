@@ -29,6 +29,7 @@ import {
   TenantTypePref,
 } from "../../../types/constants/property.constant";
 import { propertySchema } from "../schemas/propertySchemas";
+import { PropertyLocationMap } from "./PropertyLocationMap";
 
 const PROPERTY_TYPE_OPTIONS = Object.values(PropertyTypes);
 const TENANT_PREF_OPTIONS = Object.values(TenantTypePref);
@@ -438,18 +439,35 @@ const AddProperty: React.FC = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-700 ml-1">
-                        Facing
-                      </label>
-                      <input
-                        name="facingDirection"
-                        value={formData.facingDirection}
-                        onChange={handleInputChange}
-                        placeholder="e.g. East"
-                        className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
-                      />
-                    </div>
+<div className="space-y-2">
+  <label className="text-sm font-black text-gray-700 ml-1">
+    Facing Direction
+  </label>
+
+  <select
+    name="facingDirection"
+    value={formData.facingDirection}
+    onChange={handleInputChange}
+    className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+  >
+    <option value="">Select Direction</option>
+
+    {[
+      "North",
+      "South",
+      "East",
+      "West",
+      "North-East",
+      "North-West",
+      "South-East",
+      "South-West",
+    ].map((direction) => (
+      <option key={direction} value={direction}>
+        {direction}
+      </option>
+    ))}
+  </select>
+</div>
                     <div className="space-y-2">
                       <label className="text-sm font-black text-gray-700 ml-1">
                         Furnishing Status
@@ -496,11 +514,30 @@ const AddProperty: React.FC = () => {
           {step === 2 && (
             <div className="space-y-6">
               <h3 className="text-xl font-black mb-6">Location Details</h3>
-              <div className="h-72 rounded-3xl overflow-hidden border-2 border-gray-100 relative bg-gray-50 flex items-center justify-center text-gray-400 font-bold">
-                Map functionality temporarily disabled
-              </div>
-              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-2xl shadow-xl text-xs font-bold text-gray-600 pointer-events-none">
-                Click on the map to pin exact location
+              <PropertyLocationMap
+                latitude={formData.latitude}
+                longitude={formData.longitude}
+                onLocationChange={(lat, lng) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    latitude: lat,
+                    longitude: lng,
+                  }))
+                }
+              />
+              <div className="flex flex-wrap gap-4 text-xs text-gray-600">
+                <span>
+                  Lat:{" "}
+                  <span className="font-mono font-semibold">
+                    {formData.latitude.toFixed(6)}
+                  </span>
+                </span>
+                <span>
+                  Lng:{" "}
+                  <span className="font-mono font-semibold">
+                    {formData.longitude.toFixed(6)}
+                  </span>
+                </span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
