@@ -5,19 +5,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#7C3AED", // purple
-        secondary: "#DDD6FE", // light purple
-        accent: "#EDE9FE", // very light purple
-        card: "#FFFFFF", // white
-        muted: "#9CA3AF", // gray
+        primary: "#2563eb", // Blue 600
+        secondary: "#f1f5f9", // Slate 100
+        accent: "#dbeafe", // Blue 100
+        card: "#FFFFFF",
+        muted: "#64748b", // Slate 500
+        danger: "#ef4444",
       },
 
       textColor: {
-        primary: "#7C3AED",
-        "muted-foreground": "#6B7280",
-        "card-foreground": "#111827",
-        "secondary-foreground": "#4C1D95",
-        "accent-foreground": "#4C1D95",
+        primary: "#2563eb",
+        "muted-foreground": "#64748b",
+        "card-foreground": "#0f172a",
+        "secondary-foreground": "#1e293b",
+        "accent-foreground": "#1e40af",
+      },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
       },
     },
   },

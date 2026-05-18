@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import { Bell, Search, Settings } from "lucide-react";
+import { Bell, Search, Settings, Menu, X } from "lucide-react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { logout } from "../../features/auth/slices/AuthSlice";
@@ -31,6 +31,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user } = useAppSelector((state: RootState) => state.auth);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -51,36 +52,48 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   }, []);
 
   return (
-    <div className="flex h-screen bg-[color:var(--color-background)] overflow-hidden font-sans p-4 gap-4">
+    <div className="flex h-screen bg-[color:var(--color-background)] overflow-hidden font-sans">
       <Sidebar
         role={role}
         userName={userName}
         avatarUrl={user?.avatarUrl}
         onLogout={handleLogout}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-16 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] flex items-center justify-between px-6 shrink-0 rounded-2xl">
-          <div className="flex-1 max-w-xl">
-            {!hideSearch && (
-              <div className="relative group">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 group-focus-within:text-primary transition-colors">
-                  <Search size={18} />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Search anything..."
-                  className="block w-full pl-10 pr-3 py-2 border border-[color:var(--color-border)] rounded-xl bg-[color:var(--color-card)] text-sm text-[color:var(--color-foreground)] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-              </div>
-            )}
+        {/* Responsive Header */}
+        <header className="h-16 bg-[color:var(--color-surface)] border-b border-[color:var(--color-border)] flex items-center justify-between px-4 lg:px-8 shrink-0 z-30">
+          <div className="flex items-center gap-4 flex-1">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 -ml-2 text-slate-600 lg:hidden hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <Menu size={24} />
+            </button>
+
+            <div className="flex-1 max-w-xl hidden md:block">
+              {!hideSearch && (
+                <div className="relative group">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-[color:var(--color-muted-foreground)] group-focus-within:text-primary transition-colors">
+                    <Search size={18} />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Search properties, agreements..."
+                    className="block w-full pl-10 pr-3 py-2 border border-[color:var(--color-border)] rounded-xl bg-[color:var(--color-background)] text-sm text-[color:var(--color-foreground)] placeholder:text-[color:var(--color-muted-foreground)] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="flex items-center gap-4 ml-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <ThemeToggle />
-            <button className="relative p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/10 rounded-lg transition-all">
+            <button className="relative p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all">
               <Bell size={20} />
-              <span className="absolute top-1.5 right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold bg-danger text-white rounded-full border-2 border-white">
+              <span className="absolute top-1.5 right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold bg-danger text-white rounded-full border-2 border-[color:var(--color-surface)]">
                 3
               </span>
             </button>
@@ -92,18 +105,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     : PAGE_ROUTES.PROFILE,
                 )
               }
-              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/10 rounded-lg transition-all"
+              className="p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all"
             >
               <Settings size={20} />
             </button>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto custom-scrollbar pt-4">
-          <div className="h-full bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl p-6 overflow-hidden shadow-sm">
-            <div className="h-full overflow-y-auto custom-scrollbar pr-1">
-              {children}
-            </div>
+        <main className="flex-1 overflow-y-auto bg-[color:var(--color-background)]">
+          <div className="max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8">
+            {children}
           </div>
         </main>
       </div>

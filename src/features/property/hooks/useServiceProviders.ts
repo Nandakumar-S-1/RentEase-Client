@@ -9,24 +9,35 @@ import {
 } from "../services/serviceProviderService";
 import { toast } from "react-hot-toast";
 
-export const useServiceProviders = (propertyId: string) => {
+export const useServiceProviders = (
+  propertyId: string,
+  initialLimit: number = 6,
+) => {
   const [providers, setProviders] = useState<ServiceProvider[]>([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [limit] = useState(initialLimit);
 
-  const fetchProviders = useCallback(async () => {
-    if (!propertyId) return;
-    try {
-      setLoading(true);
-      const res = await getServiceProviders(propertyId);
-      if (res && res.success) {
-        setProviders(res.data);
+  const fetchProviders = useCallback(
+    async (targetPage: number = page) => {
+      if (!propertyId) return;
+      try {
+        setLoading(true);
+        const res = await getServiceProviders(propertyId, targetPage, limit);
+        if (res && res.success) {
+          setProviders(res.data.providers);
+          setTotal(res.data.total);
+          setPage(res.data.page);
+        }
+      } catch (error) {
+        console.error("Failed to fetch service providers:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Failed to fetch service providers:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [propertyId]);
+    },
+    [propertyId, page, limit],
+  );
 
   useEffect(() => {
     fetchProviders();
@@ -79,6 +90,10 @@ export const useServiceProviders = (propertyId: string) => {
   return {
     providers,
     loading,
+    page,
+    total,
+    limit,
+    setPage,
     addProvider,
     removeProvider,
     updateProvider,

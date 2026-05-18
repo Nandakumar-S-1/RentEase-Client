@@ -64,7 +64,6 @@ export const Logo: React.FC<LogoProps> = ({
               style={{
                 perspective: "100px",
                 transformOrigin: "left",
-                animation: "door-cycle 6s infinite ease-in-out",
               }}
             />
 
@@ -76,13 +75,6 @@ export const Logo: React.FC<LogoProps> = ({
               className="group-hover:opacity-0 transition-opacity"
             />
           </g>
-
-          <style>{`
-            @keyframes door-cycle {
-              0%, 10%, 90%, 100% { transform: rotateY(0deg); }
-              40%, 60% { transform: rotateY(-110deg); }
-            }
-          `}</style>
         </svg>
       </div>
 

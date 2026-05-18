@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   XCircle,
   ChevronLeft,
+  ChevronRight,
   Search,
   Star,
   Edit2,
@@ -40,11 +41,15 @@ const ServiceProviderManagement: React.FC = () => {
   const {
     providers,
     loading,
+    page,
+    total,
+    limit,
+    setPage,
     addProvider,
     removeProvider,
     toggleStatus,
     updateProvider,
-  } = useServiceProviders(propertyId || "");
+  } = useServiceProviders(propertyId || "", 6);
 
   const [isAdding, setIsAdding] = useState(false);
   const [editingProviderId, setEditingProviderId] = useState<string | null>(
@@ -52,6 +57,11 @@ const ServiceProviderManagement: React.FC = () => {
   );
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [providerToDelete, setProviderToDelete] = useState<string | null>(null);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  const [providerToToggle, setProviderToToggle] = useState<{
+    id: string;
+    nextStatus: boolean;
+  } | null>(null);
 
   const [newProvider, setNewProvider] = useState({
     providerName: "",
@@ -136,6 +146,11 @@ const ServiceProviderManagement: React.FC = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const confirmToggleStatus = (id: string, nextStatus: boolean) => {
+    setProviderToToggle({ id, nextStatus });
+    setIsStatusModalOpen(true);
+  };
+
   if (loading && providers.length === 0) return <LoadingOverlay />;
 
   return (
@@ -182,7 +197,6 @@ const ServiceProviderManagement: React.FC = () => {
                   Provider Name *
                 </label>
                 <input
-                  required
                   value={newProvider.providerName}
                   onChange={(e) =>
                     setNewProvider({
@@ -211,7 +225,7 @@ const ServiceProviderManagement: React.FC = () => {
                       providerType: e.target.value,
                     })
                   }
-                  className="w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm font-medium"
+                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.providerType ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
                 >
                   {PROVIDER_TYPES.map((t) => (
                     <option key={t} value={t}>
@@ -219,13 +233,17 @@ const ServiceProviderManagement: React.FC = () => {
                     </option>
                   ))}
                 </select>
+                {formErrors.providerType && (
+                  <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                    {formErrors.providerType}
+                  </p>
+                )}
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-black text-gray-700 ml-1">
                   Phone Number *
                 </label>
                 <input
-                  required
                   value={newProvider.phone}
                   onChange={(e) =>
                     setNewProvider({ ...newProvider, phone: e.target.value })
@@ -245,6 +263,7 @@ const ServiceProviderManagement: React.FC = () => {
                 </label>
                 <input
                   type="number"
+                  min="0"
                   value={newProvider.typicalChargesMin}
                   onChange={(e) =>
                     setNewProvider({
@@ -267,6 +286,7 @@ const ServiceProviderManagement: React.FC = () => {
                 </label>
                 <input
                   type="number"
+                  min="0"
                   value={newProvider.typicalChargesMax}
                   onChange={(e) =>
                     setNewProvider({
@@ -339,7 +359,7 @@ const ServiceProviderManagement: React.FC = () => {
                       <Edit2 size={18} />
                     </button>
                     <button
-                      onClick={() => toggleStatus(p.id, !p.isActive)}
+                      onClick={() => confirmToggleStatus(p.id, !p.isActive)}
                       className={`p-2 rounded-xl transition-all ${p.isActive ? "text-green-500 bg-green-50 hover:bg-green-100" : "text-gray-400 bg-gray-50 hover:bg-gray-100"}`}
                       title={p.isActive ? "Deactivate" : "Activate"}
                     >
@@ -400,6 +420,46 @@ const ServiceProviderManagement: React.FC = () => {
               </div>
             ))}
         </div>
+
+        {/* Pagination Controls */}
+        {!loading && total > limit && (
+          <div className="flex items-center justify-center gap-4 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <button
+              onClick={() => setPage(Math.max(1, page - 1))}
+              disabled={page === 1}
+              className="p-4 bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-2xl text-gray-400 hover:text-primary disabled:opacity-30 disabled:hover:text-gray-400 transition-all shadow-sm"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            <div className="flex items-center gap-2">
+              {Array.from({ length: Math.ceil(total / limit) }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i + 1)}
+                  className={`w-12 h-12 rounded-2xl font-black text-sm transition-all ${
+                    page === i + 1
+                      ? "bg-primary text-white shadow-lg shadow-primary/30"
+                      : "bg-white dark:bg-card border border-gray-100 dark:border-white/5 text-gray-400 hover:bg-gray-50"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() =>
+                setPage(Math.min(Math.ceil(total / limit), page + 1))
+              }
+              disabled={page === Math.ceil(total / limit)}
+              className="p-4 bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-2xl text-gray-400 hover:text-primary disabled:opacity-30 disabled:hover:text-gray-400 transition-all shadow-sm"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        )}
+
         <Modal
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
@@ -411,6 +471,23 @@ const ServiceProviderManagement: React.FC = () => {
           description="Are you sure you want to remove this service provider? This action cannot be undone."
           confirmText="Remove"
           isDestructive={true}
+        />
+        <Modal
+          isOpen={isStatusModalOpen}
+          onClose={() => setIsStatusModalOpen(false)}
+          onConfirm={() => {
+            if (providerToToggle)
+              toggleStatus(providerToToggle.id, providerToToggle.nextStatus);
+            setIsStatusModalOpen(false);
+          }}
+          title={
+            providerToToggle?.nextStatus
+              ? "Activate Provider"
+              : "Deactivate Provider"
+          }
+          description={`Are you sure you want to ${providerToToggle?.nextStatus ? "activate" : "deactivate"} this service provider?`}
+          confirmText={providerToToggle?.nextStatus ? "Activate" : "Deactivate"}
+          isDestructive={false}
         />
       </div>
     </DashboardLayout>

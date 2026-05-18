@@ -27,6 +27,8 @@ interface SidebarProps {
   userName: string;
   avatarUrl?: string | null;
   onLogout: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 type SidebarMenuItem = {
@@ -40,6 +42,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   userName,
   avatarUrl,
   onLogout,
+  isOpen,
+  onClose,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -178,12 +182,30 @@ const Sidebar: React.FC<SidebarProps> = ({
   const currentMenu = menuItems[role] || [];
 
   return (
-    <div className="flex flex-col h-full w-64 shrink-0 bg-[color:var(--color-surface)] text-slate-600 dark:text-gray-300 p-4 border border-[color:var(--color-border)] rounded-2xl transition-colors duration-300">
+    <>
+      {/* Mobile Overlay */}
+      <div
+        className={`fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 transition-opacity duration-300 lg:hidden ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={onClose}
+      />
+
+      <div
+        className={`
+        fixed lg:static inset-y-0 left-0 z-50
+        flex flex-col h-full w-64 shrink-0 
+        bg-[color:var(--color-surface)] text-[color:var(--color-foreground)] p-4 
+        border-r border-[color:var(--color-border)] 
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}
+      >
       <div className="mb-8 pl-2">
-        <Logo className="text-gray-900 dark:text-white" />
+        <Logo className="text-[color:var(--color-foreground)]" />
       </div>
 
-      <div className="px-2 mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-gray-500">
+      <div className="px-2 mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--color-muted-foreground)]">
         {role ? role.charAt(0) + role.slice(1).toLowerCase() : ""} Dashboard
       </div>
 
@@ -197,12 +219,12 @@ const Sidebar: React.FC<SidebarProps> = ({
               className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 group/item ${
                 isActive
                   ? "bg-primary text-white shadow-lg shadow-primary/20"
-                  : "hover:bg-slate-50 dark:hover:bg-white/5 text-slate-600 hover:text-primary dark:text-gray-400 dark:hover:text-white"
+                  : "hover:bg-[color:var(--color-secondary)] text-[color:var(--color-muted-foreground)] hover:text-primary"
               }`}
             >
               <div className="flex items-center gap-3.5">
                 <div
-                  className={`transition-transform duration-200 group-hover/item:scale-110 ${isActive ? "text-white" : "text-slate-400 group-hover/item:text-primary dark:text-gray-500"}`}
+                  className={`transition-transform duration-200 group-hover/item:scale-110 ${isActive ? "text-white" : "text-[color:var(--color-muted)] group-hover/item:text-primary"}`}
                 >
                   {item.icon}
                 </div>
@@ -221,16 +243,10 @@ const Sidebar: React.FC<SidebarProps> = ({
         {role !== RoleTypes.ADMIN_USER && (
           <div className="flex items-center gap-3 px-3 py-2 mb-2">
             <button
-              onClick={() =>
-                navigate(
-                  role === RoleTypes.ADMIN_USER
-                    ? PAGE_ROUTES.ADMIN_SETTINGS
-                    : PAGE_ROUTES.PROFILE,
-                )
-              }
-              className="flex items-center gap-3 flex-1 min-w-0 text-left hover:bg-gray-100 dark:hover:bg-white/10 p-1 rounded-lg transition-colors group"
+              onClick={() => navigate(PAGE_ROUTES.PROFILE)}
+              className="flex items-center gap-3 flex-1 min-w-0 text-left hover:bg-[color:var(--color-secondary)] p-1 rounded-lg transition-colors group"
             >
-              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#4338ca] text-white font-bold text-sm overflow-hidden group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white font-bold text-sm overflow-hidden group-hover:scale-105 transition-transform">
                 {avatarUrl ? (
                   <img
                     src={avatarUrl}
@@ -247,17 +263,17 @@ const Sidebar: React.FC<SidebarProps> = ({
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-black text-slate-900 dark:text-white truncate">
+                <p className="text-sm font-black text-[color:var(--color-foreground)] truncate">
                   {userName}
                 </p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-gray-500 truncate">
+                <p className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-muted-foreground)] truncate">
                   {role ? role.toLowerCase() : ""}
                 </p>
               </div>
             </button>
             <button
               onClick={() => setIsLogoutModalOpen(true)}
-              className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition-colors"
+              className="p-1.5 text-[color:var(--color-muted-foreground)] hover:text-primary hover:bg-[color:var(--color-secondary)] rounded-lg transition-colors"
             >
               <LogOut size={18} />
             </button>
@@ -266,11 +282,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         {role === RoleTypes.ADMIN_USER && (
           <div className="flex items-center justify-between px-3 py-2 mb-2">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-red-600 text-white font-bold text-sm">
+              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-red-600/10 text-red-600 font-bold text-sm border border-red-200 dark:border-red-900/50">
                 AD
               </div>
               <div>
-                <p className="text-sm font-black text-slate-900 dark:text-white">
+                <p className="text-sm font-black text-[color:var(--color-foreground)]">
                   Admin
                 </p>
                 <p className="text-[10px] font-black uppercase tracking-widest text-red-500">
@@ -280,7 +296,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <button
               onClick={() => setIsLogoutModalOpen(true)}
-              className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition-colors"
+              className="p-1.5 text-[color:var(--color-muted-foreground)] hover:text-primary hover:bg-[color:var(--color-secondary)] rounded-lg transition-colors"
             >
               <LogOut size={18} />
             </button>
@@ -301,6 +317,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         isDestructive={true}
       />
     </div>
+    </>
   );
 };
 

@@ -64,19 +64,7 @@ export const getPropertyById = async (
   id: string,
 ): Promise<{
   success: boolean;
-  data: PropertyData & {
-    bhk?: number;
-    bathrooms?: number;
-    floorNumber?: string;
-    totalFloors?: number;
-    propertyAge?: string;
-    facingDirection?: string;
-    furnishingStatus?: string;
-    amenities?: string[];
-    preferredTenantType?: string[];
-    maintenanceCharges?: number;
-    maintenanceIncluded?: boolean;
-  };
+  data: PropertyData;
 }> => {
   const response = await axiosApi.get(API_ROUTES.GET_PROPERTY_BY_ID(id));
   return response.data;

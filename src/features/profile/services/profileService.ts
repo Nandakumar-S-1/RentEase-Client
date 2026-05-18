@@ -4,6 +4,7 @@ import type {
   ProfileResponse,
   UpdateProfileData,
   UpdateProfileResponse,
+  ChangePasswordData,
 } from "../types/profileTypes";
 
 export const getProfile = async (): Promise<ProfileResponse> => {
@@ -29,5 +30,12 @@ export const uploadAvatar = async (
       "Content-Type": "multipart/form-data",
     },
   });
+  return response.data;
+};
+
+export const changePassword = async (
+  data: ChangePasswordData,
+): Promise<{ success: boolean; message: string }> => {
+  const response = await axiosApi.post(API_ROUTES.CHANGE_PASSWORD, data);
   return response.data;
 };

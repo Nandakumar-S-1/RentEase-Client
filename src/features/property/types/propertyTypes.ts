@@ -14,6 +14,7 @@ export interface PropertyData {
   photos: string[];
   primaryPhotoIndex: number;
   createdAt: string;
+  updatedAt: string;
   areaSqft?: number | null;
   latitude?: number | null;
   longitude?: number | null;
@@ -44,6 +45,12 @@ export interface PropertyData {
   // Analytics
   viewsCount?: number;
   wishlistCount?: number;
+
+  owner?: {
+    fullName: string;
+    email: string;
+    phone?: string | null;
+  };
 }
 
 export interface GetPropertiesParams {

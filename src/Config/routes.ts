@@ -77,6 +77,7 @@ export const API_ROUTES = {
   PROFILE: "/profile",
   UPDATE_PROFILE: "/profile",
   UPLOAD_AVATAR: "/profile/avatar",
+  CHANGE_PASSWORD: "/profile/change-password",
   GET_OWNER_PROPERTIES: "/properties/owner",
   CREATE_PROPERTY: "/properties",
   UPLOAD_PROPERTY_PHOTOS_URLS: "/properties/photos/upload-urls",

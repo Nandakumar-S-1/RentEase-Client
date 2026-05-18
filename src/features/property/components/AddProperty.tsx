@@ -214,7 +214,7 @@ const AddProperty: React.FC = () => {
         errors[issue.path[0]?.toString() || "unknown"] = issue.message;
       });
       setValidationErrors(errors);
-      console.error('Validation errors on submit:', errors);
+      console.error("Validation errors on submit:", errors);
       toast.error("Please fix the errors before submitting");
       return;
     }
@@ -249,8 +249,18 @@ const AddProperty: React.FC = () => {
       await createProperty(payload);
       toast.success("Property added successfully!");
       navigate(PAGE_ROUTES.OWNER_PROPERTIES);
-    } catch (err) {
-      toast.error(getApiErrorMessage(err, "Failed to add property"));
+    } catch (err: any) {
+      const apiErrors = err?.response?.data?.errors;
+      if (apiErrors) {
+        const errors: Record<string, string> = {};
+        Object.entries(apiErrors).forEach(([key, messages]: [string, any]) => {
+          errors[key] = Array.isArray(messages) ? messages[0] : messages;
+        });
+        setValidationErrors(errors);
+        toast.error("Please fix the validation errors");
+      } else {
+        toast.error(getApiErrorMessage(err, "Failed to add property"));
+      }
     } finally {
       setLoading(false);
     }
@@ -267,13 +277,13 @@ const AddProperty: React.FC = () => {
             <h1 className="text-4xl font-black text-[color:var(--color-foreground)] tracking-tight">
               Add New Property
             </h1>
-            <p className="text-gray-500 font-medium tracking-wide">
+            <p className="text-[color:var(--color-muted-foreground)] font-medium tracking-wide">
               Step {step} of 5: {STEPS[step - 1]}
             </p>
           </div>
           <button
             onClick={() => navigate(PAGE_ROUTES.OWNER_PROPERTIES)}
-            className="px-6 py-2.5 bg-gray-100 h-fit dark:bg-white/5 text-gray-600 dark:text-gray-400 font-bold rounded-2xl hover:bg-gray-200 transition-all text-sm"
+            className="px-6 py-2.5 bg-[color:var(--color-secondary)] h-fit text-[color:var(--color-foreground)] font-bold rounded-2xl hover:bg-[color:var(--color-border)] transition-all text-sm"
           >
             Cancel
           </button>
@@ -284,10 +294,10 @@ const AddProperty: React.FC = () => {
           {STEPS.map((s, idx) => (
             <React.Fragment key={s}>
               <div
-                className={`flex flex-col items-center gap-2 ${step >= idx + 1 ? "text-primary" : "text-gray-400"}`}
+                className={`flex flex-col items-center gap-2 ${step >= idx + 1 ? "text-primary" : "text-[color:var(--color-muted)]"}`}
               >
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${step >= idx + 1 ? "bg-primary text-white shadow-lg shadow-primary/30" : "bg-gray-100 dark:bg-white/5"}`}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${step >= idx + 1 ? "bg-primary text-white shadow-lg shadow-primary/30" : "bg-[color:var(--color-secondary)]"}`}
                 >
                   {step > idx + 1 ? <CheckCircle2 size={18} /> : idx + 1}
                 </div>
@@ -297,7 +307,7 @@ const AddProperty: React.FC = () => {
               </div>
               {idx < STEPS.length - 1 && (
                 <div
-                  className={`flex-1 h-1 rounded-full ${step > idx + 1 ? "bg-primary" : "bg-gray-100 dark:bg-white/5"}`}
+                  className={`flex-1 h-1 rounded-full ${step > idx + 1 ? "bg-primary" : "bg-[color:var(--color-secondary)]"}`}
                 />
               )}
             </React.Fragment>
@@ -308,11 +318,11 @@ const AddProperty: React.FC = () => {
           {/* STEP 1: Basic Details */}
           {step === 1 && (
             <div className="space-y-6">
-              <h3 className="text-xl font-black mb-6">
+              <h3 className="text-xl font-black mb-6 text-[color:var(--color-foreground)]">
                 Basic Property Information
               </h3>
               <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 ml-1">
+                <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                   Property Title *
                 </label>
                 <input
@@ -320,7 +330,7 @@ const AddProperty: React.FC = () => {
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g. Modern 2 BHK Flat in Kakkanad"
-                  className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.title ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm`}
+                  className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.title ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm`}
                 />
                 {validationErrors.title && (
                   <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -330,14 +340,14 @@ const AddProperty: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     Property Type
                   </label>
                   <select
                     name="propertyType"
                     value={formData.propertyType}
                     onChange={handleInputChange}
-                    className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.propertyType ? "border-red-500" : "border-border"} rounded-2xl text-sm`}
+                    className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.propertyType ? "border-red-500" : "border-border"} rounded-2xl text-sm`}
                   >
                     <option value="">Select Type</option>
                     {PROPERTY_TYPE_OPTIONS.map((opt) => (
@@ -353,55 +363,73 @@ const AddProperty: React.FC = () => {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     Area (Sq. Ft.)
                   </label>
                   <input
                     type="number"
+                    min="0"
                     name="areaSqft"
                     value={formData.areaSqft}
                     onChange={handleInputChange}
                     placeholder="e.g. 1200"
-                    className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                    className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.areaSqft ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                   />
+                  {validationErrors.areaSqft && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                      {validationErrors.areaSqft}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {formData.propertyType !== "LAND" && (
                 <>
-                  {formData.propertyType !== "SHOP" && (
-                    <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+                    {formData.propertyType !== "SHOP" && (
                       <div className="space-y-2">
-                        <label className="text-sm font-black text-gray-700 ml-1">
+                        <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                           BHK
                         </label>
                         <input
                           type="number"
+                          min="1"
                           name="bhk"
                           value={formData.bhk}
                           onChange={handleInputChange}
                           placeholder="e.g. 2"
-                          className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                          className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.bhk ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                         />
+                        {validationErrors.bhk && (
+                          <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                            {validationErrors.bhk}
+                          </p>
+                        )}
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-black text-gray-700 ml-1">
-                          Bathrooms
-                        </label>
-                        <input
-                          type="number"
-                          name="bathrooms"
-                          value={formData.bathrooms}
-                          onChange={handleInputChange}
-                          placeholder="e.g. 2"
-                          className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
-                        />
-                      </div>
+                    )}
+                    <div className="space-y-2">
+                      <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
+                        Bathrooms
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        name="bathrooms"
+                        value={formData.bathrooms}
+                        onChange={handleInputChange}
+                        placeholder="e.g. 2"
+                        className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.bathrooms ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                      />
+                      {validationErrors.bathrooms && (
+                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                          {validationErrors.bathrooms}
+                        </p>
+                      )}
                     </div>
-                  )}
+                  </div>
                   <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-700 ml-1">
+                      <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                         Floor
                       </label>
                       <input
@@ -409,11 +437,11 @@ const AddProperty: React.FC = () => {
                         value={formData.floorNumber}
                         onChange={handleInputChange}
                         placeholder="e.g. 2nd Floor"
-                        className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                        className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-700 ml-1">
+                      <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                         Age
                       </label>
                       <input
@@ -421,62 +449,68 @@ const AddProperty: React.FC = () => {
                         value={formData.propertyAge}
                         onChange={handleInputChange}
                         placeholder="e.g. 2 years"
-                        className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                        className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-700 ml-1">
+                      <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                         Total Floors
                       </label>
                       <input
                         type="number"
+                        min="1"
                         name="totalFloors"
                         value={formData.totalFloors}
                         onChange={handleInputChange}
                         placeholder="e.g. 5"
-                        className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                        className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.totalFloors ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                       />
+                      {validationErrors.totalFloors && (
+                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                          {validationErrors.totalFloors}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div className="space-y-2">
-  <label className="text-sm font-black text-gray-700 ml-1">
-    Facing Direction
-  </label>
-
-  <select
-    name="facingDirection"
-    value={formData.facingDirection}
-    onChange={handleInputChange}
-    className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
-  >
-    <option value="">Select Direction</option>
-
-    {[
-      "North",
-      "South",
-      "East",
-      "West",
-      "North-East",
-      "North-West",
-      "South-East",
-      "South-West",
-    ].map((direction) => (
-      <option key={direction} value={direction}>
-        {direction}
-      </option>
-    ))}
-  </select>
-</div>
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-700 ml-1">
+                      <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
+                        Facing Direction
+                      </label>
+
+                      <select
+                        name="facingDirection"
+                        value={formData.facingDirection}
+                        onChange={handleInputChange}
+                        className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                      >
+                        <option value="">Select Direction</option>
+
+                        {[
+                          "North",
+                          "South",
+                          "East",
+                          "West",
+                          "North-East",
+                          "North-West",
+                          "South-East",
+                          "South-West",
+                        ].map((direction) => (
+                          <option key={direction} value={direction}>
+                            {direction}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                         Furnishing Status
                       </label>
                       <select
                         name="furnishingStatus"
                         value={formData.furnishingStatus}
                         onChange={handleInputChange}
-                        className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.furnishingStatus ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                        className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.furnishingStatus ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                       >
                         <option value="">Select Status</option>
                         {(FURNISHING_OPTIONS as string[]).map((opt: string) => (
@@ -496,7 +530,7 @@ const AddProperty: React.FC = () => {
               )}
 
               <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 ml-1">
+                <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                   Description *
                 </label>
                 <textarea
@@ -505,8 +539,13 @@ const AddProperty: React.FC = () => {
                   onChange={handleInputChange}
                   rows={4}
                   placeholder="Tell us about your property..."
-                  className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                  className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.description ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                 />
+                {validationErrors.description && (
+                  <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                    {validationErrors.description}
+                  </p>
+                )}
               </div>
             </div>
           )}
@@ -524,8 +563,17 @@ const AddProperty: React.FC = () => {
                     longitude: lng,
                   }))
                 }
+                onAddressFetch={(addr) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    locationCity: addr.city || prev.locationCity,
+                    locationDistrict: addr.district || prev.locationDistrict,
+                    locationPinCode: addr.pincode || prev.locationPinCode,
+                    fullAddress: addr.formattedAddress || prev.fullAddress,
+                  }));
+                }}
               />
-              <div className="flex flex-wrap gap-4 text-xs text-gray-600">
+              <div className="flex flex-wrap gap-4 text-xs text-[color:var(--color-muted-foreground)]">
                 <span>
                   Lat:{" "}
                   <span className="font-mono font-semibold">
@@ -541,14 +589,14 @@ const AddProperty: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     District *
                   </label>
                   <input
                     name="locationDistrict"
                     value={formData.locationDistrict}
                     onChange={handleInputChange}
-                    className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.locationDistrict ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                    className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.locationDistrict ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                   />
                   {validationErrors.locationDistrict && (
                     <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -557,14 +605,14 @@ const AddProperty: React.FC = () => {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     City *
                   </label>
                   <input
                     name="locationCity"
                     value={formData.locationCity}
                     onChange={handleInputChange}
-                    className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.locationCity ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                    className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.locationCity ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                   />
                   {validationErrors.locationCity && (
                     <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -575,14 +623,14 @@ const AddProperty: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     Pincode *
                   </label>
                   <input
                     name="locationPinCode"
                     value={formData.locationPinCode}
                     onChange={handleInputChange}
-                    className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.locationPinCode ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                    className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.locationPinCode ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                   />
                   {validationErrors.locationPinCode && (
                     <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -591,19 +639,19 @@ const AddProperty: React.FC = () => {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     Nearby Landmarks
                   </label>
                   <input
                     name="nearbyLandmarks"
                     value={formData.nearbyLandmarks}
                     onChange={handleInputChange}
-                    className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                    className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 ml-1">
+                <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                   Full Address *
                 </label>
                 <textarea
@@ -611,7 +659,7 @@ const AddProperty: React.FC = () => {
                   value={formData.fullAddress}
                   onChange={handleInputChange}
                   rows={2}
-                  className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.fullAddress ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                  className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.fullAddress ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                 />
                 {validationErrors.fullAddress && (
                   <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -634,7 +682,7 @@ const AddProperty: React.FC = () => {
                   ).map((amenity) => (
                     <label
                       key={amenity}
-                      className={`flex items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all ${formData.amenities.includes(amenity as string) ? "border-primary bg-primary/5 text-primary" : "border-gray-100 hover:border-gray-200 text-gray-600"}`}
+                      className={`flex items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all ${formData.amenities.includes(amenity as string) ? "border-primary bg-primary/5 text-primary" : "border-[color:var(--color-border)] hover:border-[color:var(--color-muted)] text-[color:var(--color-muted-foreground)]"}`}
                     >
                       <input
                         type="checkbox"
@@ -645,7 +693,7 @@ const AddProperty: React.FC = () => {
                         }
                       />
                       <div
-                        className={`w-5 h-5 rounded flex items-center justify-center ${formData.amenities.includes(amenity as string) ? "bg-primary text-white" : "bg-gray-100"}`}
+                        className={`w-5 h-5 rounded flex items-center justify-center ${formData.amenities.includes(amenity as string) ? "bg-primary text-white" : "bg-[color:var(--color-secondary)]"}`}
                       >
                         {formData.amenities.includes(amenity as string) && (
                           <CheckCircle2 size={14} />
@@ -664,7 +712,7 @@ const AddProperty: React.FC = () => {
                   {TENANT_PREF_OPTIONS.map((type) => (
                     <label
                       key={type}
-                      className={`px-6 py-3 rounded-2xl border-2 cursor-pointer transition-all text-sm font-bold ${formData.preferredTenantType.includes(type) ? "border-primary bg-primary text-white shadow-lg shadow-primary/30" : "border-gray-100 bg-white text-gray-500 hover:border-gray-200"}`}
+                      className={`px-6 py-3 rounded-2xl border-2 cursor-pointer transition-all text-sm font-bold ${formData.preferredTenantType.includes(type) ? "border-primary bg-primary text-white shadow-lg shadow-primary/30" : "border-[color:var(--color-border)] bg-white text-[color:var(--color-muted-foreground)] hover:border-[color:var(--color-muted)]"}`}
                     >
                       <input
                         type="checkbox"
@@ -685,7 +733,7 @@ const AddProperty: React.FC = () => {
                   House Rules & Occupancy
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50">
+                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)]">
                     <input
                       type="checkbox"
                       name="petsAllowed"
@@ -693,11 +741,11 @@ const AddProperty: React.FC = () => {
                       onChange={handleInputChange}
                       className="w-5 h-5 rounded text-primary focus:ring-primary"
                     />
-                    <span className="text-sm font-bold text-gray-700">
+                    <span className="text-sm font-bold text-[color:var(--color-foreground)]">
                       Pets Allowed
                     </span>
                   </label>
-                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50">
+                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)]">
                     <input
                       type="checkbox"
                       name="smokingAllowed"
@@ -705,22 +753,28 @@ const AddProperty: React.FC = () => {
                       onChange={handleInputChange}
                       className="w-5 h-5 rounded text-primary focus:ring-primary"
                     />
-                    <span className="text-sm font-bold text-gray-700">
+                    <span className="text-sm font-bold text-[color:var(--color-foreground)]">
                       Smoking Allowed
                     </span>
                   </label>
                   <div className="space-y-2">
-                    <label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">
+                    <label className="text-xs font-black text-[color:var(--color-muted-foreground)] uppercase tracking-widest ml-1">
                       Max Occupants
                     </label>
                     <input
                       type="number"
+                      min="1"
                       name="maximumOccupants"
                       value={formData.maximumOccupants}
                       onChange={handleInputChange}
                       placeholder="e.g. 4"
-                      className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm"
+                      className={`w-full px-4 py-3 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.maximumOccupants ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-xl text-sm`}
                     />
+                    {validationErrors.maximumOccupants && (
+                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                        {validationErrors.maximumOccupants}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -730,7 +784,7 @@ const AddProperty: React.FC = () => {
                   <h3 className="text-xl font-black mb-4">Land Details</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">
+                      <label className="text-xs font-black text-[color:var(--color-muted-foreground)] uppercase tracking-widest ml-1">
                         Land Type
                       </label>
                       <input
@@ -738,10 +792,10 @@ const AddProperty: React.FC = () => {
                         value={formData.landType}
                         onChange={handleInputChange}
                         placeholder="e.g. Residential, Commercial"
-                        className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm"
+                        className="w-full px-4 py-3 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-xl text-sm"
                       />
                     </div>
-                    <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50 h-fit self-end">
+                    <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)] h-fit self-end">
                       <input
                         type="checkbox"
                         name="isCornerPlot"
@@ -749,22 +803,28 @@ const AddProperty: React.FC = () => {
                         onChange={handleInputChange}
                         className="w-5 h-5 rounded text-primary focus:ring-primary"
                       />
-                      <span className="text-sm font-bold text-gray-700">
+                      <span className="text-sm font-bold text-[color:var(--color-foreground)]">
                         Corner Plot
                       </span>
                     </label>
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">
+                      <label className="text-xs font-black text-[color:var(--color-muted-foreground)] uppercase tracking-widest ml-1">
                         Road Width (ft)
                       </label>
                       <input
                         type="number"
+                        min="0"
                         name="roadWidthFeet"
                         value={formData.roadWidthFeet}
                         onChange={handleInputChange}
                         placeholder="e.g. 30"
-                        className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm"
+                        className={`w-full px-4 py-3 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.roadWidthFeet ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-xl text-sm`}
                       />
+                      {validationErrors.roadWidthFeet && (
+                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                          {validationErrors.roadWidthFeet}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -775,7 +835,7 @@ const AddProperty: React.FC = () => {
                   <h3 className="text-xl font-black mb-4">Business Details</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">
+                      <label className="text-xs font-black text-[color:var(--color-muted-foreground)] uppercase tracking-widest ml-1">
                         Shop/Office Type
                       </label>
                       <input
@@ -783,10 +843,10 @@ const AddProperty: React.FC = () => {
                         value={formData.shopType}
                         onChange={handleInputChange}
                         placeholder="e.g. Retail, Office Space"
-                        className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm"
+                        className="w-full px-4 py-3 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-xl text-sm"
                       />
                     </div>
-                    <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50 h-fit self-end">
+                    <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)] h-fit self-end">
                       <input
                         type="checkbox"
                         name="hasParking"
@@ -794,7 +854,7 @@ const AddProperty: React.FC = () => {
                         onChange={handleInputChange}
                         className="w-5 h-5 rounded text-primary focus:ring-primary"
                       />
-                      <span className="text-sm font-bold text-gray-700">
+                      <span className="text-sm font-bold text-[color:var(--color-foreground)]">
                         Dedicated Parking Area
                       </span>
                     </label>
@@ -810,7 +870,7 @@ const AddProperty: React.FC = () => {
               <h3 className="text-xl font-black mb-2">
                 Upload Property Photos
               </h3>
-              <p className="text-sm text-gray-500 font-bold mb-6">
+              <p className="text-sm text-[color:var(--color-muted-foreground)] font-bold mb-6">
                 Upload up to 5 high-quality images. The first image will be set
                 as primary.
               </p>
@@ -819,7 +879,7 @@ const AddProperty: React.FC = () => {
                 {previews.map((src, idx) => (
                   <div
                     key={src}
-                    className="relative aspect-video md:aspect-square rounded-3xl overflow-hidden group border-2 border-gray-100 shadow-sm"
+                    className="relative aspect-video md:aspect-square rounded-3xl overflow-hidden group border-2 border-[color:var(--color-border)] shadow-sm"
                   >
                     <img
                       src={src}
@@ -845,7 +905,7 @@ const AddProperty: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="aspect-video md:aspect-square rounded-3xl border-2 border-dashed border-gray-200 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-primary"
+                    className="aspect-video md:aspect-square rounded-3xl border-2 border-dashed border-[color:var(--color-border)] hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 text-[color:var(--color-muted)] hover:text-primary"
                   >
                     <Plus size={32} />
                     <span className="text-xs font-black uppercase tracking-widest">
@@ -871,19 +931,20 @@ const AddProperty: React.FC = () => {
               <h3 className="text-xl font-black mb-6">Pricing & Maintenance</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     Monthly Rent *
                   </label>
                   <div className="relative">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-gray-400">
+                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-[color:var(--color-muted)]">
                       ₹
                     </span>
                     <input
                       type="number"
+                      min="1"
                       name="monthlyRent"
                       value={formData.monthlyRent}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.monthlyRent ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                      className={`w-full pl-10 pr-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.monthlyRent ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                     />
                   </div>
                   {validationErrors.monthlyRent && (
@@ -893,19 +954,20 @@ const AddProperty: React.FC = () => {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     Security Deposit *
                   </label>
                   <div className="relative">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-gray-400">
+                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-[color:var(--color-muted)]">
                       ₹
                     </span>
                     <input
                       type="number"
+                      min="1"
                       name="depositAmount"
                       value={formData.depositAmount}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.depositAmount ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                      className={`w-full pl-10 pr-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.depositAmount ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                     />
                   </div>
                   {validationErrors.depositAmount && (
@@ -915,26 +977,32 @@ const AddProperty: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[color:var(--color-border)]">
                 <div className="space-y-2">
-                  <label className="text-sm font-black text-gray-700 ml-1">
+                  <label className="text-sm font-black text-[color:var(--color-foreground)] ml-1">
                     Maintenance Charges
                   </label>
                   <div className="relative">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-gray-400">
+                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-[color:var(--color-muted)]">
                       ₹
                     </span>
                     <input
                       type="number"
+                      min="0"
                       name="maintenanceCharges"
                       value={formData.maintenanceCharges}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                      className={`w-full pl-10 pr-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.maintenanceCharges ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
                     />
                   </div>
+                  {validationErrors.maintenanceCharges && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                      {validationErrors.maintenanceCharges}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2 flex flex-col justify-center pt-6">
-                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50">
+                  <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)]">
                     <input
                       type="checkbox"
                       name="maintenanceIncluded"
@@ -942,7 +1010,7 @@ const AddProperty: React.FC = () => {
                       onChange={handleInputChange}
                       className="w-5 h-5 rounded text-primary focus:ring-primary inline-block"
                     />
-                    <span className="text-sm font-bold text-gray-700">
+                    <span className="text-sm font-bold text-[color:var(--color-foreground)]">
                       Maintenance is included in Rent
                     </span>
                   </label>
@@ -954,7 +1022,7 @@ const AddProperty: React.FC = () => {
                   <AlertCircle size={20} />
                   <h4 className="font-black">Submission Rules</h4>
                 </div>
-                <ul className="space-y-2 text-xs font-bold text-gray-600">
+                <ul className="space-y-2 text-xs font-bold text-[color:var(--color-muted-foreground)]">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 size={12} className="text-primary" /> All
                     listings are moderated by AI for safety.
@@ -975,7 +1043,7 @@ const AddProperty: React.FC = () => {
             type="button"
             onClick={prevStep}
             disabled={step === 1 || loading}
-            className="flex items-center gap-2 px-6 py-3 font-bold text-gray-500 hover:bg-gray-100 rounded-2xl transition-all disabled:opacity-30"
+            className="flex items-center gap-2 px-6 py-3 font-bold text-[color:var(--color-muted-foreground)] hover:bg-[color:var(--color-secondary)] rounded-2xl transition-all disabled:opacity-30"
           >
             <ChevronLeft size={20} /> Back
           </button>

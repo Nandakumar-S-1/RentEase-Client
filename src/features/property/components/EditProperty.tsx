@@ -413,6 +413,7 @@ const EditProperty: React.FC = () => {
                   </label>
                   <input
                     type="number"
+                    min="0"
                     name="areaSqft"
                     value={formData.areaSqft}
                     onChange={handleInputChange}
@@ -428,34 +429,46 @@ const EditProperty: React.FC = () => {
 
               {formData.propertyType !== "LAND" && (
                 <>
-                  {formData.propertyType !== "SHOP" && (
-                    <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+                    {formData.propertyType !== "SHOP" && (
                       <div className="space-y-2">
                         <label className="text-sm font-black text-gray-700 ml-1">
                           BHK
                         </label>
                         <input
                           type="number"
+                          min="1"
                           name="bhk"
                           value={formData.bhk}
                           onChange={handleInputChange}
-                          className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm"
+                          className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.bhk ? "border-red-500" : "border-border"} rounded-2xl text-sm`}
                         />
+                        {validationErrors.bhk && (
+                          <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                            {validationErrors.bhk}
+                          </p>
+                        )}
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-black text-gray-700 ml-1">
-                          Bathrooms
-                        </label>
-                        <input
-                          type="number"
-                          name="bathrooms"
-                          value={formData.bathrooms}
-                          onChange={handleInputChange}
-                          className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm"
-                        />
-                      </div>
+                    )}
+                    <div className="space-y-2">
+                      <label className="text-sm font-black text-gray-700 ml-1">
+                        Bathrooms
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        name="bathrooms"
+                        value={formData.bathrooms}
+                        onChange={handleInputChange}
+                        className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.bathrooms ? "border-red-500" : "border-border"} rounded-2xl text-sm`}
+                      />
+                      {validationErrors.bathrooms && (
+                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                          {validationErrors.bathrooms}
+                        </p>
+                      )}
                     </div>
-                  )}
+                  </div>
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-black text-gray-700 ml-1">
@@ -474,11 +487,17 @@ const EditProperty: React.FC = () => {
                       </label>
                       <input
                         type="number"
+                        min="1"
                         name="totalFloors"
                         value={formData.totalFloors}
                         onChange={handleInputChange}
-                        className="w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm"
+                        className={`w-full px-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.totalFloors ? "border-red-500" : "border-border"} rounded-2xl text-sm`}
                       />
+                      {validationErrors.totalFloors && (
+                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                          {validationErrors.totalFloors}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-black text-gray-700 ml-1">
@@ -564,6 +583,15 @@ const EditProperty: React.FC = () => {
                     longitude: lng,
                   }))
                 }
+                onAddressFetch={(addr) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    locationCity: addr.city || prev.locationCity,
+                    locationDistrict: addr.district || prev.locationDistrict,
+                    locationPinCode: addr.pincode || prev.locationPinCode,
+                    fullAddress: addr.formattedAddress || prev.fullAddress,
+                  }));
+                }}
               />
               <div className="flex flex-wrap gap-4 text-xs text-gray-600">
                 <span>
@@ -712,12 +740,18 @@ const EditProperty: React.FC = () => {
                     </label>
                     <input
                       type="number"
+                      min="1"
                       name="maximumOccupants"
                       value={formData.maximumOccupants}
                       onChange={handleInputChange}
                       placeholder="e.g. 4"
-                      className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm"
+                      className={`w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.maximumOccupants ? "border-red-500" : "border-gray-100"} rounded-xl text-sm`}
                     />
+                    {validationErrors.maximumOccupants && (
+                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                        {validationErrors.maximumOccupants}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -756,12 +790,18 @@ const EditProperty: React.FC = () => {
                       </label>
                       <input
                         type="number"
+                        min="0"
                         name="roadWidthFeet"
                         value={formData.roadWidthFeet}
                         onChange={handleInputChange}
                         placeholder="e.g. 30"
-                        className="w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-gray-100 rounded-xl text-sm"
+                        className={`w-full px-4 py-3 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.roadWidthFeet ? "border-red-500" : "border-gray-100"} rounded-xl text-sm`}
                       />
+                      {validationErrors.roadWidthFeet && (
+                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                          {validationErrors.roadWidthFeet}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -886,6 +926,7 @@ const EditProperty: React.FC = () => {
                   </label>
                   <input
                     type="number"
+                    min="1"
                     name="monthlyRent"
                     value={formData.monthlyRent}
                     onChange={handleInputChange}
@@ -903,6 +944,7 @@ const EditProperty: React.FC = () => {
                   </label>
                   <input
                     type="number"
+                    min="1"
                     name="depositAmount"
                     value={formData.depositAmount}
                     onChange={handleInputChange}
@@ -926,12 +968,18 @@ const EditProperty: React.FC = () => {
                     </span>
                     <input
                       type="number"
+                      min="0"
                       name="maintenanceCharges"
                       value={formData.maintenanceCharges}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-6 py-4 bg-gray-50/50 dark:bg-white/5 border border-border rounded-2xl text-sm"
+                      className={`w-full pl-10 pr-6 py-4 bg-gray-50/50 dark:bg-white/5 border ${validationErrors.maintenanceCharges ? "border-red-500" : "border-border"} rounded-2xl text-sm`}
                     />
                   </div>
+                  {validationErrors.maintenanceCharges && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
+                      {validationErrors.maintenanceCharges}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2 flex flex-col justify-center pt-6">
                   <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-100 hover:bg-gray-50">

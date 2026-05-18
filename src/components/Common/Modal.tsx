@@ -27,32 +27,34 @@ export const Modal: React.FC<ModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 transition-opacity">
-      <div className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-        <div className="flex items-start justify-between">
-          <h3 className="text-lg font-semibold leading-6 text-gray-900">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-all duration-300">
+      <div className="relative w-full max-w-md transform overflow-hidden rounded-3xl bg-[color:var(--color-surface)] border border-[color:var(--color-border)] p-8 text-left align-middle shadow-2xl shadow-slate-900/20 transition-all">
+        <div className="flex items-start justify-between mb-2">
+          <h3 className="text-xl font-extrabold tracking-tight text-[color:var(--color-foreground)]">
             {title}
           </h3>
           <button
             type="button"
             onClick={onClose}
             disabled={isLoading}
-            className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500 transition-colors"
+            className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-600 dark:hover:text-white transition-all"
           >
             <X size={20} />
           </button>
         </div>
 
-        <div className="mt-2">
-          <p className="text-sm text-gray-500">{description}</p>
+        <div className="mb-8">
+          <p className="text-base text-[color:var(--color-muted-foreground)] leading-relaxed font-medium">
+            {description}
+          </p>
         </div>
 
-        <div className="mt-6 flex justify-end gap-3">
+        <div className="flex flex-col sm:flex-row justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
             disabled={isLoading}
-            className="inline-flex justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 disabled:opacity-50"
+            className="w-full sm:w-auto inline-flex justify-center rounded-xl border border-[color:var(--color-border)] bg-transparent px-6 py-2.5 text-sm font-bold text-[color:var(--color-foreground)] hover:bg-slate-50 dark:hover:bg-white/5 focus:outline-none transition-all disabled:opacity-50"
           >
             {cancelText}
           </button>
@@ -60,33 +62,13 @@ export const Modal: React.FC<ModalProps> = ({
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className={`inline-flex min-w-[80px] justify-center rounded-lg border border-transparent px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 transition-colors ${
-              isDestructive
-                ? "bg-red-600 hover:bg-red-700 focus-visible:ring-red-500"
-                : "bg-primary hover:bg-primary-hover focus-visible:ring-primary"
-            }`}
+            className={`w-full sm:w-auto inline-flex min-w-[100px] justify-center rounded-xl px-6 py-2.5 text-sm font-bold text-white shadow-lg transition-all disabled:opacity-50 ${isDestructive
+                ? "bg-red-600 hover:bg-red-700 shadow-red-600/20"
+                : "bg-primary hover:bg-primary/90 shadow-primary/20"
+              }`}
           >
             {isLoading ? (
-              <svg
-                className="animate-spin h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
             ) : (
               confirmText
             )}

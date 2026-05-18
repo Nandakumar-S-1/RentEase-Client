@@ -41,3 +41,8 @@ export interface UpdateProfileResponse {
     role: RoleType;
   };
 }
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

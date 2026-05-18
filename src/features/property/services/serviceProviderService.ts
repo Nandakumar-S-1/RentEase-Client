@@ -34,10 +34,23 @@ export const addServiceProvider = async (
   return response.data;
 };
 
-export const getServiceProviders = async (propertyId: string) => {
-  const response = await axiosApi.get<ApiResponse<ServiceProvider[]>>(
-    `${BASE_URL}/property/${propertyId}`,
-  );
+export interface PaginatedServiceProviderResponse {
+  providers: ServiceProvider[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export const getServiceProviders = async (
+  propertyId: string,
+  page: number = 1,
+  limit: number = 10,
+) => {
+  const response = await axiosApi.get<
+    ApiResponse<PaginatedServiceProviderResponse>
+  >(`${BASE_URL}/property/${propertyId}`, {
+    params: { page, limit },
+  });
   return response.data;
 };
 

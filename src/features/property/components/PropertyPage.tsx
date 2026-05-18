@@ -17,6 +17,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { useAppSelector } from "../../../hooks/useAppSelector";
+import { useDebounce } from "../../../hooks/useDebounce";
 import type { RootState } from "../../../app/store/store";
 import type { RoleType } from "../../../types/constants/role.constant";
 import { useNavigate } from "react-router-dom";
@@ -48,9 +49,19 @@ const PropertyPage: React.FC = () => {
   const { user } = useAppSelector((state: RootState) => state.auth);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [cityInput, setCityInput] = useState("");
-  const [debouncedCityInput, setDebouncedCityInput] = useState("");
+  const debouncedCityInput = useDebounce(cityInput, 500);
+
+  const [minRentInput, setMinRentInput] = useState("");
+  const [maxRentInput, setMaxRentInput] = useState("");
+  const debouncedMinRent = useDebounce(minRentInput, 500);
+  const debouncedMaxRent = useDebounce(maxRentInput, 500);
+
+  const [minAreaInput, setMinAreaInput] = useState("");
+  const [maxAreaInput, setMaxAreaInput] = useState("");
+  const debouncedMinArea = useDebounce(minAreaInput, 500);
+  const debouncedMaxArea = useDebounce(maxAreaInput, 500);
 
   const tabs = [
     { id: "ALL", label: "All Properties" },
@@ -70,14 +81,6 @@ const PropertyPage: React.FC = () => {
       setPage(1);
     }
   };
-
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm.trim());
-    }, 500);
-
-    return () => clearTimeout(id);
-  }, [searchTerm]);
 
   useEffect(() => {
     const value = debouncedSearchTerm;
@@ -100,22 +103,41 @@ const PropertyPage: React.FC = () => {
     setFilters({});
     setSearchTerm("");
     setCityInput("");
+    setMinRentInput("");
+    setMaxRentInput("");
+    setMinAreaInput("");
+    setMaxAreaInput("");
     setPage(1);
   };
-
-  // Debounce city filter as well
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setDebouncedCityInput(cityInput.trim());
-    }, 500);
-
-    return () => clearTimeout(id);
-  }, [cityInput]);
 
   useEffect(() => {
     const value = debouncedCityInput || undefined;
     handleFilterChange({ city: value });
   }, [debouncedCityInput]);
+
+  useEffect(() => {
+    handleFilterChange({
+      minRent: debouncedMinRent ? Number(debouncedMinRent) : undefined,
+    });
+  }, [debouncedMinRent]);
+
+  useEffect(() => {
+    handleFilterChange({
+      maxRent: debouncedMaxRent ? Number(debouncedMaxRent) : undefined,
+    });
+  }, [debouncedMaxRent]);
+
+  useEffect(() => {
+    handleFilterChange({
+      minArea: debouncedMinArea ? Number(debouncedMinArea) : undefined,
+    });
+  }, [debouncedMinArea]);
+
+  useEffect(() => {
+    handleFilterChange({
+      maxArea: debouncedMaxArea ? Number(debouncedMaxArea) : undefined,
+    });
+  }, [debouncedMaxArea]);
 
   const showBhkFilter =
     !filters.propertyType ||
@@ -330,28 +352,16 @@ const PropertyPage: React.FC = () => {
                       type="number"
                       placeholder="Min"
                       className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
-                      onChange={(e) =>
-                        handleFilterChange({
-                          minRent: e.target.value
-                            ? Number(e.target.value)
-                            : undefined,
-                        })
-                      }
-                      value={filters.minRent || ""}
+                      onChange={(e) => setMinRentInput(e.target.value)}
+                      value={minRentInput}
                     />
                     <span className="text-gray-300">-</span>
                     <input
                       type="number"
                       placeholder="Max"
                       className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
-                      onChange={(e) =>
-                        handleFilterChange({
-                          maxRent: e.target.value
-                            ? Number(e.target.value)
-                            : undefined,
-                        })
-                      }
-                      value={filters.maxRent || ""}
+                      onChange={(e) => setMaxRentInput(e.target.value)}
+                      value={maxRentInput}
                     />
                   </div>
                 </div>
@@ -366,34 +376,16 @@ const PropertyPage: React.FC = () => {
                         type="number"
                         placeholder="Min"
                         className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
-                        onChange={(e) =>
-                          handleFilterChange({
-                            minArea: e.target.value
-                              ? Number(e.target.value)
-                              : undefined,
-                          })
-                        }
-                        value={
-                          ((filters as Record<string, unknown>)
-                            .minArea as string) || ""
-                        }
+                        onChange={(e) => setMinAreaInput(e.target.value)}
+                        value={minAreaInput}
                       />
                       <span className="text-gray-300">-</span>
                       <input
                         type="number"
                         placeholder="Max"
                         className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
-                        onChange={(e) =>
-                          handleFilterChange({
-                            maxArea: e.target.value
-                              ? Number(e.target.value)
-                              : undefined,
-                          })
-                        }
-                        value={
-                          ((filters as Record<string, unknown>)
-                            .maxArea as string) || ""
-                        }
+                        onChange={(e) => setMaxAreaInput(e.target.value)}
+                        value={maxAreaInput}
                       />
                     </div>
                   </div>

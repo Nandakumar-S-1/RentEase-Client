@@ -1,23 +1,53 @@
 import { useEffect, useRef } from "react";
 import { OlaMaps, defaultStyleJson } from "olamaps-web-sdk";
+import { reverseGeocode } from "../services/olaMapService";
+
+type AddressData = {
+  city: string;
+  district: string;
+  pincode: string;
+  formattedAddress: string;
+};
 
 type PropertyLocationMapProps = {
   latitude: number;
   longitude: number;
-  onLocationChange: (latitude: number, longitude: number) => void;
+  onLocationChange?: (latitude: number, longitude: number) => void;
+  onAddressFetch?: (address: AddressData) => void;
+  isReadOnly?: boolean;
 };
-
 
 export function PropertyLocationMap({
   latitude,
   longitude,
   onLocationChange,
+  onAddressFetch,
+  isReadOnly = false,
 }: PropertyLocationMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<{ remove: () => void } | null>(null);
-  const markerRef = useRef<{ getLngLat: () => { lat: number; lng: number }; setLngLat: (lngLat: [number, number]) => unknown; remove: () => void } | null>(null);
+  const markerRef = useRef<{
+    getLngLat: () => { lat: number; lng: number };
+    setLngLat: (lngLat: [number, number]) => unknown;
+    remove: () => void;
+  } | null>(null);
+
   const onLocationChangeRef = useRef(onLocationChange);
   onLocationChangeRef.current = onLocationChange;
+
+  const onAddressFetchRef = useRef(onAddressFetch);
+  onAddressFetchRef.current = onAddressFetch;
+
+  const handleLocationUpdate = async (lat: number, lng: number) => {
+    onLocationChangeRef.current?.(lat, lng);
+
+    if (onAddressFetchRef.current) {
+      const address = await reverseGeocode(lat, lng);
+      if (address) {
+        onAddressFetchRef.current(address);
+      }
+    }
+  };
 
   useEffect(() => {
     const apiKey = import.meta.env.VITE_OLA_MAP_TOKEN_API as string | undefined;
@@ -41,20 +71,22 @@ export function PropertyLocationMap({
 
       mapRef.current = map;
       const marker = sdk
-        .addMarker({ draggable: true })
+        .addMarker({ draggable: !isReadOnly })
         .setLngLat([longitude, latitude])
         .addTo(map);
       markerRef.current = marker;
 
-      marker.on("dragend", () => {
-        const ll = marker.getLngLat();
-        onLocationChangeRef.current(ll.lat, ll.lng);
-      });
+      if (!isReadOnly) {
+        marker.on("dragend", () => {
+          const ll = marker.getLngLat();
+          handleLocationUpdate(ll.lat, ll.lng);
+        });
 
-      map.on("click", (e: { lngLat: { lat: number; lng: number } }) => {
-        marker.setLngLat([e.lngLat.lng, e.lngLat.lat]);
-        onLocationChangeRef.current(e.lngLat.lat, e.lngLat.lng);
-      });
+        map.on("click", (e: { lngLat: { lat: number; lng: number } }) => {
+          marker.setLngLat([e.lngLat.lng, e.lngLat.lat]);
+          handleLocationUpdate(e.lngLat.lat, e.lngLat.lng);
+        });
+      }
     };
 
     void run().catch((err: unknown) => {
@@ -68,8 +100,6 @@ export function PropertyLocationMap({
       mapRef.current?.remove();
       mapRef.current = null;
     };
-    // Intentionally run once per mount; parent supplies initial lat/lng below.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -97,7 +127,9 @@ export function PropertyLocationMap({
     <div className="relative h-72 rounded-3xl overflow-hidden border-2 border-gray-100">
       <div ref={containerRef} className="h-full w-full" />
       <p className="pointer-events-none absolute top-3 left-3 rounded-xl bg-white/90 px-3 py-2 text-xs font-bold text-gray-600 shadow-md backdrop-blur-sm">
-        Click map or drag pin to set location
+        {isReadOnly
+          ? "Property Location"
+          : "Click map or drag pin to set location"}
       </p>
     </div>
   );

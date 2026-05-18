@@ -21,7 +21,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   return (
     <div className="flex min-h-screen">
       {showLeftPanel && (
-        <div className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-linear-to-b from-[hsl(260,20%,18%)] to-[hsl(260,25%,12%)] p-12 text-white">
+        <div className="hidden lg:flex lg:w-1/2 flex-col justify-between bg-gradient-to-b from-blue-900 to-slate-950 p-12 text-white">
           <Logo size="md" />
           <p className="max-w-md text-lg leading-relaxed text-white/70">
             {leftPanelDescription}

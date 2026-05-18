@@ -25,13 +25,7 @@ export const FurnishingStatus = {
   FULLY_FURNISHED: "Fully Furnished",
 } as const;
 
-export const FACING_DIRECTIONS = [
-  "North",
-  "South",
-  "East",
-  "West",
-] as const;
-
+export const FACING_DIRECTIONS = ["North", "South", "East", "West"] as const;
 
 export const TenantTypePref = {
   FAMILY: "Family",

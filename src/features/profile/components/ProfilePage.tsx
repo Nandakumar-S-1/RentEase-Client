@@ -3,6 +3,7 @@ import DashboardLayout from "../../../components/common/DashboardLayout";
 import { useProfile } from "../hooks/useProfile";
 import ProfileCard from "./ProfileCard";
 import PersonalInfoForm from "./PersonalInfoForm";
+import ChangePasswordForm from "./ChangePasswordForm";
 import type { RoleType } from "../../../types/constants/role.constant";
 import { LoadingOverlay } from "../../../components/common";
 import {
@@ -131,6 +132,10 @@ const ProfilePage: React.FC = () => {
                   isSaving={updating}
                 />
               </div>
+            </div>
+          ) : activeTab === "security" ? (
+            <div className="bg-white dark:bg-card rounded-[3rem] p-12 shadow-xl border border-gray-100 dark:border-white/5 max-w-4xl mx-auto">
+              <ChangePasswordForm />
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-40 border-4 border-dashed border-gray-100 dark:border-white/5 rounded-[4rem] gap-8 bg-gray-50/30">

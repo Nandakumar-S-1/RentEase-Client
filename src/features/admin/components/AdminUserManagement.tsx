@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Search,
   Filter,
@@ -22,6 +22,7 @@ import type {
 } from "../../../types/constants/role.constant";
 import { useNavigate } from "react-router-dom";
 import { PAGE_ROUTES } from "../../../config/routes";
+import { useDebounce } from "../../../hooks/useDebounce";
 
 const AdminUserManagement = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const AdminUserManagement = () => {
     pages: 1,
   });
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [confirmModal, setConfirmModal] = useState<{
     isOpen: boolean;
     userId: string | null;
@@ -111,11 +113,15 @@ const AdminUserManagement = () => {
     navigate(PAGE_ROUTES.ADMIN_USER_DETAIL.replace(":id", user.id));
   };
 
-  const filteredUsers = allUsers.filter(
-    (user) =>
-      user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredUsers = useMemo(() => {
+    return allUsers.filter(
+      (user) =>
+        user.fullname
+          .toLowerCase()
+          .includes(debouncedSearchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(debouncedSearchTerm.toLowerCase()),
+    );
+  }, [allUsers, debouncedSearchTerm]);
 
   const getStatusStyles = (user: UserResponse) => {
     if (user.isSuspended) return "bg-red-500/10 text-red-500 border-red-500/20";
