@@ -46,6 +46,12 @@ const ServiceProviderManagement = lazy(
 );
 const LandingPage = lazy(() => import("../../components/pages/LandingPage"));
 const NotFound = lazy(() => import("../../components/common/NotFound"));
+const AgreementDashboard = lazy(
+  () => import("../../features/agreements/components/AgreementDashboard"),
+);
+const AgreementCreationPage = lazy(
+  () => import("../../features/agreements/components/AgreementCreationPage"),
+);
 
 export const UserRouter = () => {
   return (
@@ -178,6 +184,30 @@ export const UserRouter = () => {
           element={
             <ProtectedRoute>
               <ServiceProviderManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.OWNER_AGREEMENTS}
+          element={
+            <ProtectedRoute>
+              <AgreementDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.OWNER_CREATE_AGREEMENT}
+          element={
+            <ProtectedRoute>
+              <AgreementCreationPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.TENANT_AGREEMENTS}
+          element={
+            <ProtectedRoute>
+              <AgreementDashboard />
             </ProtectedRoute>
           }
         />

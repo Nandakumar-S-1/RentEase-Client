@@ -20,6 +20,7 @@ export const PAGE_ROUTES = {
   MESSAGES: "/messages",
   OWNER_PROPERTIES: "/owner/properties",
   OWNER_AGREEMENTS: "/owner/agreements",
+  OWNER_CREATE_AGREEMENT: "/owner/agreements/create",
   OWNER_PAYMENTS: "/owner/payments",
   OWNER_MAINTENANCE: "/owner/maintenance",
   OWNER_SUBSCRIPTION: "/owner/subscription",
@@ -91,6 +92,16 @@ export const API_ROUTES = {
   WISHLIST: "/wishlist",
   TOGGLE_WISHLIST: (propertyId: string) => `/wishlist/${propertyId}`,
   CHECK_WISHLISTED: (propertyId: string) => `/wishlist/check/${propertyId}`,
+
+  // Agreements
+  CREATE_AGREEMENT: "/agreements",
+  SIGN_OWNER: (id: string) => `/agreements/${id}/sign-owner`,
+  SIGN_TENANT: (id: string) => `/agreements/${id}/sign-tenant`,
+  GENERATE_PDF: (id: string) => `/agreements/${id}/generate-pdf`,
+  GET_AGREEMENT: (id: string) => `/agreements/${id}`,
+  GET_MY_AGREEMENTS: "/agreements/me",
+  UPLOAD_KYC: (id: string) => `/agreements/${id}/kyc`,
+  GET_AGREEMENT_UPLOAD_URLS: (id: string) => `/agreements/${id}/upload-urls`,
 } as const;
 
 export const PATH_ROUTES = {

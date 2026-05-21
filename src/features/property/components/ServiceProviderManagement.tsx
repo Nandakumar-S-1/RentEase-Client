@@ -7,32 +7,15 @@ import type { RootState } from "../../../app/store/store";
 import type { RoleType } from "../../../types/constants/role.constant";
 import {
   Plus,
-  Trash2,
-  Phone,
-  Wrench,
-  CheckCircle2,
   XCircle,
   ChevronLeft,
-  ChevronRight,
   Search,
-  Star,
-  Edit2,
 } from "lucide-react";
-import { LoadingOverlay, Modal } from "../../../components/common";
+import { LoadingOverlay, Modal, Pagination } from "../../../components/common";
 import { serviceProviderSchema } from "../schemas/propertySchemas";
+import { ServiceProviderCard } from "./partials/ServiceProviderCard";
+import { ServiceProviderForm } from "./partials/ServiceProviderForm";
 
-const PROVIDER_TYPES = [
-  "Electrician",
-  "Plumber",
-  "Cleaner",
-  "Painter",
-  "Carpenter",
-  "Pest Control",
-  "AC Service",
-  "Gardener",
-  "Security",
-  "Other",
-];
 
 const ServiceProviderManagement: React.FC = () => {
   const { propertyId } = useParams<{ propertyId: string }>();
@@ -184,135 +167,13 @@ const ServiceProviderManagement: React.FC = () => {
           </button>
         </div>
 
-        {/* Add Provider Form */}
         {isAdding && (
-          <div className="bg-white dark:bg-card border-2 border-primary/20 rounded-[2.5rem] p-8 shadow-xl animate-in fade-in slide-in-from-top-4">
-            <h3 className="text-xl font-black mb-6">New Service Provider</h3>
-            <form
-              onSubmit={handleAddSubmit}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 ml-1">
-                  Provider Name *
-                </label>
-                <input
-                  value={newProvider.providerName}
-                  onChange={(e) =>
-                    setNewProvider({
-                      ...newProvider,
-                      providerName: e.target.value,
-                    })
-                  }
-                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.providerName ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm font-medium`}
-                  placeholder="e.g. John Doe"
-                />
-                {formErrors.providerName && (
-                  <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
-                    {formErrors.providerName}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 ml-1">
-                  Service Category
-                </label>
-                <select
-                  value={newProvider.providerType}
-                  onChange={(e) =>
-                    setNewProvider({
-                      ...newProvider,
-                      providerType: e.target.value,
-                    })
-                  }
-                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.providerType ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
-                >
-                  {PROVIDER_TYPES.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-                {formErrors.providerType && (
-                  <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
-                    {formErrors.providerType}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 ml-1">
-                  Phone Number *
-                </label>
-                <input
-                  value={newProvider.phone}
-                  onChange={(e) =>
-                    setNewProvider({ ...newProvider, phone: e.target.value })
-                  }
-                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.phone ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
-                  placeholder="e.g. +91 9876543210"
-                />
-                {formErrors.phone && (
-                  <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
-                    {formErrors.phone}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 ml-1">
-                  Min Charges (₹)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={newProvider.typicalChargesMin}
-                  onChange={(e) =>
-                    setNewProvider({
-                      ...newProvider,
-                      typicalChargesMin: e.target.value,
-                    })
-                  }
-                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.typicalChargesMin ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
-                  placeholder="500"
-                />
-                {formErrors.typicalChargesMin && (
-                  <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
-                    {formErrors.typicalChargesMin}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 ml-1">
-                  Max Charges (₹)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={newProvider.typicalChargesMax}
-                  onChange={(e) =>
-                    setNewProvider({
-                      ...newProvider,
-                      typicalChargesMax: e.target.value,
-                    })
-                  }
-                  className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.typicalChargesMax ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
-                  placeholder="2000"
-                />
-                {formErrors.typicalChargesMax && (
-                  <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
-                    {formErrors.typicalChargesMax}
-                  </p>
-                )}
-              </div>
-              <div className="flex items-end">
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-primary text-white font-black rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
-                >
-                  Save Provider
-                </button>
-              </div>
-            </form>
-          </div>
+          <ServiceProviderForm
+            newProvider={newProvider}
+            setNewProvider={setNewProvider}
+            formErrors={formErrors}
+            handleAddSubmit={handleAddSubmit}
+          />
         )}
 
         {/* Providers List */}
@@ -342,122 +203,26 @@ const ServiceProviderManagement: React.FC = () => {
 
           {Array.isArray(providers) &&
             providers.map((p) => (
-              <div
+              <ServiceProviderCard
                 key={p.id}
-                className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-[2.5rem] p-6 hover:shadow-xl transition-all group overflow-hidden relative"
-              >
-                <div className="flex justify-between items-start mb-6">
-                  <div className="w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-4">
-                    <Wrench size={24} />
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => startEdit(p)}
-                      className="p-2 text-primary bg-primary/5 hover:bg-primary/10 rounded-xl transition-all"
-                      title="Edit"
-                    >
-                      <Edit2 size={18} />
-                    </button>
-                    <button
-                      onClick={() => confirmToggleStatus(p.id, !p.isActive)}
-                      className={`p-2 rounded-xl transition-all ${p.isActive ? "text-green-500 bg-green-50 hover:bg-green-100" : "text-gray-400 bg-gray-50 hover:bg-gray-100"}`}
-                      title={p.isActive ? "Deactivate" : "Activate"}
-                    >
-                      {p.isActive ? (
-                        <CheckCircle2 size={18} />
-                      ) : (
-                        <XCircle size={18} />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => confirmDelete(p.id)}
-                      className="p-2 text-red-500 bg-red-50 hover:bg-red-100 rounded-xl transition-all"
-                      title="Remove"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="text-lg font-black text-gray-800 dark:text-white group-hover:text-primary transition-colors">
-                      {p.providerName}
-                    </h4>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 bg-gray-100 dark:bg-white/5 px-2 py-0.5 rounded-md inline-block mt-1">
-                      {p.providerType}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-white/5 p-3 rounded-2xl">
-                    <div className="w-8 h-8 bg-white dark:bg-card rounded-xl flex items-center justify-center shadow-sm">
-                      <Phone size={14} className="text-primary" />
-                    </div>
-                    <span className="text-sm font-black">{p.phone}</span>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-2">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                        Typical Charges
-                      </span>
-                      <span className="text-sm font-black text-gray-800 dark:text-white">
-                        ₹{p.typicalChargesMin} - ₹{p.typicalChargesMax}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 bg-yellow-50 text-yellow-600 px-3 py-1.5 rounded-xl">
-                      <Star size={14} fill="currentColor" />
-                      <span className="text-sm font-black">
-                        {p.rating || "N/A"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  className={`absolute top-0 right-0 w-2 h-full ${p.isActive ? "bg-green-500/10" : "bg-gray-200/10"}`}
-                />
-              </div>
+                provider={p}
+                startEdit={startEdit}
+                confirmToggleStatus={confirmToggleStatus}
+                confirmDelete={confirmDelete}
+              />
             ))}
         </div>
 
         {/* Pagination Controls */}
         {!loading && total > limit && (
-          <div className="flex items-center justify-center gap-4 pt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <button
-              onClick={() => setPage(Math.max(1, page - 1))}
-              disabled={page === 1}
-              className="p-4 bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-2xl text-gray-400 hover:text-primary disabled:opacity-30 disabled:hover:text-gray-400 transition-all shadow-sm"
-            >
-              <ChevronLeft size={20} />
-            </button>
-
-            <div className="flex items-center gap-2">
-              {Array.from({ length: Math.ceil(total / limit) }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setPage(i + 1)}
-                  className={`w-12 h-12 rounded-2xl font-black text-sm transition-all ${
-                    page === i + 1
-                      ? "bg-primary text-white shadow-lg shadow-primary/30"
-                      : "bg-white dark:bg-card border border-gray-100 dark:border-white/5 text-gray-400 hover:bg-gray-50"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={() =>
-                setPage(Math.min(Math.ceil(total / limit), page + 1))
-              }
-              disabled={page === Math.ceil(total / limit)}
-              className="p-4 bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-2xl text-gray-400 hover:text-primary disabled:opacity-30 disabled:hover:text-gray-400 transition-all shadow-sm"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
+          <Pagination
+            page={page}
+            total={total}
+            totalPages={Math.ceil(total / limit)}
+            limit={limit}
+            itemName="service providers"
+            onPageChange={setPage}
+          />
         )}
 
         <Modal

@@ -16,6 +16,10 @@ export interface ProfileData {
   documentUrl?: string | null;
   verifiedAt?: string | null;
   listingsCount?: number;
+  isSuspended?: boolean;
+  isActive?: boolean;
+  isEmailVerified?: boolean;
+  authProvider?: string;
 }
 
 export interface UpdateProfileData {

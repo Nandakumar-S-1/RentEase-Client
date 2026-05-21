@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../hooks/useAppSelector";
 import type { RootState } from "../../../app/store/store";
 import type { RoleType } from "../../../types/constants/role.constant";
 import { useWishlist } from "../hooks/useWishlist";
-import PropertyCard from "./PropertyCard";
+import PropertyCard from "./partials/PropertyCard";
 import { LoadingOverlay } from "../../../components/common";
 import { Heart, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";

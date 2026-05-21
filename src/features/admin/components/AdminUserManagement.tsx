@@ -14,7 +14,7 @@ import {
   activateUser,
 } from "../services/adminService";
 import type { UserResponse } from "../types/adminTypes";
-import { Modal, Toast, Table } from "../../../components/common";
+import { Modal, Toast, Table, Pagination } from "../../../components/common";
 import { RoleTypes } from "../../../types/constants/role.constant";
 import type {
   UserType,
@@ -374,50 +374,18 @@ const AdminUserManagement = () => {
           emptyMessage={`No ${userType.toLowerCase()} found matching your search.`}
         />
 
-        <div className="p-6 bg-gray-50/50 dark:bg-white/5 flex flex-col sm:flex-row items-center justify-between border-t border-[color:var(--color-border)] gap-4">
-          <p className="text-xs font-bold text-gray-500">
-            Showing{" "}
-            <span className="text-[color:var(--color-foreground)]">
-              {filteredUsers.length}
-            </span>{" "}
-            of{" "}
-            <span className="text-[color:var(--color-foreground)]">
-              {pagination.total}
-            </span>{" "}
-            {userType.toLowerCase()}
-          </p>
-          <div className="flex gap-2">
-            <button
-              disabled={pagination.page <= 1}
-              onClick={() => handlePageChange(pagination.page - 1)}
-              className="px-4 py-2 text-xs font-black border border-[color:var(--color-border)] bg-[color:var(--color-surface)] rounded-xl text-[color:var(--color-foreground)] disabled:opacity-50 hover:bg-primary/5 hover:border-primary/30 transition-all"
-            >
-              Previous
-            </button>
-            <div className="flex gap-1.5 mx-2">
-              {[...Array(pagination.pages)].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => handlePageChange(i + 1)}
-                  className={`w-9 h-9 flex items-center justify-center text-xs font-black border rounded-xl transition-all shadow-sm ${
-                    pagination.page === i + 1
-                      ? "bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-110"
-                      : "bg-[color:var(--color-surface)] border-[color:var(--color-border)] text-gray-500 hover:border-primary/40"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-            <button
-              disabled={pagination.page >= pagination.pages}
-              onClick={() => handlePageChange(pagination.page + 1)}
-              className="px-4 py-2 text-xs font-black border border-[color:var(--color-border)] bg-[color:var(--color-surface)] rounded-xl text-[color:var(--color-foreground)] disabled:opacity-50 hover:bg-primary/5 hover:border-primary/30 transition-all shadow-sm"
-            >
-              Next
-            </button>
+        {pagination.pages > 1 && (
+          <div className="pb-6 px-6">
+            <Pagination
+              page={pagination.page}
+              total={pagination.total}
+              totalPages={pagination.pages}
+              limit={pagination.limit}
+              itemName={userType.toLowerCase()}
+              onPageChange={handlePageChange}
+            />
           </div>
-        </div>
+        )}
       </div>
 
       <Modal

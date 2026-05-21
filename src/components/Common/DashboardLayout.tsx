@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import { Bell, Search, Settings, Menu, X } from "lucide-react";
+import { Bell, Search, Settings, Menu } from "lucide-react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { logout } from "../../features/auth/slices/AuthSlice";

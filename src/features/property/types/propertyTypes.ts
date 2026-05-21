@@ -144,3 +144,38 @@ export interface CreatePropertyResponse {
     status: string;
   };
 }
+
+export interface AddPropertyFormData {
+  title: string;
+  description: string;
+  propertyType: string;
+  bhk: string;
+  bathrooms: string;
+  floorNumber: string;
+  propertyAge: string;
+  facingDirection: string;
+  totalFloors: string;
+  furnishingStatus: string;
+  locationDistrict: string;
+  locationCity: string;
+  locationPinCode: string;
+  fullAddress: string;
+  nearbyLandmarks: string;
+  latitude: number;
+  longitude: number;
+  amenities: string[];
+  preferredTenantType: string[];
+  petsAllowed: boolean;
+  smokingAllowed: boolean;
+  maximumOccupants: string;
+  landType: string;
+  isCornerPlot: boolean;
+  roadWidthFeet: string;
+  shopType: string;
+  hasParking: boolean;
+  monthlyRent: string;
+  depositAmount: string;
+  maintenanceCharges: string;
+  maintenanceIncluded: boolean;
+  areaSqft: string;
+}

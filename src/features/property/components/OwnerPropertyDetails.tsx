@@ -28,7 +28,6 @@ import { PAGE_ROUTES } from "../../../config/routes";
 import {
   unlistProperty,
   relistProperty,
-  deleteProperty,
 } from "../services/propertyService";
 import { toast } from "react-hot-toast";
 import DashboardLayout from "../../../components/common/DashboardLayout";

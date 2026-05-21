@@ -8,3 +8,4 @@ export { Toast } from "./Toast";
 export { ThemeToggle } from "./ThemeToggle";
 export { LoadingOverlay } from "./LoadingOverlay";
 export { Table } from "./Table";
+export { Pagination } from "./Pagination";

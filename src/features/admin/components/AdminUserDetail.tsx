@@ -30,7 +30,7 @@ import type { UserResponse } from "../types/adminTypes";
 import type { PropertyData } from "../../property/types/propertyTypes";
 import { RoleTypes } from "../../../types/constants/role.constant";
 import { PAGE_ROUTES } from "../../../config/routes";
-import { LoadingOverlay } from "../../../components/common";
+import { LoadingOverlay, Pagination } from "../../../components/common";
 
 const AdminUserDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -490,21 +490,14 @@ const AdminUserDetail = () => {
                     ))}
 
                     {propPagination.pages > 1 && (
-                      <div className="flex items-center justify-center gap-2 pt-4">
-                        {[...Array(propPagination.pages)].map((_, i) => (
-                          <button
-                            key={i + 1}
-                            onClick={() => fetchUserProperties(i + 1)}
-                            className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
-                              propPagination.page === i + 1
-                                ? "bg-primary text-white"
-                                : "bg-gray-100 text-gray-500 hover:bg-gray-200"
-                            }`}
-                          >
-                            {i + 1}
-                          </button>
-                        ))}
-                      </div>
+                      <Pagination
+                        page={propPagination.page}
+                        total={propPagination.total}
+                        totalPages={propPagination.pages}
+                        limit={propPagination.limit}
+                        itemName="properties"
+                        onPageChange={fetchUserProperties}
+                      />
                     )}
                   </div>
                 ) : (

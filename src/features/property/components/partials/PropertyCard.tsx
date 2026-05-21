@@ -3,30 +3,28 @@ import {
   Home,
   Maximize2,
   ExternalLink,
-  Edit,
-  Trash2,
-  EyeOff,
   MoreVertical,
   Heart,
-  Eye,
 } from "lucide-react";
 import {
   unlistProperty,
   relistProperty,
   deleteProperty,
-} from "../services/propertyService";
-import { useWishlist } from "../hooks/useWishlist";
+} from "../../services/propertyService";
+import { useWishlist } from "../../hooks/useWishlist";
 import { toast } from "react-hot-toast";
-import { Modal } from "../../../components/common";
-import type { PropertyData } from "../types/propertyTypes";
+import type { PropertyData } from "../../types/propertyTypes";
+import { PropertyCardActions } from "./PropertyCardActions";
+import { PropertyCardModals } from "./PropertyCardModals";
+import { getStatusColor, getStatusLabel } from "./PropertyCardUtils";
 
 import { useNavigate } from "react-router-dom";
-import { PAGE_ROUTES } from "../../../config/routes";
+import { PAGE_ROUTES } from "../../../../config/routes";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../../app/store/store";
-import { RoleTypes } from "../../../types/constants/role.constant";
+import type { RootState } from "../../../../app/store/store";
+import { RoleTypes } from "../../../../types/constants/role.constant";
 import { useState } from "react";
-import { PropertyStatus } from "../../../types/constants/property.constant";
+import { PropertyStatus } from "../../../../types/constants/property.constant";
 
 interface PropertyCardProps {
   property: PropertyData;
@@ -71,7 +69,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
       await unlistProperty(property.id);
       toast.success("Property unlisted successfully");
       window.location.reload();
-    } catch {
+    } catch (_error) {
+      console.error(_error);
       toast.error("Failed to unlist property");
     }
   };
@@ -81,7 +80,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
       await relistProperty(property.id);
       toast.success("Property listed successfully");
       window.location.reload();
-    } catch {
+    } catch (_error) {
+      console.error(_error);
       toast.error("Failed to list property");
     }
   };
@@ -91,37 +91,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
       await deleteProperty(property.id);
       toast.success("Property deleted permanently");
       window.location.reload();
-    } catch {
+    } catch (_error) {
+      console.error(_error);
       toast.error("Failed to delete property");
     }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status.toUpperCase()) {
-      case PropertyStatus.ACTIVE:
-      case "APPROVED":
-      case "AVAILABLE":
-        return "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400";
-      case "RENTED":
-        return "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400";
-      case PropertyStatus.UNLISTED:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-500/20 dark:text-gray-400";
-      case PropertyStatus.PENDING_APPROVAL:
-      case PropertyStatus.PENDING:
-        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-400";
-      case PropertyStatus.REJECTED:
-        return "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400";
-      default:
-        return "bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400";
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    if (status === PropertyStatus.ACTIVE || status === "APPROVED")
-      return "Listed";
-    if (status === PropertyStatus.PENDING_APPROVAL)
-      return "Verification Pending";
-    return status.charAt(0) + status.slice(1).toLowerCase();
   };
 
   return (
@@ -243,95 +216,34 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
 
         {!isSearchMode && (
-          <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-50">
-            <button
-              onClick={handleEdit}
-              className="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-xl transition-all"
-              title="Edit Property"
-            >
-              <Edit size={18} />
-            </button>
-            {property.status === "UNLISTED" ? (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsRelistModalOpen(true);
-                }}
-                className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-xl transition-all"
-                title="List Property"
-              >
-                <Eye size={18} />
-              </button>
-            ) : (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsUnlistModalOpen(true);
-                }}
-                className="p-2 text-gray-400 hover:text-orange-500 hover:bg-orange-50 rounded-xl transition-all"
-                title="Unlist Property"
-              >
-                <EyeOff size={18} />
-              </button>
-            )}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsDeleteModalOpen(true);
-              }}
-              className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
-              title="Delete Property"
-            >
-              <Trash2 size={18} />
-            </button>
-          </div>
+          <PropertyCardActions
+            status={property.status}
+            handleEdit={handleEdit}
+            setIsRelistModalOpen={setIsRelistModalOpen}
+            setIsUnlistModalOpen={setIsUnlistModalOpen}
+            setIsDeleteModalOpen={setIsDeleteModalOpen}
+          />
         )}
       </div>
 
-      {/* Modals */}
-      <Modal
-        isOpen={isUnlistModalOpen}
-        onClose={() => setIsUnlistModalOpen(false)}
-        onConfirm={handleUnlist}
-        title="Unlist Property"
-        description="Are you sure you want to unlist this property? It will no longer be visible to potential tenants."
-        confirmText="Unlist"
-        isDestructive={false}
-      />
-
-      <Modal
-        isOpen={isRelistModalOpen}
-        onClose={() => setIsRelistModalOpen(false)}
-        onConfirm={handleRelist}
-        title="Relist Property"
-        description="Are you sure you want to list this property again? It will become visible to all potential tenants."
-        confirmText="List Property"
-        isDestructive={false}
-      />
-
-      <Modal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDelete}
-        title="Delete Permanently"
-        description="Are you sure you want to PERMANENTLY delete this property? This action cannot be undone."
-        confirmText="Delete"
-        isDestructive={true}
-      />
-
-      <Modal
-        isOpen={isWishlistConfirmModalOpen}
-        onClose={() => setIsWishlistConfirmModalOpen(false)}
-        onConfirm={async () => {
+      <PropertyCardModals
+        isUnlistModalOpen={isUnlistModalOpen}
+        setIsUnlistModalOpen={setIsUnlistModalOpen}
+        handleUnlist={handleUnlist}
+        isRelistModalOpen={isRelistModalOpen}
+        setIsRelistModalOpen={setIsRelistModalOpen}
+        handleRelist={handleRelist}
+        isDeleteModalOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        handleDelete={handleDelete}
+        isWishlistConfirmModalOpen={isWishlistConfirmModalOpen}
+        setIsWishlistConfirmModalOpen={setIsWishlistConfirmModalOpen}
+        handleWishlistConfirm={async () => {
           await toggle();
           if (onToggleWishlist) onToggleWishlist();
           setIsWishlistConfirmModalOpen(false);
           toast.success("Removed from wishlist");
         }}
-        title="Remove from Wishlist"
-        description="Are you sure you want to remove this property from your saved list?"
-        confirmText="Remove"
-        isDestructive={true}
       />
     </div>
   );

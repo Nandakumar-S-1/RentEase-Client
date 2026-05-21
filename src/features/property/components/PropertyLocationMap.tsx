@@ -33,10 +33,12 @@ export function PropertyLocationMap({
   } | null>(null);
 
   const onLocationChangeRef = useRef(onLocationChange);
-  onLocationChangeRef.current = onLocationChange;
-
   const onAddressFetchRef = useRef(onAddressFetch);
-  onAddressFetchRef.current = onAddressFetch;
+
+  useEffect(() => {
+    onLocationChangeRef.current = onLocationChange;
+    onAddressFetchRef.current = onAddressFetch;
+  });
 
   const handleLocationUpdate = async (lat: number, lng: number) => {
     onLocationChangeRef.current?.(lat, lng);
@@ -100,6 +102,7 @@ export function PropertyLocationMap({
       mapRef.current?.remove();
       mapRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

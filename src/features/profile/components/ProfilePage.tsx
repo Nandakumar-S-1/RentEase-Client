@@ -23,7 +23,7 @@ const ProfilePage: React.FC = () => {
     { id: "profile", label: "Identity", icon: UserCog },
     { id: "preferences", label: "Preferences", icon: Settings2 },
     { id: "notifications", label: "Alerts", icon: BellRing },
-    { id: "security", label: "Security", icon: ShieldCheck },
+    ...(profile?.authProvider !== "GOOGLE" ? [{ id: "security", label: "Security", icon: ShieldCheck }] : []),
   ];
   const [resetKey, setResetKey] = useState(0);
 
@@ -71,11 +71,10 @@ const ProfilePage: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-sm font-black transition-all duration-500 ${
-                  activeTab === tab.id
+                className={`flex items-center gap-3 px-8 py-3.5 rounded-2xl text-sm font-black transition-all duration-500 ${activeTab === tab.id
                     ? "bg-white dark:bg-primary text-primary dark:text-white shadow-xl shadow-primary/10 scale-105"
                     : "text-gray-400 hover:text-primary"
-                }`}
+                  }`}
               >
                 <tab.icon size={18} />
                 {tab.label}
