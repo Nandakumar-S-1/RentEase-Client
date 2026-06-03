@@ -190,19 +190,35 @@ const AdminPropertyDetails = () => {
       </div>
 
       {/* Floating Action Bar */}
-      <div className="fixed bottom-10 left-1/2 -translate-x-1/2 w-full max-w-4xl px-6 z-40">
-        <div className="bg-white/80 dark:bg-card/80 backdrop-blur-2xl p-4 rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex items-center justify-between gap-6">
-          <div className="hidden md:flex items-center gap-4 pl-4 border-r border-gray-200 pr-8">
-            <div className="text-right">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                Final Status
-              </p>
-              <p className="text-xs font-black text-primary">Requires Action</p>
+      {property.status === "PENDING_APPROVAL" && (
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 w-full max-w-4xl px-6 z-40">
+          <div className="bg-white/80 dark:bg-card/80 backdrop-blur-2xl p-4 rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex items-center justify-between gap-6">
+            <div className="hidden md:flex items-center gap-4 pl-4 border-r border-gray-200 pr-8">
+              <div className="text-right">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  Final Decision
+                </p>
+                <p className="text-xs font-black text-primary">Requires Action</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 flex-1 justify-end">
+              <button
+                onClick={() => setShowRejectModal(true)}
+                className="px-6 py-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all rounded-2xl font-black text-sm"
+              >
+                Reject Listing
+              </button>
+              <button
+                onClick={() => setShowApproveModal(true)}
+                className="px-8 py-3 bg-primary text-white hover:scale-[1.03] active:scale-[0.97] transition-all rounded-2xl font-black text-sm shadow-xl shadow-primary/25"
+              >
+                Approve Listing
+              </button>
             </div>
           </div>
-
         </div>
-      </div>
+      )}
 
       <AdminPropertyModals
         showRejectModal={showRejectModal}

@@ -5,8 +5,7 @@ import type {
   UpdateProfileData,
   UpdateProfileResponse,
 } from "../types/profileTypes";
-
-import { Toast } from "../../../components/common/Toast";
+import { toast } from "react-hot-toast";
 
 interface PersonalInfoFormProps {
   profile: ProfileData;
@@ -33,10 +32,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         )
       : false,
   );
-  const [toast, setToast] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
+
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -72,19 +68,16 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
 
     const errorMsg = validate();
     if (errorMsg) {
-      setToast({ message: errorMsg, type: "error" });
+      toast.error(errorMsg);
       return;
     }
 
     try {
       await saveProfile(formData);
-      setToast({ message: "Profile updated successfully!", type: "success" });
+      toast.success("Profile updated successfully!");
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      setToast({
-        message: error.response?.data?.message || "Failed to update profile.",
-        type: "error",
-      });
+      toast.error(error.response?.data?.message || "Failed to update profile.");
     }
   };
 
@@ -203,13 +196,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         </div>
       </form>
 
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
+
     </div>
   );
 };

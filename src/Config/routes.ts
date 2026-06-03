@@ -102,6 +102,12 @@ export const API_ROUTES = {
   GET_MY_AGREEMENTS: "/agreements/me",
   UPLOAD_KYC: (id: string) => `/agreements/${id}/kyc`,
   GET_AGREEMENT_UPLOAD_URLS: (id: string) => `/agreements/${id}/upload-urls`,
+
+  // Notifications
+  GET_NOTIFICATIONS: "/notifications",
+  GET_UNREAD_COUNT: "/notifications/unread-count",
+  MARK_NOTIFICATION_READ: (id: string) => `/notifications/${id}/read`,
+  MARK_ALL_NOTIFICATIONS_READ: "/notifications/read-all",
 } as const;
 
 export const PATH_ROUTES = {

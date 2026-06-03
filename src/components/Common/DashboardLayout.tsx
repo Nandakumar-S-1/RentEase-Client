@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import { Bell, Search, Settings, Menu } from "lucide-react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { logout } from "../../features/auth/slices/AuthSlice";
+import { resetNotifications, setUnreadCount } from "../../features/notifications/slices/notificationSlice";
 import { RoleTypes } from "../../types/constants/role.constant";
 import { useNavigate } from "react-router-dom";
 import { PAGE_ROUTES } from "../../config/routes";
@@ -14,6 +15,8 @@ import {
 import type { RoleType } from "../../types/constants/role.constant";
 import { ThemeToggle } from "./ThemeToggle";
 import type { RootState } from "../../app/store/store";
+import { NotificationDropdown } from "../../features/notifications/components/NotificationDropdown";
+import { getUnreadCount } from "../../features/notifications/services/notificationService";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -31,7 +34,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user } = useAppSelector((state: RootState) => state.auth);
+  const unreadCount = useAppSelector(
+    (state: RootState) => state.notifications.unreadCount,
+  );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -40,6 +47,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       // ontinue with logout
     }
     dispatch(logout());
+    dispatch(resetNotifications());
     const loginPath =
       role === RoleTypes.ADMIN_USER
         ? PAGE_ROUTES.ADMIN_LOGIN
@@ -47,9 +55,25 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     navigate(loginPath, { replace: true });
   };
 
+  const handleCloseNotif = useCallback(() => setIsNotifOpen(false), []);
+
   useEffect(() => {
     checkSession().catch(() => {});
   }, []);
+
+  useEffect(() => {
+    const fetchUnread = async () => {
+      try {
+        const res = await getUnreadCount();
+        dispatch(setUnreadCount(res.data.unreadCount));
+      } catch (err) {
+        console.error("Failed to fetch unread notification count:", err);
+      }
+    };
+    if (user) {
+      fetchUnread();
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="flex h-screen bg-[color:var(--color-background)] overflow-hidden font-sans">
@@ -91,12 +115,24 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           <div className="flex items-center gap-2 md:gap-4">
             <ThemeToggle />
-            <button className="relative p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all">
-              <Bell size={20} />
-              <span className="absolute top-1.5 right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold bg-danger text-white rounded-full border-2 border-[color:var(--color-surface)]">
-                3
-              </span>
-            </button>
+            {/* Notification bell */}
+            <div className="relative">
+              <button
+                onClick={() => setIsNotifOpen((prev) => !prev)}
+                className="relative p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all"
+              >
+                <Bell size={20} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 flex items-center justify-center min-w-[16px] h-4 px-0.5 text-[10px] font-bold bg-danger text-white rounded-full border-2 border-[color:var(--color-surface)]">
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
+              </button>
+              <NotificationDropdown
+                isOpen={isNotifOpen}
+                onClose={handleCloseNotif}
+              />
+            </div>
             <button
               onClick={() =>
                 navigate(
