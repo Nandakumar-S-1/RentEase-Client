@@ -1,0 +1,34 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- background circle -->
+  <rect width="32" height="32" rx="8" fill="#2563eb"/>
+
+  <!-- house body fill -->
+  <path
+    d="M5 15L16 5L27 15V25C27 25.5523 26.5523 26 26 26H6C5.44772 26 5 25.5523 5 25V15Z"
+    fill="white"
+    fill-opacity="0.2"
+  />
+
+  <!-- house outline -->
+  <path
+    d="M5 15L16 5L27 15V25C27 25.5523 26.5523 26 26 26H6C5.44772 26 5 25.5523 5 25V15Z"
+    stroke="white"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+
+  <!-- roof peak line -->
+  <path
+    d="M3 15L16 3L29 15"
+    stroke="white"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- door -->
+  <rect x="12" y="17" width="8" height="9" rx="1" fill="white" fill-opacity="0.9"/>
+
+  <!-- door knob -->
+  <circle cx="18.5" cy="22" r="0.8" fill="#2563eb"/>
+</svg>

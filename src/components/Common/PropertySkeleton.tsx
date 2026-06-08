@@ -2,7 +2,7 @@ import React from "react";
 
 const PropertySkeleton: React.FC = () => {
   return (
-    <div className="bg-[color:var(--color-surface)] rounded-2xl overflow-hidden border border-[color:var(--color-border)] shadow-sm animate-pulse">
+    <div className="bg-[color:var(--color-surface)] rounded-lg overflow-hidden border border-[color:var(--color-border)] shadow-sm animate-pulse">
       <div className="w-full h-48 bg-gray-200 dark:bg-gray-800 animate-shimmer"></div>
 
       <div className="p-4 space-y-3">

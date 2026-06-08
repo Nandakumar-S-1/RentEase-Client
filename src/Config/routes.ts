@@ -30,6 +30,7 @@ export const PAGE_ROUTES = {
   OWNER_PROPERTY_SERVICE_PROVIDERS:
     "/owner/properties/:propertyId/service-providers",
   TENANT_AGREEMENTS: "/tenant/agreements",
+  AGREEMENT_DETAIL: "/agreements/:id",
   TENANT_PAYMENTS: "/tenant/payments",
   TENANT_MAINTENANCE: "/tenant/maintenance",
   TENANT_WISHLIST: "/tenant/wishlist",

@@ -39,7 +39,7 @@ export const ServiceProviderForm: React.FC<ServiceProviderFormProps> = ({
   handleAddSubmit,
 }) => {
   return (
-    <div className="bg-white dark:bg-card border-2 border-primary/20 rounded-[2.5rem] p-8 shadow-xl animate-in fade-in slide-in-from-top-4">
+    <div className="bg-white dark:bg-card border-2 border-primary/20 rounded-xl p-8 shadow-xl animate-in fade-in slide-in-from-top-4">
       <h3 className="text-xl font-black mb-6">New Service Provider</h3>
       <form
         onSubmit={handleAddSubmit}
@@ -57,7 +57,7 @@ export const ServiceProviderForm: React.FC<ServiceProviderFormProps> = ({
                 providerName: e.target.value,
               })
             }
-            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.providerName ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm font-medium`}
+            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.providerName ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg focus:ring-2 focus:ring-primary/20 text-sm font-medium`}
             placeholder="e.g. John Doe"
           />
           {formErrors.providerName && (
@@ -78,7 +78,7 @@ export const ServiceProviderForm: React.FC<ServiceProviderFormProps> = ({
                 providerType: e.target.value,
               })
             }
-            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.providerType ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
+            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.providerType ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm font-medium`}
           >
             {PROVIDER_TYPES.map((t) => (
               <option key={t} value={t}>
@@ -101,7 +101,7 @@ export const ServiceProviderForm: React.FC<ServiceProviderFormProps> = ({
             onChange={(e) =>
               setNewProvider({ ...newProvider, phone: e.target.value })
             }
-            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.phone ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
+            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.phone ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm font-medium`}
             placeholder="e.g. +91 9876543210"
           />
           {formErrors.phone && (
@@ -124,7 +124,7 @@ export const ServiceProviderForm: React.FC<ServiceProviderFormProps> = ({
                 typicalChargesMin: e.target.value,
               })
             }
-            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.typicalChargesMin ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
+            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.typicalChargesMin ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm font-medium`}
             placeholder="500"
           />
           {formErrors.typicalChargesMin && (
@@ -147,7 +147,7 @@ export const ServiceProviderForm: React.FC<ServiceProviderFormProps> = ({
                 typicalChargesMax: e.target.value,
               })
             }
-            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.typicalChargesMax ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm font-medium`}
+            className={`w-full px-6 py-4 bg-gray-50 dark:bg-white/5 border ${formErrors.typicalChargesMax ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm font-medium`}
             placeholder="2000"
           />
           {formErrors.typicalChargesMax && (
@@ -159,7 +159,7 @@ export const ServiceProviderForm: React.FC<ServiceProviderFormProps> = ({
         <div className="flex items-end">
           <button
             type="submit"
-            className="w-full py-4 bg-primary text-white font-black rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
+            className="w-full py-4 bg-primary text-white font-black rounded-lg hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
           >
             Save Provider
           </button>

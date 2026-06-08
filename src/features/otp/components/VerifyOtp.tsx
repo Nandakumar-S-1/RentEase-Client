@@ -127,7 +127,7 @@ const VerifyOtp = () => {
                 value={digit}
                 onChange={(e) => handleOtpChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className="h-14 w-12 rounded-2xl border-2 border-gray-100 bg-white/50 backdrop-blur-sm text-center text-xl font-black text-primary focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all shadow-sm"
+                className="h-14 w-12 rounded-lg border-2 border-gray-100 bg-white/50 backdrop-blur-sm text-center text-xl font-black text-primary focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all shadow-sm"
                 placeholder="-"
               />
             ))}
@@ -137,7 +137,7 @@ const VerifyOtp = () => {
             type="submit"
             loading={isLoading}
             disabled={otp.join("").length !== 6 || isLoading}
-            className="w-full py-4 text-lg font-black rounded-2xl shadow-xl shadow-primary/25 hover:scale-[1.02] active:scale-95 transition-all"
+            className="w-full py-4 text-lg font-black rounded-lg shadow-xl shadow-primary/25 hover:scale-[1.02] active:scale-95 transition-all"
           >
             Verify & Continue
           </Button>
@@ -155,7 +155,7 @@ const VerifyOtp = () => {
 
           <div className="flex flex-col items-center gap-4">
             {resendCooldown > 0 ? (
-              <div className="flex items-center gap-2 px-6 py-3 bg-gray-50 rounded-2xl border border-gray-100">
+              <div className="flex items-center gap-2 px-6 py-3 bg-gray-50 rounded-lg border border-gray-100">
                 <Clock className="h-4 w-4 text-primary animate-pulse" />
                 <span className="text-sm font-black text-gray-600">
                   Resend available in{" "}
@@ -166,7 +166,7 @@ const VerifyOtp = () => {
               <button
                 onClick={handleResendOtp}
                 disabled={resendLoading}
-                className="flex items-center gap-2 px-8 py-3 text-primary font-black hover:bg-primary/5 rounded-2xl transition-all"
+                className="flex items-center gap-2 px-8 py-3 text-primary font-black hover:bg-primary/5 rounded-lg transition-all"
               >
                 <RotateCcw
                   className={`h-4 w-4 ${resendLoading ? "animate-spin" : ""}`}

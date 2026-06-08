@@ -28,7 +28,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-all duration-300">
-      <div className="relative w-full max-w-md transform overflow-hidden rounded-3xl bg-[color:var(--color-surface)] border border-[color:var(--color-border)] p-8 text-left align-middle shadow-2xl shadow-slate-900/20 transition-all">
+      <div className="relative w-full max-w-md transform overflow-hidden rounded-xl bg-[color:var(--color-surface)] border border-[color:var(--color-border)] p-8 text-left align-middle shadow-2xl shadow-slate-900/20 transition-all">
         <div className="flex items-start justify-between mb-2">
           <h3 className="text-xl font-extrabold tracking-tight text-[color:var(--color-foreground)]">
             {title}

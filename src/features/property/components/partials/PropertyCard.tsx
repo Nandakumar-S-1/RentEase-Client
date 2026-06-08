@@ -99,7 +99,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <div
-      className={`bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 group ${isList ? "flex h-48" : "flex flex-col"}`}
+      className={`bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group ${isList ? "flex h-48" : "flex flex-col"}`}
     >
       <div
         className={`relative overflow-hidden ${isList ? "w-72 shrink-0" : "h-56"}`}
@@ -131,7 +131,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                 if (onToggleWishlist) onToggleWishlist();
               }
             }}
-            className={`absolute top-4 right-4 p-2.5 rounded-2xl shadow-lg transition-all hover:scale-110 active:scale-95 ${isSaved ? "bg-red-500 text-white" : "bg-white/80 backdrop-blur-md text-gray-600 hover:bg-white"}`}
+            className={`absolute top-4 right-4 p-2.5 rounded-lg shadow-lg transition-all hover:scale-110 active:scale-95 ${isSaved ? "bg-red-500 text-white" : "bg-white/80 backdrop-blur-md text-gray-600 hover:bg-white"}`}
           >
             <Heart
               size={20}
@@ -143,7 +143,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
         {isSearchMode && property.status === PropertyStatus.UNLISTED && (
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center p-4">
-            <div className="bg-white/90 dark:bg-black/80 px-6 py-3 rounded-2xl shadow-2xl border border-white/20 transform -rotate-3">
+            <div className="bg-white/90 dark:bg-black/80 px-6 py-3 rounded-lg shadow-2xl border border-white/20 transform -rotate-3">
               <span className="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] text-center block">
                 This property is temporarily unavailable
               </span>

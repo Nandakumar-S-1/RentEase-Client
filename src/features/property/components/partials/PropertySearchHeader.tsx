@@ -25,7 +25,7 @@ export const PropertySearchHeader: React.FC<PropertySearchHeaderProps> = ({
   filters,
 }) => {
   return (
-    <div className="flex flex-col lg:flex-row gap-4 justify-between items-center bg-[color:var(--color-surface)] p-5 rounded-[2.5rem] border border-[color:var(--color-border)] shadow-xl">
+    <div className="flex flex-col lg:flex-row gap-4 justify-between items-center bg-[color:var(--color-surface)] p-5 rounded-xl border border-[color:var(--color-border)] shadow-xl">
       <div className="relative w-full lg:max-w-xl">
         <Search
           className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
@@ -36,7 +36,7 @@ export const PropertySearchHeader: React.FC<PropertySearchHeaderProps> = ({
           placeholder="Search by name, place or keywords..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-12 pr-4 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
+          className="w-full pl-12 pr-4 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
           onKeyDown={(e) => e.key === "Enter" && handleSearch(e)}
         />
         {searchTerm && (
@@ -55,11 +55,11 @@ export const PropertySearchHeader: React.FC<PropertySearchHeaderProps> = ({
       <div className="flex items-center gap-4 w-full lg:w-auto">
         <button
           onClick={handleSearch}
-          className="px-8 py-3.5 bg-primary text-white font-black rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-sm"
+          className="px-8 py-3.5 bg-primary text-white font-black rounded-lg shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-sm"
         >
           Search Now
         </button>
-        <div className="flex p-1.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl">
+        <div className="flex p-1.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-lg">
           <button
             type="button"
             onClick={() => setLayout("grid")}
@@ -87,7 +87,7 @@ export const PropertySearchHeader: React.FC<PropertySearchHeaderProps> = ({
         <button
           type="button"
           onClick={() => setShowFilters(!showFilters)}
-          className={`flex-1 lg:flex-none flex items-center justify-center gap-2 px-8 py-3.5 border rounded-2xl text-sm font-black transition-all ${
+          className={`flex-1 lg:flex-none flex items-center justify-center gap-2 px-8 py-3.5 border rounded-lg text-sm font-black transition-all ${
             showFilters
               ? "bg-primary text-white border-primary shadow-xl shadow-primary/20"
               : "bg-[color:var(--color-card)] border-[color:var(--color-border)] text-gray-600 dark:text-gray-400 hover:bg-gray-100/50"

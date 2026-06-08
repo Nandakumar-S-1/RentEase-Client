@@ -123,7 +123,7 @@ export const AgreementDashboard = () => {
           {user?.role === "OWNER" && (
             <button
               onClick={() => navigate(PAGE_ROUTES.OWNER_CREATE_AGREEMENT)}
-              className="px-8 py-4.5 bg-primary text-white rounded-3xl text-sm font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] hover:shadow-2xl transition-all"
+              className="px-8 py-4.5 bg-primary text-white rounded-xl text-sm font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] hover:shadow-2xl transition-all"
             >
               Draft New Lease
             </button>
@@ -142,7 +142,7 @@ export const AgreementDashboard = () => {
             </p>
           </div>
         ) : agreements.length === 0 ? (
-          <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[3.5rem] p-16 flex flex-col items-center text-center space-y-6">
+          <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-xl p-16 flex flex-col items-center text-center space-y-6">
             <div className="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center text-primary">
               <FileText className="w-10 h-10" />
             </div>

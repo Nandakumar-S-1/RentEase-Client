@@ -34,9 +34,9 @@ export const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
   confirmDelete,
 }) => {
   return (
-    <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-[2.5rem] p-6 hover:shadow-xl transition-all group overflow-hidden relative">
+    <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-xl p-6 hover:shadow-xl transition-all group overflow-hidden relative">
       <div className="flex justify-between items-start mb-6">
-        <div className="w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-4">
+        <div className="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4">
           <Wrench size={24} />
         </div>
         <div className="flex gap-2">
@@ -82,7 +82,7 @@ export const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-white/5 p-3 rounded-2xl">
+        <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
           <div className="w-8 h-8 bg-white dark:bg-card rounded-xl flex items-center justify-center shadow-sm">
             <Phone size={14} className="text-primary" />
           </div>

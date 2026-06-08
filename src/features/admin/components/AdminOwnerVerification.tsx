@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useOwnerVerification } from "../hooks/useOwnerVerification";
 import { type PendingOwner } from "../services/adminVerificationService";
-import { Button, FormMessage, Table } from "../../../components/common";
+import { Button, FormMessage, Modal, Table } from "../../../components/common";
 
 const AdminOwnerVerification = () => {
   const {
@@ -24,6 +24,7 @@ const AdminOwnerVerification = () => {
 
   const [rejectingId, setRejectingId] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
+  const [approvingId, setApprovingId] = useState<string | null>(null);
 
   const message = successMessage || error || "";
   const isError = !!error;
@@ -39,9 +40,15 @@ const AdminOwnerVerification = () => {
     setRejectionReason("");
   };
 
+  const handleApprove = async () => {
+    if (!approvingId) return;
+    await approve(approvingId);
+    setApprovingId(null);
+  };
+
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-[2.5rem] p-10 shadow-xl">
+      <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl p-10 shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
           <div className="space-y-1">
             <h1 className="text-4xl font-black text-[color:var(--color-foreground)] tracking-tight flex items-center gap-4">
@@ -52,7 +59,7 @@ const AdminOwnerVerification = () => {
               Review and verify property owner identity documents.
             </p>
           </div>
-          <div className="flex items-center gap-2 px-6 py-3 bg-amber-500/10 text-amber-600 dark:text-amber-500 rounded-2xl text-sm font-black uppercase tracking-widest">
+          <div className="flex items-center gap-2 px-6 py-3 bg-amber-500/10 text-amber-600 dark:text-amber-500 rounded-lg text-sm font-black uppercase tracking-widest">
             <Clock size={18} />
             {owners.length} Pending
           </div>
@@ -60,7 +67,7 @@ const AdminOwnerVerification = () => {
 
         <FormMessage message={message} isError={isError} />
 
-        <div className="bg-[color:var(--color-background)] rounded-3xl border border-[color:var(--color-border)] overflow-hidden">
+        <div className="bg-[color:var(--color-background)] rounded-xl border border-[color:var(--color-border)] overflow-hidden">
           <Table<PendingOwner>
             columns={[
               {
@@ -68,7 +75,7 @@ const AdminOwnerVerification = () => {
                 key: "owner",
                 render: (owner: PendingOwner) => (
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-primary/10 text-primary font-black text-xs">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-primary/10 text-primary font-black text-xs">
                       {owner.ownerId.slice(-2).toUpperCase()}
                     </div>
                     <div>
@@ -159,7 +166,7 @@ const AdminOwnerVerification = () => {
                         <Button
                           onClick={(e) => {
                             e.stopPropagation();
-                            approve(owner.ownerId);
+                            setApprovingId(owner.ownerId);
                           }}
                           loading={isLoading}
                           className="px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/20"
@@ -187,6 +194,16 @@ const AdminOwnerVerification = () => {
           />
         </div>
       </div>
+
+      <Modal
+        isOpen={!!approvingId}
+        onClose={() => setApprovingId(null)}
+        onConfirm={handleApprove}
+        title="Approve Owner?"
+        description="Are you sure you want to approve this owner's verification? This will grant them full access to list properties on the platform."
+        confirmText="Yes, Approve"
+        isDestructive={false}
+      />
     </div>
   );
 };

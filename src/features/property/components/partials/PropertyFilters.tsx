@@ -43,7 +43,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
   if (!showFilters) return null;
 
   return (
-    <div className="p-8 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-[3rem] shadow-2xl animate-in slide-in-from-top-4 duration-500">
+    <div className="p-8 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl shadow-2xl animate-in slide-in-from-top-4 duration-500">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="space-y-3">
           <label className="flex items-center gap-2 text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
@@ -52,7 +52,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
           <input
             type="text"
             placeholder="e.g. Kochi"
-            className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
+            className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-lg text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
             onChange={(e) => setCityInput(e.target.value)}
             value={cityInput}
           />
@@ -62,7 +62,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
             <Building size={14} className="text-primary" /> Property Type
           </label>
           <select
-            className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
+            className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-lg text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
             onChange={(e) =>
               handleFilterChange({ propertyType: e.target.value })
             }
@@ -124,7 +124,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
             <input
               type="number"
               placeholder="Min"
-              className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
+              className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-lg text-sm font-medium outline-none"
               onChange={(e) => setMinRentInput(e.target.value)}
               value={minRentInput}
             />
@@ -132,7 +132,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
             <input
               type="number"
               placeholder="Max"
-              className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
+              className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-lg text-sm font-medium outline-none"
               onChange={(e) => setMaxRentInput(e.target.value)}
               value={maxRentInput}
             />
@@ -148,7 +148,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
               <input
                 type="number"
                 placeholder="Min"
-                className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
+                className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-lg text-sm font-medium outline-none"
                 onChange={(e) => setMinAreaInput(e.target.value)}
                 value={minAreaInput}
               />
@@ -156,7 +156,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
               <input
                 type="number"
                 placeholder="Max"
-                className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-2xl text-sm font-medium outline-none"
+                className="w-full px-5 py-3.5 bg-[color:var(--color-card)] border border-[color:var(--color-border)] rounded-lg text-sm font-medium outline-none"
                 onChange={(e) => setMaxAreaInput(e.target.value)}
                 value={maxAreaInput}
               />
@@ -178,7 +178,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
           </button>
           <button
             onClick={() => setShowFilters(false)}
-            className="px-10 py-3.5 bg-[color:var(--color-foreground)] text-[color:var(--color-surface)] font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg"
+            className="px-10 py-3.5 bg-[color:var(--color-foreground)] text-[color:var(--color-surface)] font-black rounded-lg text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg"
           >
             Show Results
           </button>

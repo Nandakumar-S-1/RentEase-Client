@@ -61,7 +61,7 @@ export const AdminPropertySpecs: React.FC<AdminPropertySpecsProps> = ({
         .map((spec, i) => (
           <div
             key={i}
-            className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 p-6 rounded-[2rem] shadow-sm"
+            className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 p-6 rounded-xl shadow-sm"
           >
             <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4">
               <spec.icon size={20} />

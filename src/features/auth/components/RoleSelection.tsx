@@ -26,7 +26,7 @@ const RoleSelection = () => {
         Back to Home
       </button>
 
-      <div className="w-full max-w-xl rounded-2xl bg-card p-8 shadow-lg">
+      <div className="w-full max-w-xl rounded-lg bg-card p-8 shadow-lg">
         <h1 className="mb-2 text-center text-2xl font-bold text-primary">
           Join RentEase
         </h1>

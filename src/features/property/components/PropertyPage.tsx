@@ -156,7 +156,7 @@ const PropertyPage: React.FC = () => {
           {!isSearchMode && (
             <button
               onClick={() => navigate(PAGE_ROUTES.OWNER_ADD_PROPERTY)}
-              className="flex items-center gap-3 px-8 py-4 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all"
+              className="flex items-center gap-3 px-8 py-4 bg-primary text-white font-black rounded-lg shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all"
             >
               <Plus size={22} />
               <span>Add New Property</span>
@@ -167,7 +167,7 @@ const PropertyPage: React.FC = () => {
         {/* Status Tabs - Only for Owners */}
         {!isSearchMode && (
           <div className="flex flex-wrap items-center gap-4 py-2 border-b border-[color:var(--color-border)]">
-            <div className="flex gap-2 p-1.5 bg-gray-100/50 dark:bg-white/5 rounded-2xl border border-[color:var(--color-border)]">
+            <div className="flex gap-2 p-1.5 bg-gray-100/50 dark:bg-white/5 rounded-lg border border-[color:var(--color-border)]">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}

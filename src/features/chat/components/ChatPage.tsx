@@ -13,7 +13,7 @@ const ChatPage: React.FC = () => {
 
   return (
     <DashboardLayout role={user.role} userName={user.fullname}>
-      <div className="flex h-full bg-[color:var(--color-surface)] rounded-2xl overflow-hidden shadow-sm border border-[color:var(--color-border)]">
+      <div className="flex h-full bg-[color:var(--color-surface)] rounded-lg overflow-hidden shadow-sm border border-[color:var(--color-border)]">
         <ChatSidebar selectedId={selectedChat} onSelect={setSelectedChat} />
 
         <ChatWindow chatId={selectedChat} />

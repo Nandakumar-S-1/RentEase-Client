@@ -68,7 +68,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
   const badge = getStatusBadge(agreement.status);
 
   return (
-    <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 p-8 lg:p-10 rounded-[3.5rem] shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all relative overflow-hidden group">
+    <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 p-8 lg:p-10 rounded-xl shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all relative overflow-hidden group">
       <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full -mr-24 -mt-24 blur-3xl group-hover:scale-150 transition-all duration-1000" />
 
       {/* Top Bar inside Card */}
@@ -141,7 +141,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
           {agreement.status === "DRAFT" && isOwner && (
             <button
               onClick={onInitiateSign}
-              className="w-full sm:w-auto px-8 py-4.5 bg-primary text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4.5 bg-primary text-white rounded-lg text-xs font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
             >
               <PenTool size={16} /> Sign Draft to Publish
             </button>
@@ -151,7 +151,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
           {agreement.status === "PENDING_TENANT_SIGNATURE" && isTenant && (
             <div className="w-full sm:w-auto space-y-4 text-right">
               {!agreement.tenantKycDocumentUrl ? (
-                <div className="p-6 bg-amber-50 dark:bg-white/5 border-2 border-dashed border-amber-200 dark:border-white/10 rounded-3xl flex flex-col items-center gap-4">
+                <div className="p-6 bg-amber-50 dark:bg-white/5 border-2 border-dashed border-amber-200 dark:border-white/10 rounded-xl flex flex-col items-center gap-4">
                   <div className="text-center space-y-1">
                     <h5 className="text-xs font-black uppercase tracking-wider text-amber-700 dark:text-amber-500">
                       KYC Government ID Required
@@ -171,7 +171,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
                     />
                     <label
                       htmlFor={`kyc-file-${agreement.id}`}
-                      className="flex-1 flex justify-center items-center gap-2 px-4 py-3 bg-white dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/5 rounded-2xl text-xs font-black uppercase tracking-wider cursor-pointer transition-all text-gray-700 dark:text-white"
+                      className="flex-1 flex justify-center items-center gap-2 px-4 py-3 bg-white dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/5 rounded-lg text-xs font-black uppercase tracking-wider cursor-pointer transition-all text-gray-700 dark:text-white"
                     >
                       {kycFile
                         ? kycFile.name.substring(0, 15) + "..."
@@ -179,7 +179,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
                     </label>
                     <button
                       onClick={onKycUpload}
-                      className="px-6 py-3 bg-amber-500 text-white rounded-2xl text-xs font-black uppercase tracking-wider hover:bg-amber-600 transition-all flex items-center gap-2"
+                      className="px-6 py-3 bg-amber-500 text-white rounded-lg text-xs font-black uppercase tracking-wider hover:bg-amber-600 transition-all flex items-center gap-2"
                     >
                       <Upload size={14} /> Upload
                     </button>
@@ -188,7 +188,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
               ) : (
                 <button
                   onClick={onInitiateSign}
-                  className="px-8 py-4.5 bg-primary text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                  className="px-8 py-4.5 bg-primary text-white rounded-lg text-xs font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
                 >
                   <PenTool size={16} /> Biometric Sign lease
                 </button>
@@ -202,7 +202,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
               href={agreement.agreementPdfUrl}
               target="_blank"
               rel="noreferrer"
-              className="w-full sm:w-auto px-8 py-4.5 bg-emerald-500 text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl shadow-emerald-500/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4.5 bg-emerald-500 text-white rounded-lg text-xs font-black uppercase tracking-widest shadow-xl shadow-emerald-500/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
             >
               <Download size={16} /> Download Signed PDF
             </a>
@@ -210,7 +210,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
 
           {/* Informational badges for await state */}
           {agreement.status === "PENDING_TENANT_SIGNATURE" && isOwner && (
-            <div className="flex items-center gap-2 text-xs font-black text-amber-600 bg-amber-50 dark:bg-amber-500/10 px-5 py-3 rounded-2xl">
+            <div className="flex items-center gap-2 text-xs font-black text-amber-600 bg-amber-50 dark:bg-amber-500/10 px-5 py-3 rounded-lg">
               <Clock size={16} /> Awaiting Tenant KYC & Signature
             </div>
           )}

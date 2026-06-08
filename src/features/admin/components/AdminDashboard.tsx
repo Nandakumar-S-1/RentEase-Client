@@ -3,8 +3,8 @@ import { ShieldCheck } from "lucide-react";
 const AdminDashboard = () => {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="bg-[color:var(--color-surface)] rounded-[2.5rem] p-10 border border-[color:var(--color-border)] shadow-xl flex flex-col items-center text-center space-y-6">
-        <div className="w-24 h-24 bg-primary/10 rounded-3xl flex items-center justify-center transition-transform hover:rotate-12 duration-500">
+      <div className="bg-[color:var(--color-surface)] rounded-xl p-10 border border-[color:var(--color-border)] shadow-xl flex flex-col items-center text-center space-y-6">
+        <div className="w-24 h-24 bg-primary/10 rounded-xl flex items-center justify-center transition-transform hover:rotate-12 duration-500">
           <ShieldCheck className="w-12 h-12 text-primary" />
         </div>
         <div className="space-y-2">

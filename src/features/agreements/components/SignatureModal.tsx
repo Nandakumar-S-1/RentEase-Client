@@ -39,7 +39,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({ isOpen, onClose,
                 toast.error('Please provide a signature first.');
                 return;
             }
-            const signatureData = sigCanvas.current?.getTrimmedCanvas().toDataURL('image/png');
+            const signatureData = sigCanvas.current?.getCanvas().toDataURL('image/png');
             if (signatureData) onSign(signatureData);
         } else {
             if (!uploadedImage) {

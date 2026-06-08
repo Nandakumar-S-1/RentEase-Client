@@ -79,6 +79,15 @@ export const propertySchema = z.object({
     (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
     z.coerce.number().positive("Area must be positive").optional().nullable(),
   ),
+}).superRefine((data, ctx) => {
+  const needsOccupants = !["SHOP", "LAND"].includes(data.propertyType);
+  if (needsOccupants && (data.maximumOccupants === undefined || data.maximumOccupants === null)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Max occupants is required for this property type",
+      path: ["maximumOccupants"],
+    });
+  }
 });
 
 export const serviceProviderSchema = z

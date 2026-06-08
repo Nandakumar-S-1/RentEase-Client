@@ -303,20 +303,20 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         )}
       </div>
-
-      <Modal
-        isOpen={isLogoutModalOpen}
-        onClose={() => setIsLogoutModalOpen(false)}
-        onConfirm={() => {
-          setIsLogoutModalOpen(false);
-          onLogout();
-        }}
-        title={LABELS.CONFIRM_LOGOUT}
-        description={LABELS.LOGOUT_DESCRIPTION}
-        confirmText={LABELS.LOGOUT}
-        isDestructive={true}
-      />
     </div>
+
+    <Modal
+      isOpen={isLogoutModalOpen}
+      onClose={() => setIsLogoutModalOpen(false)}
+      onConfirm={() => {
+        setIsLogoutModalOpen(false);
+        onLogout();
+      }}
+      title={LABELS.CONFIRM_LOGOUT}
+      description={LABELS.LOGOUT_DESCRIPTION}
+      confirmText={LABELS.LOGOUT}
+      isDestructive={true}
+    />
     </>
   );
 };

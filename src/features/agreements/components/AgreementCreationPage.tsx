@@ -25,6 +25,32 @@ const AgreementCreationPage: React.FC = () => {
   const [depositAmount, setDepositAmount] = useState("");
   const [lockInMonths, setLockInMonths] = useState("6");
   const [customTerms, setCustomTerms] = useState("");
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [durationDisplay, setDurationDisplay] = useState("");
+
+  const today = new Date().toISOString().split('T')[0];
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      if (end > start) {
+        let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+        if (end.getDate() < start.getDate()) {
+            months--;
+        }
+        const remainingStart = new Date(start);
+        remainingStart.setMonth(start.getMonth() + months);
+        const diffTime = Math.abs(end.getTime() - remainingStart.getTime());
+        const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        setDurationDisplay(`${months} Months, ${days} Days`);
+      } else {
+        setDurationDisplay("Invalid Dates");
+      }
+    } else {
+      setDurationDisplay("");
+    }
+  }, [startDate, endDate]);
 
   useEffect(() => {
     // Fetch owner properties
@@ -54,6 +80,7 @@ const AgreementCreationPage: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError(null);
     if (!selectedPropertyId) {
       toast.error("Please select a property");
       return;
@@ -64,6 +91,10 @@ const AgreementCreationPage: React.FC = () => {
     }
     if (!startDate || !endDate) {
       toast.error("Please enter validity dates");
+      return;
+    }
+    if (new Date(endDate) <= new Date(startDate)) {
+      toast.error("End date must be after start date");
       return;
     }
 
@@ -83,9 +114,10 @@ const AgreementCreationPage: React.FC = () => {
       await createAgreement(payload);
       toast.success("Draft agreement created successfully!");
       navigate(PAGE_ROUTES.OWNER_AGREEMENTS);
-    } catch (err) {
-      const error = err as Error;
-      toast.error(error.message || "Failed to create agreement");
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.message || err.message || "Failed to create agreement";
+      setApiError(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
@@ -95,7 +127,7 @@ const AgreementCreationPage: React.FC = () => {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate(PAGE_ROUTES.OWNER_AGREEMENTS)}
-            className="w-12 h-12 flex items-center justify-center bg-white dark:bg-card border border-[color:var(--color-border)] rounded-2xl hover:bg-[color:var(--color-secondary)] transition-all"
+            className="w-12 h-12 flex items-center justify-center bg-white dark:bg-card border border-[color:var(--color-border)] rounded-lg hover:bg-[color:var(--color-secondary)] transition-all"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -109,8 +141,15 @@ const AgreementCreationPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-[2.5rem] shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-xl shadow-sm overflow-hidden">
           <form onSubmit={handleFormSubmit} className="p-8 md:p-10 space-y-8">
+            {apiError && (
+              <div className="p-4 bg-red-50 text-red-600 rounded-lg text-sm font-semibold border border-red-100 flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 shrink-0" />
+                {apiError}
+              </div>
+            )}
+            
             {/* Asset Selection */}
             <div className="space-y-3">
               <label className="text-xs font-black uppercase tracking-widest text-[color:var(--color-muted-foreground)] flex items-center gap-2">
@@ -119,7 +158,7 @@ const AgreementCreationPage: React.FC = () => {
               <select
                 value={selectedPropertyId}
                 onChange={(e) => handlePropertyChange(e.target.value)}
-                className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
+                className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
               >
                 {properties.length === 0 ? (
                   <option value="">No active listings available</option>
@@ -146,7 +185,7 @@ const AgreementCreationPage: React.FC = () => {
                     placeholder="name@example.com"
                     value={tenantEmail}
                     onChange={(e) => setTenantEmail(e.target.value)}
-                    className="w-full pl-12 pr-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
+                    className="w-full pl-12 pr-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
                   />
                   <Mail size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--color-muted-foreground)]" />
                 </div>
@@ -163,7 +202,7 @@ const AgreementCreationPage: React.FC = () => {
                   required
                   value={lockInMonths}
                   onChange={(e) => setLockInMonths(e.target.value)}
-                  className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
+                  className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
                 />
               </div>
             </div>
@@ -180,7 +219,7 @@ const AgreementCreationPage: React.FC = () => {
                     required
                     value={monthlyRent}
                     onChange={(e) => setMonthlyRent(e.target.value)}
-                    className="w-full pl-12 pr-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
+                    className="w-full pl-12 pr-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
                   />
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--color-muted-foreground)] font-bold text-lg">₹</span>
                 </div>
@@ -197,7 +236,7 @@ const AgreementCreationPage: React.FC = () => {
                     required
                     value={depositAmount}
                     onChange={(e) => setDepositAmount(e.target.value)}
-                    className="w-full pl-12 pr-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
+                    className="w-full pl-12 pr-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
                   />
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--color-muted-foreground)] font-bold text-lg">₹</span>
                 </div>
@@ -213,23 +252,32 @@ const AgreementCreationPage: React.FC = () => {
                 <input
                   type="date"
                   required
+                  min={today}
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
+                  className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
                 />
               </div>
 
               {/* End Date */}
               <div className="space-y-3">
-                <label className="text-xs font-black uppercase tracking-widest text-[color:var(--color-muted-foreground)] flex items-center gap-2">
-                  <Calendar size={16} className="text-primary" /> Agreement End Date *
-                </label>
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-black uppercase tracking-widest text-[color:var(--color-muted-foreground)] flex items-center gap-2">
+                    <Calendar size={16} className="text-primary" /> Agreement End Date *
+                  </label>
+                  {durationDisplay && (
+                    <span className="text-xs font-black text-primary bg-primary/10 px-3 py-1 rounded-full">
+                      Duration: {durationDisplay}
+                    </span>
+                  )}
+                </div>
                 <input
                   type="date"
                   required
+                  min={startDate || today}
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
+                  className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
                 />
               </div>
             </div>
@@ -244,12 +292,12 @@ const AgreementCreationPage: React.FC = () => {
                 placeholder="E.g., No painting walls, no sub-letting, maintenance details..."
                 value={customTerms}
                 onChange={(e) => setCustomTerms(e.target.value)}
-                className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
+                className="w-full px-6 py-4 border border-[color:var(--color-border)] bg-[color:var(--color-secondary)]/50 dark:bg-white/5 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)]"
               />
             </div>
 
             {/* Legal / Policy terms */}
-            <div className="p-6 bg-primary/5 dark:bg-primary/10 rounded-[1.8rem] flex gap-4 items-start border border-primary/20">
+            <div className="p-6 bg-primary/5 dark:bg-primary/10 rounded-xl flex gap-4 items-start border border-primary/20">
               <ShieldCheck className="w-8 h-8 text-primary shrink-0" />
               <div>
                 <h5 className="text-sm font-black uppercase tracking-wider text-primary">
@@ -266,14 +314,14 @@ const AgreementCreationPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(PAGE_ROUTES.OWNER_AGREEMENTS)}
-                className="px-8 py-4 rounded-2xl text-sm font-black tracking-widest text-[color:var(--color-muted-foreground)] hover:bg-[color:var(--color-secondary)] transition-all"
+                className="px-8 py-4 rounded-lg text-sm font-black tracking-widest text-[color:var(--color-muted-foreground)] hover:bg-[color:var(--color-secondary)] transition-all"
               >
                 CANCEL
               </button>
               <button
                 type="submit"
                 disabled={isLoading || properties.length === 0}
-                className="px-10 py-4 bg-primary text-white rounded-2xl text-sm font-black tracking-widest hover:scale-[1.02] disabled:opacity-50 transition-all flex items-center gap-2 shadow-xl shadow-primary/20"
+                className="px-10 py-4 bg-primary text-white rounded-lg text-sm font-black tracking-widest hover:scale-[1.02] disabled:opacity-50 transition-all flex items-center gap-2 shadow-xl shadow-primary/20"
               >
                 {isLoading ? "GENERATING DRAFT..." : "CONFIRM & DRAFT"} <ChevronRight size={18} />
               </button>

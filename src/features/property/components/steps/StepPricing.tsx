@@ -33,7 +33,7 @@ export const StepPricing: React.FC<StepPricingProps> = ({
             value={formData.monthlyRent}
             onChange={handleInputChange}
             placeholder="e.g. 15000"
-            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.monthlyRent ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm`}
+            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.monthlyRent ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg focus:ring-2 focus:ring-primary/20 text-sm`}
           />
           {validationErrors.monthlyRent && (
             <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -53,7 +53,7 @@ export const StepPricing: React.FC<StepPricingProps> = ({
             value={formData.depositAmount}
             onChange={handleInputChange}
             placeholder="e.g. 50000"
-            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.depositAmount ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm`}
+            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.depositAmount ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg focus:ring-2 focus:ring-primary/20 text-sm`}
           />
           {validationErrors.depositAmount && (
             <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -75,7 +75,7 @@ export const StepPricing: React.FC<StepPricingProps> = ({
             value={formData.maintenanceCharges}
             onChange={handleInputChange}
             placeholder="e.g. 1500"
-            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.maintenanceCharges ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.maintenanceCharges ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm`}
           />
           {validationErrors.maintenanceCharges && (
             <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -84,7 +84,7 @@ export const StepPricing: React.FC<StepPricingProps> = ({
           )}
         </div>
 
-        <label className="flex items-center gap-3 cursor-pointer p-5 rounded-2xl border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)]/30 h-fit self-end">
+        <label className="flex items-center gap-3 cursor-pointer p-5 rounded-lg border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)]/30 h-fit self-end">
           <input
             type="checkbox"
             name="maintenanceIncluded"

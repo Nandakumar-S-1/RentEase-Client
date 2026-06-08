@@ -208,7 +208,7 @@ const LandingPage: React.FC = () => {
             agreements.
           </p>
 
-          <div className="max-w-4xl mx-auto bg-[color:var(--color-surface)] rounded-2xl sm:rounded-[2rem] shadow-xl sm:shadow-2xl shadow-slate-200/50 dark:shadow-none p-2 sm:p-3 mb-8 border border-[color:var(--color-border)] transition-colors duration-300">
+          <div className="max-w-4xl mx-auto bg-[color:var(--color-surface)] rounded-lg sm:rounded-xl shadow-xl sm:shadow-2xl shadow-slate-200/50 dark:shadow-none p-2 sm:p-3 mb-8 border border-[color:var(--color-border)] transition-colors duration-300">
             <div className="flex flex-col gap-2">
               <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-3 gap-2 px-2 sm:px-4">
                 <div className="flex items-center gap-3 py-3 border-b sm:border-b-0 sm:border-r border-[color:var(--color-border)]">
@@ -290,7 +290,7 @@ const LandingPage: React.FC = () => {
 
               <button
                 onClick={handleSearch}
-                className="w-full sm:mt-2 px-8 py-3.5 bg-primary text-white font-bold rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
+                className="w-full sm:mt-2 px-8 py-3.5 bg-primary text-white font-bold rounded-xl sm:rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
               >
                 <Search size={20} />
                 <span>Search Properties</span>
@@ -342,7 +342,7 @@ const LandingPage: React.FC = () => {
               [...Array(4)].map((_, i) => (
                 <div
                   key={i}
-                  className="animate-pulse bg-[color:var(--color-secondary)] rounded-2xl aspect-[4/3]"
+                  className="animate-pulse bg-[color:var(--color-secondary)] rounded-lg aspect-[4/3]"
                 />
               ))
             ) : properties.length === 0 ? (
@@ -353,7 +353,7 @@ const LandingPage: React.FC = () => {
               properties.map((property) => (
                 <div
                   key={property.id}
-                  className="group bg-[color:var(--color-surface)] rounded-2xl border border-[color:var(--color-border)] overflow-hidden hover:shadow-xl transition-all"
+                  className="group bg-[color:var(--color-surface)] rounded-lg border border-[color:var(--color-border)] overflow-hidden hover:shadow-xl transition-all"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img
@@ -412,7 +412,7 @@ const LandingPage: React.FC = () => {
               { label: "Rent Collected", value: "₹50L+" },
               { label: "Average Rating", value: "4.8★" },
             ].map((stat, i) => (
-              <div key={i} className="text-center p-4 sm:p-6 bg-[color:var(--color-surface)] rounded-2xl border border-[color:var(--color-border)] shadow-sm transition-all">
+              <div key={i} className="text-center p-4 sm:p-6 bg-[color:var(--color-surface)] rounded-lg border border-[color:var(--color-border)] shadow-sm transition-all">
                 <p className="text-2xl sm:text-3xl font-extrabold text-[color:var(--color-foreground)] mb-1">
                   {stat.value}
                 </p>
@@ -461,11 +461,11 @@ const LandingPage: React.FC = () => {
               color: "bg-blue-50 dark:bg-blue-500/10 text-blue-600",
             },
           ].map((item, i) => (
-            <div key={i} className="relative p-8 sm:p-10 bg-[color:var(--color-surface)] rounded-[2rem] border border-[color:var(--color-border)] shadow-sm text-center transition-all">
+            <div key={i} className="relative p-8 sm:p-10 bg-[color:var(--color-surface)] rounded-xl border border-[color:var(--color-border)] shadow-sm text-center transition-all">
               <div className="absolute top-4 right-6 font-black text-4xl sm:text-5xl text-[color:var(--color-muted)]/10 select-none">
                 {item.step}
               </div>
-              <div className={`w-14 h-14 ${item.color} rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto`}>
+              <div className={`w-14 h-14 ${item.color} rounded-lg flex items-center justify-center mb-6 sm:mb-8 mx-auto`}>
                 {item.icon}
               </div>
               <h3 className="text-xl font-bold mb-3 sm:mb-4 text-[color:var(--color-foreground)]">
@@ -481,7 +481,7 @@ const LandingPage: React.FC = () => {
 
       {/* CTA Section */}
       <section className="py-16 sm:py-24 px-4 bg-[color:var(--color-background)] transition-colors duration-300">
-        <div className="max-w-7xl mx-auto bg-primary rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-20 relative overflow-hidden text-center text-white shadow-xl shadow-primary/20">
+        <div className="max-w-7xl mx-auto bg-primary rounded-xl sm:rounded-xl p-8 sm:p-12 lg:p-20 relative overflow-hidden text-center text-white shadow-xl shadow-primary/20">
           <div className="absolute top-0 right-0 w-1/2 h-full bg-white/5 skew-x-[-15deg] translate-x-[25%] pointer-events-none" />
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-8 leading-tight relative z-10">
@@ -493,7 +493,7 @@ const LandingPage: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 relative z-10">
-            <div className="bg-white/10 backdrop-blur-sm p-6 sm:p-8 rounded-2xl sm:rounded-[2rem] flex-1 max-w-sm border border-white/10 mx-auto w-full">
+            <div className="bg-white/10 backdrop-blur-sm p-6 sm:p-8 rounded-lg sm:rounded-xl flex-1 max-w-sm border border-white/10 mx-auto w-full">
               <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">I'm a Property Owner</h3>
               <p className="text-xs sm:text-sm text-blue-100/70 mb-6 sm:mb-8">List your property and connect with verified tenants</p>
               <button
@@ -504,7 +504,7 @@ const LandingPage: React.FC = () => {
               </button>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm p-6 sm:p-8 rounded-2xl sm:rounded-[2rem] flex-1 max-w-sm border border-white/10 mx-auto w-full">
+            <div className="bg-white/10 backdrop-blur-sm p-6 sm:p-8 rounded-lg sm:rounded-xl flex-1 max-w-sm border border-white/10 mx-auto w-full">
               <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">I'm Looking for Rental</h3>
               <p className="text-xs sm:text-sm text-blue-100/70 mb-6 sm:mb-8">Find your perfect home from thousands of listings</p>
               <button

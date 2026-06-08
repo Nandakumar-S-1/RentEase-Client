@@ -109,7 +109,7 @@ const ChangePasswordForm: React.FC = () => {
               value={formData.currentPassword}
               onChange={handleChange}
               required
-              className={`w-full pl-12 pr-12 py-4 bg-gray-50/50 dark:bg-white/5 border ${errors.currentPassword ? "border-red-500" : "border-gray-100 dark:border-white/10"} rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium`}
+              className={`w-full pl-12 pr-12 py-4 bg-gray-50/50 dark:bg-white/5 border ${errors.currentPassword ? "border-red-500" : "border-gray-100 dark:border-white/10"} rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium`}
               placeholder="Enter your current password"
             />
             <button
@@ -137,7 +137,7 @@ const ChangePasswordForm: React.FC = () => {
                 value={formData.newPassword}
                 onChange={handleChange}
                 required
-                className={`w-full pl-12 pr-12 py-4 bg-gray-50/50 dark:bg-white/5 border ${errors.newPassword ? "border-red-500" : "border-gray-100 dark:border-white/10"} rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium`}
+                className={`w-full pl-12 pr-12 py-4 bg-gray-50/50 dark:bg-white/5 border ${errors.newPassword ? "border-red-500" : "border-gray-100 dark:border-white/10"} rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium`}
                 placeholder="Minimum 8 chars"
               />
               {errors.newPassword && (
@@ -169,7 +169,7 @@ const ChangePasswordForm: React.FC = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
-                className={`w-full pl-12 pr-12 py-4 bg-gray-50/50 dark:bg-white/5 border ${errors.confirmPassword ? "border-red-500" : "border-gray-100 dark:border-white/10"} rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium`}
+                className={`w-full pl-12 pr-12 py-4 bg-gray-50/50 dark:bg-white/5 border ${errors.confirmPassword ? "border-red-500" : "border-gray-100 dark:border-white/10"} rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium`}
                 placeholder="Repeat new password"
               />
               {errors.confirmPassword && (
@@ -188,7 +188,7 @@ const ChangePasswordForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 rounded-2xl p-4 space-y-3">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 rounded-lg p-4 space-y-3">
           <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-black text-xs uppercase tracking-widest">
             <AlertCircle size={14} /> Password Requirements
           </div>
@@ -225,7 +225,7 @@ const ChangePasswordForm: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full md:w-fit px-12 py-4 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
+            className="w-full md:w-fit px-12 py-4 bg-primary text-white font-black rounded-lg shadow-xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
           >
             {loading ? (
               <div className="flex items-center gap-3">

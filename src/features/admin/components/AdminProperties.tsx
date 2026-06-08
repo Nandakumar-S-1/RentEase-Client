@@ -34,7 +34,7 @@ const AdminProperties = () => {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-[2.5rem] p-6 lg:p-10 shadow-2xl">
+      <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl p-6 lg:p-10 shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1">
             <h1 className="text-4xl font-black text-[color:var(--color-foreground)] tracking-tight flex items-center gap-4">
@@ -45,7 +45,7 @@ const AdminProperties = () => {
               Monitor and manage all listed properties across the platform.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2 bg-gray-100/50 dark:bg-white/5 p-2 rounded-[1.5rem] border border-[color:var(--color-border)]">
+          <div className="flex flex-wrap items-center gap-2 bg-gray-100/50 dark:bg-white/5 p-2 rounded-xl border border-[color:var(--color-border)]">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -65,15 +65,15 @@ const AdminProperties = () => {
       </div>
 
       {error && (
-        <div className="p-5 bg-red-500/10 text-red-600 rounded-[1.5rem] border border-red-500/20 font-bold text-sm flex items-center gap-3">
+        <div className="p-5 bg-red-500/10 text-red-600 rounded-xl border border-red-500/20 font-bold text-sm flex items-center gap-3">
           <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
           {error}
         </div>
       )}
 
       {!loading && properties.length === 0 ? (
-        <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-[3rem] p-24 text-center shadow-xl">
-          <div className="w-24 h-24 bg-gray-50 dark:bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-[color:var(--color-border)]">
+        <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl p-24 text-center shadow-xl">
+          <div className="w-24 h-24 bg-gray-50 dark:bg-white/5 rounded-xl flex items-center justify-center mx-auto mb-6 border border-[color:var(--color-border)]">
             <CheckCircle2 size={48} className="text-gray-200" />
           </div>
           <h3 className="text-2xl font-black text-[color:var(--color-foreground)] mb-2">
@@ -98,7 +98,7 @@ const AdminProperties = () => {
                     ),
                   )
                 }
-                className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:border-primary/30 transition-all duration-500 cursor-pointer group shadow-lg"
+                className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl overflow-hidden hover:shadow-2xl hover:border-primary/30 transition-all duration-500 cursor-pointer group shadow-lg"
               >
                 <div className="relative h-60 overflow-hidden">
                   <img
@@ -160,7 +160,7 @@ const AdminProperties = () => {
                         ₹{property.monthlyRent.toLocaleString()}
                       </span>
                     </div>
-                    <div className="w-12 h-12 bg-primary/5 text-primary rounded-2xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                    <div className="w-12 h-12 bg-primary/5 text-primary rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                       <ArrowRight size={20} />
                     </div>
                   </div>
@@ -200,7 +200,7 @@ const AdminProperties = () => {
                     window.scrollTo(0, 0);
                   }}
                   disabled={pagination.page === 1}
-                  className="w-12 h-12 flex items-center justify-center bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl hover:bg-primary/5 hover:border-primary/30 disabled:opacity-20 transition-all text-gray-400 hover:text-primary shadow-sm"
+                  className="w-12 h-12 flex items-center justify-center bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-lg hover:bg-primary/5 hover:border-primary/30 disabled:opacity-20 transition-all text-gray-400 hover:text-primary shadow-sm"
                 >
                   <ChevronLeft size={24} />
                 </button>
@@ -213,7 +213,7 @@ const AdminProperties = () => {
                         fetchProperties(i + 1, pagination.status);
                         window.scrollTo(0, 0);
                       }}
-                      className={`w-12 h-12 rounded-2xl font-black transition-all shadow-sm ${
+                      className={`w-12 h-12 rounded-lg font-black transition-all shadow-sm ${
                         pagination.page === i + 1
                           ? "bg-primary text-white shadow-xl shadow-primary/25 scale-110"
                           : "bg-[color:var(--color-surface)] border border-[color:var(--color-border)] hover:bg-gray-100 dark:hover:bg-white/5 text-gray-400"
@@ -233,7 +233,7 @@ const AdminProperties = () => {
                     window.scrollTo(0, 0);
                   }}
                   disabled={pagination.page === pagination.pages}
-                  className="w-12 h-12 flex items-center justify-center bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl hover:bg-primary/5 hover:border-primary/30 disabled:opacity-20 transition-all text-gray-400 hover:text-primary shadow-sm"
+                  className="w-12 h-12 flex items-center justify-center bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-lg hover:bg-primary/5 hover:border-primary/30 disabled:opacity-20 transition-all text-gray-400 hover:text-primary shadow-sm"
                 >
                   <ChevronRight size={24} />
                 </button>

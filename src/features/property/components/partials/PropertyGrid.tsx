@@ -31,11 +31,11 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 bg-red-500/5 rounded-[3rem] border border-red-500/10">
+      <div className="flex flex-col items-center justify-center py-20 bg-red-500/5 rounded-xl border border-red-500/10">
         <p className="text-red-500 font-bold mb-6">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="px-10 py-4 bg-red-500 text-white font-black rounded-2xl shadow-xl shadow-red-500/20 hover:scale-105 transition-all"
+          className="px-10 py-4 bg-red-500 text-white font-black rounded-lg shadow-xl shadow-red-500/20 hover:scale-105 transition-all"
         >
           Retry Connection
         </button>
@@ -45,8 +45,8 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
 
   if (properties.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 bg-[color:var(--color-surface)] rounded-[3rem] border border-dashed border-[color:var(--color-border)]">
-        <div className="w-24 h-24 bg-gray-100/50 dark:bg-white/5 flex items-center justify-center rounded-[2rem] mb-6 text-gray-300">
+      <div className="flex flex-col items-center justify-center py-32 bg-[color:var(--color-surface)] rounded-xl border border-dashed border-[color:var(--color-border)]">
+        <div className="w-24 h-24 bg-gray-100/50 dark:bg-white/5 flex items-center justify-center rounded-xl mb-6 text-gray-300">
           <Home size={48} />
         </div>
         <h3 className="text-2xl font-black text-[color:var(--color-foreground)] mb-3">

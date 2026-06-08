@@ -5,7 +5,6 @@ import ProtectedRoute from "../guards/ProtectedRoute";
 import { PAGE_ROUTES } from "../../config/routes";
 import { LoadingOverlay } from "../../components/common";
 
-// Lazy load components
 const RoleSelection = lazy(
   () => import("../../features/auth/components/RoleSelection"),
 );
@@ -205,6 +204,14 @@ export const UserRouter = () => {
         />
         <Route
           path={PAGE_ROUTES.TENANT_AGREEMENTS}
+          element={
+            <ProtectedRoute>
+              <AgreementDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.AGREEMENT_DETAIL}
           element={
             <ProtectedRoute>
               <AgreementDashboard />

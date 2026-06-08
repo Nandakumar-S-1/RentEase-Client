@@ -5,20 +5,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#2563eb", // Blue 600
-        secondary: "#f1f5f9", // Slate 100
-        accent: "#dbeafe", // Blue 100
-        card: "#FFFFFF",
-        muted: "#64748b", // Slate 500
-        danger: "#ef4444",
+        primary: "var(--color-primary)",
+        secondary: "var(--color-secondary)",
+        accent: "var(--color-accent)",
+        card: "var(--color-card)",
+        muted: "var(--color-muted)",
+        danger: "var(--color-danger)",
+        background: "var(--color-background)",
+        foreground: "var(--color-foreground)",
       },
 
       textColor: {
-        primary: "#2563eb",
-        "muted-foreground": "#64748b",
-        "card-foreground": "#0f172a",
-        "secondary-foreground": "#1e293b",
-        "accent-foreground": "#1e40af",
+        primary: "var(--color-primary)",
+        "muted-foreground": "var(--color-muted-foreground)",
+        "card-foreground": "var(--color-card-foreground)",
+        "secondary-foreground": "var(--color-secondary-foreground)",
+        "accent-foreground": "var(--color-accent-foreground)",
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],

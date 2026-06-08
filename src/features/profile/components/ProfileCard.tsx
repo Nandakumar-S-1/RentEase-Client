@@ -2,10 +2,8 @@ import React from "react";
 import {
   Mail,
   Phone,
-  CheckCircle,
+  CheckCircle2,
   Clock,
-  Star,
-  LayoutGrid,
   Briefcase,
   Quote,
 } from "lucide-react";
@@ -24,143 +22,128 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
     : "Recent";
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
-      {/* Header with Name */}
-      <div className="pb-6 border-b border-gray-100 dark:border-white/5">
-        <h2 className="text-3xl font-black text-gray-800 dark:text-white tracking-tight">
-          {profile.fullName}
-        </h2>
-        <p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em] mt-1">
-          {profile.role} Account
-        </p>
-      </div>
+    <div className="space-y-8">
 
-      {/* Bio & Occupation Section */}
-      <div className="space-y-6">
-        <div className="space-y-6">
-          <div className="flex items-center gap-3 text-primary">
-            <div className="p-2 bg-primary/10 rounded-xl">
-              <Briefcase size={20} />
-            </div>
-            <h3 className="font-black text-sm uppercase tracking-widest">
-              Professional Identity
-            </h3>
+      {/* ── Bio & Occupation ──────────────────────────────── */}
+      <section className="space-y-4">
+        <SectionLabel icon={<Briefcase size={14} />} text="Professional Identity" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Occupation */}
+          <div className="p-5 bg-[color:var(--color-secondary)] rounded-lg border border-[color:var(--color-border)]">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--color-muted-foreground)] mb-1">
+              Occupation
+            </p>
+            <p className="font-semibold text-[color:var(--color-foreground)]">
+              {profile.occupation?.trim() || "Community Member"}
+            </p>
           </div>
 
-          <div className="space-y-4">
-            <div className="p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100/50 hover:border-primary/20 transition-colors">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">
-                Current Occupation
-              </p>
-              <p className="text-lg font-black text-gray-900 dark:text-white">
-                {profile.occupation && profile.occupation.trim() !== ""
-                  ? profile.occupation
-                  : "Community Member"}
-              </p>
-            </div>
-
-            <div className="p-6 bg-primary/5 rounded-3xl border border-primary/10 relative overflow-hidden group hover:bg-primary/[0.08] transition-colors">
-              <Quote
-                className="absolute -right-2 -bottom-2 text-primary/10 group-hover:scale-110 transition-transform duration-500"
-                size={64}
-              />
-              <p className="text-[10px] font-black text-primary/60 uppercase tracking-widest mb-2">
-                About Me
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-200 font-medium leading-relaxed italic relative z-10">
-                {profile.bio && profile.bio.trim() !== ""
-                  ? `"${profile.bio}"`
-                  : "Write a short bio to let others know you better."}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Info Grid */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-gray-50 dark:bg-white/5 rounded-[2rem] p-6 text-center hover:translate-y-[-4px] transition-all">
-          <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-3">
-            <LayoutGrid size={20} />
-          </div>
-          <p className="text-2xl font-black text-gray-900 dark:text-white">
-            {profile.listingsCount || 0}
-          </p>
-          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-            {isOwner ? "Listings" : "Rentals"}
-          </p>
-        </div>
-        <div className="bg-gray-50 dark:bg-white/5 rounded-[2rem] p-6 text-center hover:translate-y-[-4px] transition-all">
-          <div className="w-10 h-10 bg-amber-50 dark:bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3">
-            <Star size={20} />
-          </div>
-          <p className="text-2xl font-black text-gray-900 dark:text-white">
-            4.9
-          </p>
-          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-            Avg Rating
-          </p>
-        </div>
-      </div>
-
-      {/* Contact Details */}
-      <div className="pt-4">
-        <h3 className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6 px-1">
-          Verifications & Contact
-        </h3>
-        <div className="space-y-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gray-50 dark:bg-white/5 rounded-2xl flex items-center justify-center text-gray-400">
-              <Mail size={20} />
-            </div>
+          {/* Member since */}
+          <div className="p-5 bg-[color:var(--color-secondary)] rounded-lg border border-[color:var(--color-border)] flex items-center gap-3">
+            <Clock size={16} className="text-[color:var(--color-muted-foreground)] flex-shrink-0" />
             <div>
-              <p className="text-[10px] font-black text-gray-400 uppercase">
-                Email Address
+              <p className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--color-muted-foreground)] mb-0.5">
+                Member Since
               </p>
-              <p className="font-bold text-sm text-gray-800 dark:text-gray-200">
-                {profile.email}
-              </p>
+              <p className="font-semibold text-[color:var(--color-foreground)]">{joinedDate}</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gray-50 dark:bg-white/5 rounded-2xl flex items-center justify-center text-gray-400">
-              <Phone size={20} />
-            </div>
-            <div>
-              <p className="text-[10px] font-black text-gray-400 uppercase">
-                Phone Number
-              </p>
-              <p className="font-bold text-sm text-gray-800 dark:text-gray-200">
-                {profile.phone || "Not provided"}
-              </p>
-            </div>
+        </div>
+
+        {/* Bio */}
+        {profile.bio?.trim() ? (
+          <div className="relative p-5 bg-primary/5 border border-primary/15 rounded-lg overflow-hidden">
+            <Quote
+              size={48}
+              className="absolute -right-2 -bottom-2 text-primary/10 pointer-events-none"
+            />
+            <p className="text-[10px] font-bold uppercase tracking-widest text-primary/60 mb-2">
+              About
+            </p>
+            <p className="text-sm text-[color:var(--color-foreground)] leading-relaxed italic relative z-10">
+              "{profile.bio}"
+            </p>
           </div>
+        ) : (
+          <div className="p-5 border border-dashed border-[color:var(--color-border)] rounded-lg text-center">
+            <p className="text-sm text-[color:var(--color-muted-foreground)]">
+              No bio yet —{" "}
+              <span className="text-primary font-medium">add one in Configure</span>
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* ── Contact & Verifications ───────────────────────── */}
+      <section className="space-y-4">
+        <SectionLabel icon={<Mail size={14} />} text="Contact & Verifications" />
+
+        <div className="divide-y divide-[color:var(--color-border)] border border-[color:var(--color-border)] rounded-lg overflow-hidden">
+          <ContactRow
+            icon={<Mail size={16} />}
+            label="Email Address"
+            value={profile.email}
+          />
+          <ContactRow
+            icon={<Phone size={16} />}
+            label="Phone Number"
+            value={profile.phone || "Not provided"}
+            muted={!profile.phone}
+          />
           {isOwner && profile.verificationStatus === "VERIFIED" && (
-            <div className="flex items-center gap-4 pt-2">
-              <div className="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center">
-                <CheckCircle size={20} />
-              </div>
+            <div className="flex items-center gap-3 px-5 py-4 bg-emerald-50 dark:bg-emerald-500/10">
+              <CheckCircle2 size={16} className="text-emerald-500 flex-shrink-0" />
               <div>
-                <p className="text-[10px] font-black text-green-600 uppercase">
-                  Account Status
-                </p>
-                <p className="font-bold text-sm text-green-700">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                   Verified Owner
+                </p>
+                <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                  Identity confirmed
                 </p>
               </div>
             </div>
           )}
         </div>
-
-        <div className="mt-8 pt-8 border-t border-gray-50 dark:border-white/5 flex items-center gap-2 text-gray-400">
-          <Clock size={14} />
-          <span className="text-[10px] font-black uppercase tracking-widest">
-            Joined {joinedDate}
-          </span>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };
+
+/* ── Small helpers ─────────────────────────────────────────────────── */
+const SectionLabel: React.FC<{ icon: React.ReactNode; text: string }> = ({
+  icon,
+  text,
+}) => (
+  <div className="flex items-center gap-2 text-[color:var(--color-muted-foreground)]">
+    {icon}
+    <span className="text-xs font-bold uppercase tracking-widest">{text}</span>
+  </div>
+);
+
+const ContactRow: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  muted?: boolean;
+}> = ({ icon, label, value, muted }) => (
+  <div className="flex items-center gap-3 px-5 py-4 bg-[color:var(--color-surface)]">
+    <span className="text-[color:var(--color-muted-foreground)] flex-shrink-0">{icon}</span>
+    <div>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--color-muted-foreground)]">
+        {label}
+      </p>
+      <p
+        className={`text-sm font-semibold ${
+          muted
+            ? "text-[color:var(--color-muted-foreground)] italic"
+            : "text-[color:var(--color-foreground)]"
+        }`}
+      >
+        {value}
+      </p>
+    </div>
+  </div>
+);
 
 export default ProfileCard;

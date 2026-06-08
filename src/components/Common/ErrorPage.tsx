@@ -20,8 +20,8 @@ const ErrorPage: React.FC<ErrorPageProps> = ({
           {code}
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-white dark:bg-card p-6 rounded-3xl border-2 border-danger/20 shadow-2xl">
-            <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-danger text-white shadow-xl rotate-12">
+          <div className="bg-white dark:bg-card p-6 rounded-xl border-2 border-danger/20 shadow-2xl">
+            <div className="w-16 h-16 flex items-center justify-center rounded-lg bg-danger text-white shadow-xl rotate-12">
               <AlertTriangle size={32} />
             </div>
           </div>
@@ -57,7 +57,7 @@ const ErrorPage: React.FC<ErrorPageProps> = ({
         </Button>
       </div>
 
-      <div className="mt-16 flex items-center gap-4 p-4 bg-white dark:bg-card rounded-2xl border border-border shadow-sm">
+      <div className="mt-16 flex items-center gap-4 p-4 bg-white dark:bg-card rounded-lg border border-border shadow-sm">
         <div className="p-2 bg-primary/10 rounded-lg text-primary">
           <Bell size={20} />
         </div>

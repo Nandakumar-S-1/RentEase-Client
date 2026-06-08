@@ -119,7 +119,7 @@ export function PropertyLocationMap({
   const apiKey = import.meta.env.VITE_OLA_MAP_TOKEN_API as string | undefined;
   if (!apiKey?.trim()) {
     return (
-      <div className="h-72 rounded-3xl border-2 border-gray-100 bg-gray-50 flex items-center justify-center px-4 text-center text-sm text-gray-500">
+      <div className="h-72 rounded-xl border-2 border-gray-100 bg-gray-50 flex items-center justify-center px-4 text-center text-sm text-gray-500">
         Add <code className="mx-1">VITE_OLA_MAP_TOKEN_API</code> to Client{" "}
         <code className="mx-1">.env</code> and restart the dev server.
       </div>
@@ -127,7 +127,7 @@ export function PropertyLocationMap({
   }
 
   return (
-    <div className="relative h-72 rounded-3xl overflow-hidden border-2 border-gray-100">
+    <div className="relative h-72 rounded-xl overflow-hidden border-2 border-gray-100">
       <div ref={containerRef} className="h-full w-full" />
       <p className="pointer-events-none absolute top-3 left-3 rounded-xl bg-white/90 px-3 py-2 text-xs font-bold text-gray-600 shadow-md backdrop-blur-sm">
         {isReadOnly

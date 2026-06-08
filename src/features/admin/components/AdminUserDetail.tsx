@@ -160,11 +160,11 @@ const AdminUserDetail = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden relative">
+          <div className="bg-white rounded-lg border border-gray-100 shadow-sm p-6 overflow-hidden relative">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" />
 
             <div className="relative flex flex-col items-center text-center">
-              <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 overflow-hidden border-4 border-white shadow-xl">
+              <div className="w-24 h-24 rounded-lg bg-primary/10 flex items-center justify-center mb-4 overflow-hidden border-4 border-white shadow-xl">
                 {user.avatarUrl ? (
                   <img
                     src={user.avatarUrl}
@@ -264,7 +264,7 @@ const AdminUserDetail = () => {
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-1 flex">
+          <div className="bg-white rounded-lg border border-gray-100 shadow-sm p-1 flex">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -289,7 +289,7 @@ const AdminUserDetail = () => {
             ))}
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden min-h-[400px]">
+          <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden min-h-[400px]">
             {activeTab === "DOCUMENTS" && (
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -315,7 +315,7 @@ const AdminUserDetail = () => {
                 ) : verification ? (
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-4 bg-gray-50 rounded-2xl">
+                      <div className="p-4 bg-gray-50 rounded-lg">
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tight mb-1">
                           Document Type
                         </p>
@@ -323,7 +323,7 @@ const AdminUserDetail = () => {
                           {verification.documentType || "Aadhaar / PAN"}
                         </p>
                       </div>
-                      <div className="p-4 bg-gray-50 rounded-2xl">
+                      <div className="p-4 bg-gray-50 rounded-lg">
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tight mb-1">
                           Status
                         </p>
@@ -350,7 +350,7 @@ const AdminUserDetail = () => {
                       </div>
                     </div>
 
-                    <div className="border border-gray-100 rounded-2xl overflow-hidden bg-gray-50">
+                    <div className="border border-gray-100 rounded-lg overflow-hidden bg-gray-50">
                       <div className="p-4 bg-white border-b border-gray-100 flex items-center justify-between">
                         <span className="text-xs font-bold text-gray-600">
                           Document Scan
@@ -425,7 +425,7 @@ const AdminUserDetail = () => {
                     {[1, 2].map((i) => (
                       <div
                         key={i}
-                        className="h-24 bg-gray-50 rounded-2xl animate-pulse"
+                        className="h-24 bg-gray-50 rounded-lg animate-pulse"
                       />
                     ))}
                   </div>
@@ -442,7 +442,7 @@ const AdminUserDetail = () => {
                             ),
                           )
                         }
-                        className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-all cursor-pointer group border border-transparent hover:border-primary/20"
+                        className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all cursor-pointer group border border-transparent hover:border-primary/20"
                       >
                         <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
                           <img

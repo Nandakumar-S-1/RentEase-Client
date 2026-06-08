@@ -119,9 +119,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <div className="relative">
               <button
                 onClick={() => setIsNotifOpen((prev) => !prev)}
-                className="relative p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all"
+                className="group relative p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all"
               >
-                <Bell size={20} />
+                <div className="animate-ring-periodic group-hover:animate-none hover-ring-shake">
+                  <Bell size={20} />
+                </div>
                 {unreadCount > 0 && (
                   <span className="absolute top-1.5 right-1.5 flex items-center justify-center min-w-[16px] h-4 px-0.5 text-[10px] font-bold bg-danger text-white rounded-full border-2 border-[color:var(--color-surface)]">
                     {unreadCount > 99 ? "99+" : unreadCount}
@@ -134,16 +136,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               />
             </div>
             <button
-              onClick={() =>
-                navigate(
-                  role === RoleTypes.ADMIN_USER
-                    ? PAGE_ROUTES.ADMIN_SETTINGS
-                    : PAGE_ROUTES.PROFILE,
-                )
-              }
-              className="p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all"
+              onClick={() => {
+                if (role === RoleTypes.ADMIN_USER) {
+                  navigate(PAGE_ROUTES.ADMIN_SETTINGS);
+                } else if (role === RoleTypes.OWNER_USER) {
+                  navigate(PAGE_ROUTES.OWNER_SUBSCRIPTION);
+                } else {
+                  navigate(PAGE_ROUTES.PROFILE);
+                }
+              }}
+              className="group p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all"
             >
-              <Settings size={20} />
+              <Settings size={20} className="transition-transform duration-700 ease-in-out group-hover:rotate-180" />
             </button>
           </div>
         </header>

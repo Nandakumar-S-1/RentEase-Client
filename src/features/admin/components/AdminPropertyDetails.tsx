@@ -63,7 +63,7 @@ const AdminPropertyDetails = () => {
           <AdminPropertySpecs property={property} />
 
           {/* Property Description Section */}
-          <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[3rem] p-10 space-y-6">
+          <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-xl p-10 space-y-6">
             <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
               <FileText size={22} className="text-primary" /> Listing
               Description
@@ -80,14 +80,14 @@ const AdminPropertyDetails = () => {
                 <MapPin size={22} className="text-primary" /> Geo-Location
                 Verification
               </h3>
-              <div className="rounded-[3rem] overflow-hidden border-8 border-white dark:border-card shadow-xl h-[400px]">
+              <div className="rounded-xl overflow-hidden border-8 border-white dark:border-card shadow-xl h-[400px]">
                 <PropertyLocationMap
                   latitude={property.latitude}
                   longitude={property.longitude}
                   isReadOnly={true}
                 />
               </div>
-              <div className="p-6 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5 flex items-center justify-between">
+              <div className="p-6 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/5 flex items-center justify-between">
                 <span className="text-xs font-black uppercase text-gray-400 tracking-widest">
                   Reported Address
                 </span>
@@ -102,14 +102,14 @@ const AdminPropertyDetails = () => {
         {/* Right Column: Owner & Audit Checklist */}
         <div className="lg:col-span-4 space-y-8">
           {/* Owner Identity Block */}
-          <div className="bg-gray-950 rounded-[3rem] p-10 text-white relative overflow-hidden">
+          <div className="bg-gray-950 rounded-xl p-10 text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full -mr-16 -mt-16 blur-3xl" />
             <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 mb-8 flex items-center gap-2">
               <User size={14} /> Registered Partner
             </h4>
 
             <div className="flex items-center gap-5 mb-10">
-              <div className="w-20 h-20 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center text-primary font-black text-3xl shadow-2xl">
+              <div className="w-20 h-20 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center text-primary font-black text-3xl shadow-2xl">
                 {property.owner?.fullName?.charAt(0) || "O"}
               </div>
               <div>
@@ -123,7 +123,7 @@ const AdminPropertyDetails = () => {
             </div>
 
             <div className="space-y-4 pt-6 border-t border-white/5">
-              <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
+              <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
                 <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-primary">
                   <Mail size={18} />
                 </div>
@@ -131,7 +131,7 @@ const AdminPropertyDetails = () => {
                   {property.owner?.email || "N/A"}
                 </span>
               </div>
-              <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
+              <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
                 <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-primary">
                   <Phone size={18} />
                 </div>
@@ -143,7 +143,7 @@ const AdminPropertyDetails = () => {
           </div>
 
           {/* Verification Checklist */}
-          <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-[3rem] p-8 shadow-sm">
+          <div className="bg-white dark:bg-card border border-gray-100 dark:border-white/5 rounded-xl p-8 shadow-sm">
             <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
               <CheckCircle size={14} className="text-primary" /> Auditor
               Checklist
@@ -158,7 +158,7 @@ const AdminPropertyDetails = () => {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-white/5 rounded-2xl"
+                  className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-white/5 rounded-lg"
                 >
                   <input
                     type="checkbox"
@@ -173,7 +173,7 @@ const AdminPropertyDetails = () => {
           </div>
 
           {/* Alerts & Critical Info */}
-          <div className="p-8 bg-amber-500/5 rounded-[3rem] border border-amber-500/20 space-y-4">
+          <div className="p-8 bg-amber-500/5 rounded-xl border border-amber-500/20 space-y-4">
             <div className="flex items-center gap-2 text-amber-600">
               <AlertCircle size={20} />
               <span className="font-black text-xs uppercase tracking-widest">
@@ -192,7 +192,7 @@ const AdminPropertyDetails = () => {
       {/* Floating Action Bar */}
       {property.status === "PENDING_APPROVAL" && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 w-full max-w-4xl px-6 z-40">
-          <div className="bg-white/80 dark:bg-card/80 backdrop-blur-2xl p-4 rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex items-center justify-between gap-6">
+          <div className="bg-white/80 dark:bg-card/80 backdrop-blur-2xl p-4 rounded-xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex items-center justify-between gap-6">
             <div className="hidden md:flex items-center gap-4 pl-4 border-r border-gray-200 pr-8">
               <div className="text-right">
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
@@ -205,13 +205,13 @@ const AdminPropertyDetails = () => {
             <div className="flex items-center gap-4 flex-1 justify-end">
               <button
                 onClick={() => setShowRejectModal(true)}
-                className="px-6 py-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all rounded-2xl font-black text-sm"
+                className="px-6 py-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all rounded-lg font-black text-sm"
               >
                 Reject Listing
               </button>
               <button
                 onClick={() => setShowApproveModal(true)}
-                className="px-8 py-3 bg-primary text-white hover:scale-[1.03] active:scale-[0.97] transition-all rounded-2xl font-black text-sm shadow-xl shadow-primary/25"
+                className="px-8 py-3 bg-primary text-white hover:scale-[1.03] active:scale-[0.97] transition-all rounded-lg font-black text-sm shadow-xl shadow-primary/25"
               >
                 Approve Listing
               </button>

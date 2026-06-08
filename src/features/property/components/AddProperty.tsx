@@ -138,6 +138,7 @@ const AddProperty: React.FC = () => {
       if (step === 1) return ["title", "description", "propertyType"].includes(field);
       if (step === 2)
         return ["locationDistrict", "locationCity", "locationPinCode", "fullAddress"].includes(field);
+      if (step === 3) return ["maximumOccupants"].includes(field);
       if (step === 5) return ["monthlyRent", "depositAmount"].includes(field);
       return false;
     });

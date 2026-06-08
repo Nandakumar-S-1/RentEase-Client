@@ -60,8 +60,8 @@ const OwnerVerification = () => {
   if (status === VerificationStatus.SUBMITTED) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[color:var(--color-background)] px-4">
-        <div className="w-full max-w-md rounded-3xl bg-[color:var(--color-surface)] p-10 shadow-xl border border-[color:var(--color-border)] text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/10 transition-colors">
+        <div className="w-full max-w-md rounded-xl bg-[color:var(--color-surface)] p-10 shadow-xl border border-[color:var(--color-border)] text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-xl bg-amber-500/10 transition-colors">
             <Clock className="h-10 w-10 text-amber-500" />
           </div>
           <h1 className="mb-3 text-3xl font-black text-[color:var(--color-foreground)] tracking-tight">
@@ -83,9 +83,9 @@ const OwnerVerification = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[color:var(--color-background)] px-4">
-      <div className="w-full max-w-md rounded-[2.5rem] bg-[color:var(--color-surface)] p-10 shadow-xl border border-[color:var(--color-border)] animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="w-full max-w-md rounded-xl bg-[color:var(--color-surface)] p-10 shadow-xl border border-[color:var(--color-border)] animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-primary/5">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-xl bg-primary/5">
             {status === VerificationStatus.REJECTED ? (
               <AlertCircle className="h-10 w-10 text-red-500" />
             ) : (
@@ -116,7 +116,7 @@ const OwnerVerification = () => {
             <select
               value={documentType}
               onChange={(e) => setDocumentType(e.target.value as DocumentTypes)}
-              className="w-full rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-background)] px-6 py-3.5 text-sm font-bold text-[color:var(--color-foreground)] focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all cursor-pointer"
+              className="w-full rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-background)] px-6 py-3.5 text-sm font-bold text-[color:var(--color-foreground)] focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all cursor-pointer"
             >
               <option value={DocumentTypes.AADHAAR}>Aadhaar Card</option>
               <option value={DocumentTypes.PAN}>PAN Card</option>
@@ -129,7 +129,7 @@ const OwnerVerification = () => {
             </label>
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[color:var(--color-border)] px-4 py-10 transition-all hover:border-primary/50 hover:bg-primary/5 group"
+              className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-[color:var(--color-border)] px-4 py-10 transition-all hover:border-primary/50 hover:bg-primary/5 group"
             >
               {selectedFile ? (
                 <div className="flex items-center gap-3 text-sm text-[color:var(--color-foreground)] font-black">
@@ -140,7 +140,7 @@ const OwnerVerification = () => {
                 </div>
               ) : (
                 <>
-                  <div className="mb-3 p-4 bg-gray-100 dark:bg-white/5 rounded-2xl text-gray-400 group-hover:text-primary transition-colors">
+                  <div className="mb-3 p-4 bg-gray-100 dark:bg-white/5 rounded-lg text-gray-400 group-hover:text-primary transition-colors">
                     <Upload className="h-8 w-8" />
                   </div>
                   <p className="text-sm font-black text-gray-600 dark:text-gray-300">
@@ -165,7 +165,7 @@ const OwnerVerification = () => {
             type="submit"
             loading={isLoading}
             disabled={!selectedFile || isLoading}
-            className="w-full py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full py-4 rounded-lg font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
           >
             Submit for Verification
           </Button>

@@ -3,14 +3,14 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --color-primary: #2563eb;
-  --color-secondary: #f1f5f9;
+  --color-secondary: #e8edf2;
   --color-accent: #dbeafe;
-  --color-card: #ffffff;
+  --color-card: #f0f4f8;
   --color-muted: #64748b;
-  --color-background: #f8fafc;
+  --color-background: #eef2f7;
   --color-foreground: #0f172a;
-  --color-surface: #ffffff;
-  --color-border: #e2e8f0;
+  --color-surface: #f5f8fb;
+  --color-border: #d4dce6;
 
   --color-muted-foreground: #64748b;
   --color-card-foreground: #0f172a;
@@ -88,6 +88,58 @@
 
   .animate-pulse-house {
     animation: pulseHouse 2s ease-in-out infinite;
+  }
+
+  /* Periodic Bell Ring Animation */
+  @keyframes ring {
+    0%, 75%, 100% {
+      transform: rotate(0);
+    }
+    77% {
+      transform: rotate(15deg);
+    }
+    79% {
+      transform: rotate(-13deg);
+    }
+    81% {
+      transform: rotate(10deg);
+    }
+    83% {
+      transform: rotate(-8deg);
+    }
+    85% {
+      transform: rotate(5deg);
+    }
+    87% {
+      transform: rotate(-3deg);
+    }
+    89% {
+      transform: rotate(0);
+    }
+  }
+
+  .animate-ring-periodic {
+    animation: ring 8s ease-in-out infinite;
+    transform-origin: top center;
+  }
+
+  .hover-ring-shake:hover {
+    animation: ring 1.2s ease-in-out infinite;
+    transform-origin: top center;
+  }
+
+  /* Periodic Logo Door Swing Animation */
+  @keyframes doorSwing {
+    0%, 70%, 100% {
+      transform: rotateY(0);
+    }
+    75%, 90% {
+      transform: rotateY(-110deg);
+    }
+  }
+
+  .animate-door-periodic {
+    animation: doorSwing 12s ease-in-out infinite;
   }
 }
 

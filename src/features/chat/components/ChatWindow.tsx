@@ -99,7 +99,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId }) => {
                 </div>
               )}
               <div
-                className={`p-3.5 rounded-2xl text-xs leading-relaxed shadow-sm transition-all animate-in slide-in-from-bottom-2 duration-300 ${
+                className={`p-3.5 rounded-lg text-xs leading-relaxed shadow-sm transition-all animate-in slide-in-from-bottom-2 duration-300 ${
                   msg.isMe
                     ? "bg-primary text-white rounded-tr-none"
                     : "bg-[color:var(--color-surface)] text-[color:var(--color-foreground)] border border-[color:var(--color-border)] rounded-tl-none"
@@ -126,7 +126,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId }) => {
 
       {/* Input Area */}
       <div className="p-4 bg-[color:var(--color-surface)] border-t border-[color:var(--color-border)]">
-        <div className="flex items-center gap-3 bg-[color:var(--color-background)] border border-transparent focus-within:border-primary/20 focus-within:bg-[color:var(--color-card)] p-2 rounded-2xl transition-all group">
+        <div className="flex items-center gap-3 bg-[color:var(--color-background)] border border-transparent focus-within:border-primary/20 focus-within:bg-[color:var(--color-card)] p-2 rounded-lg transition-all group">
           <div className="flex items-center gap-1.5 px-1 border-r border-[color:var(--color-border)]">
             <button className="p-2 text-gray-400 hover:text-primary transition-colors">
               <Paperclip size={18} />

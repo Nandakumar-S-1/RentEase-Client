@@ -68,6 +68,11 @@ const notificationSlice = createSlice({
       state.unreadCount = action.payload;
     },
 
+    addNotification: (state, action: PayloadAction<Notification>) => {
+      state.items.unshift(action.payload);
+      state.unreadCount += 1;
+    },
+
     resetNotifications: () => initialState,
   },
 });
@@ -80,6 +85,7 @@ export const {
   markOneAsRead,
   markAllRead,
   setUnreadCount,
+  addNotification,
   resetNotifications,
 } = notificationSlice.actions;
 

@@ -31,7 +31,7 @@ export const PropertyFormLayout: React.FC<PropertyFormLayoutProps> = ({
   return (
     <>
       {/* Wizard Stepper Progress */}
-      <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-[2.5rem] p-8 shadow-sm">
+      <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-xl p-8 shadow-sm">
         <div className="flex justify-between items-center relative">
           <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-[color:var(--color-border)] -z-10" />
           <div
@@ -76,17 +76,17 @@ export const PropertyFormLayout: React.FC<PropertyFormLayoutProps> = ({
       </div>
 
       {/* Wizard Form Viewport */}
-      <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-[3.5rem] p-8 lg:p-12 shadow-sm min-h-[500px]">
+      <div className="bg-white dark:bg-card border border-[color:var(--color-border)] rounded-xl p-8 lg:p-12 shadow-sm min-h-[500px]">
         {children}
       </div>
 
       {/* Wizard Controls */}
-      <div className="flex justify-between items-center bg-white dark:bg-card border border-[color:var(--color-border)] rounded-[2.5rem] p-6 shadow-sm">
+      <div className="flex justify-between items-center bg-white dark:bg-card border border-[color:var(--color-border)] rounded-xl p-6 shadow-sm">
         <button
           type="button"
           onClick={prevStep}
           disabled={step === 1 || loading}
-          className="flex items-center gap-2 px-6 py-3 font-bold text-[color:var(--color-muted-foreground)] hover:bg-[color:var(--color-secondary)] rounded-2xl transition-all disabled:opacity-30"
+          className="flex items-center gap-2 px-6 py-3 font-bold text-[color:var(--color-muted-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all disabled:opacity-30"
         >
           <ChevronLeft size={20} /> Back
         </button>
@@ -95,7 +95,7 @@ export const PropertyFormLayout: React.FC<PropertyFormLayoutProps> = ({
           <button
             type="button"
             onClick={nextStep}
-            className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/30 hover:scale-105 transition-all"
+            className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-bold rounded-lg shadow-lg shadow-primary/30 hover:scale-105 transition-all"
           >
             Next Step <ChevronRight size={20} />
           </button>
@@ -104,7 +104,7 @@ export const PropertyFormLayout: React.FC<PropertyFormLayoutProps> = ({
             type="button"
             onClick={handleSubmit}
             disabled={loading}
-            className={`flex items-center gap-2 px-8 py-3 text-white font-black rounded-2xl shadow-xl hover:scale-105 transition-all disabled:opacity-50 ${
+            className={`flex items-center gap-2 px-8 py-3 text-white font-black rounded-lg shadow-xl hover:scale-105 transition-all disabled:opacity-50 ${
               isEdit ? "bg-primary shadow-primary/30" : "bg-green-500 shadow-green-500/30"
             }`}
           >

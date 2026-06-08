@@ -147,7 +147,7 @@ const AdminUserManagement = () => {
   };
 
   return (
-    <div className="bg-[color:var(--color-surface)] rounded-[2.5rem] p-6 lg:p-10 border border-[color:var(--color-border)] shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="bg-[color:var(--color-surface)] rounded-xl p-6 lg:p-10 border border-[color:var(--color-border)] shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
         <div className="space-y-1">
           <h1 className="text-4xl font-black text-[color:var(--color-foreground)] tracking-tight flex items-center gap-4">
@@ -158,7 +158,7 @@ const AdminUserManagement = () => {
             Manage all platform users and their permissions.
           </p>
         </div>
-        <button className="flex items-center gap-2 px-8 py-4 bg-[color:var(--color-card)] border border-[color:var(--color-border)] text-[color:var(--color-foreground)] font-black rounded-2xl hover:bg-primary/5 hover:border-primary/30 transition-all text-sm group">
+        <button className="flex items-center gap-2 px-8 py-4 bg-[color:var(--color-card)] border border-[color:var(--color-border)] text-[color:var(--color-foreground)] font-black rounded-lg hover:bg-primary/5 hover:border-primary/30 transition-all text-sm group">
           <Download
             size={18}
             className="group-hover:translate-y-0.5 transition-transform"
@@ -192,7 +192,7 @@ const AdminUserManagement = () => {
         </button>
       </div>
 
-      <div className="bg-[color:var(--color-card)] rounded-3xl border border-[color:var(--color-border)] shadow-sm overflow-hidden">
+      <div className="bg-[color:var(--color-card)] rounded-xl border border-[color:var(--color-border)] shadow-sm overflow-hidden">
         <div className="p-5 border-b border-[color:var(--color-border)] flex flex-wrap items-center gap-4 bg-gray-50/50 dark:bg-white/5">
           <div className="relative flex-1 min-w-[240px] max-w-md">
             <Search
@@ -202,12 +202,12 @@ const AdminUserManagement = () => {
             <input
               type="text"
               placeholder={`Search ${userType.toLowerCase()} by name or email...`}
-              className="w-full pl-11 pr-4 py-3 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)] placeholder:text-gray-500"
+              className="w-full pl-11 pr-4 py-3 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[color:var(--color-foreground)] placeholder:text-gray-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="p-3 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group">
+          <button className="p-3 bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group">
             <Filter
               size={18}
               className="text-gray-400 group-hover:text-primary"
@@ -230,7 +230,7 @@ const AdminUserManagement = () => {
               render: (user) => (
                 <div className="flex items-center gap-4">
                   <div
-                    className={`w-10 h-10 rounded-2xl flex items-center justify-center font-black text-xs text-white overflow-hidden shadow-sm ${
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center font-black text-xs text-white overflow-hidden shadow-sm ${
                       userType === "OWNERS" ? "bg-primary" : "bg-purple-600"
                     }`}
                   >

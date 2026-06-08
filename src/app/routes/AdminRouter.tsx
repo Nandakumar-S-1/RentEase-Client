@@ -8,7 +8,6 @@ import type { RoleType } from "../../types/constants/role.constant";
 import { PATH_ROUTES } from "../../config/routes";
 import { LoadingOverlay } from "../../components/common";
 
-// Lazy load components
 const AdminLogin = lazy(
   () => import("../../features/admin/components/AdminLogin"),
 );

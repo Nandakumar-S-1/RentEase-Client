@@ -60,7 +60,7 @@ export const Logo: React.FC<LogoProps> = ({
               height="12"
               rx="1"
               fill="currentColor"
-              className="origin-left transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(-110deg)]"
+              className="origin-left transition-transform duration-700 ease-in-out animate-door-periodic group-hover:animate-none group-hover:[transform:rotateY(-110deg)]"
               style={{
                 perspective: "100px",
                 transformOrigin: "left",
@@ -72,7 +72,7 @@ export const Logo: React.FC<LogoProps> = ({
               cy="22"
               r="0.5"
               fill="white"
-              className="group-hover:opacity-0 transition-opacity"
+              className="group-hover:opacity-0 transition-opacity animate-door-periodic group-hover:animate-none"
             />
           </g>
         </svg>

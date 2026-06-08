@@ -18,10 +18,10 @@ export const AdminPropertyGallery: React.FC<AdminPropertyGalleryProps> = ({
 }) => {
   return (
     <>
-      <div className="bg-white dark:bg-card p-4 rounded-[3.5rem] border border-gray-100 dark:border-white/5 shadow-sm">
+      <div className="bg-white dark:bg-card p-4 rounded-xl border border-gray-100 dark:border-white/5 shadow-sm">
         <div className="grid grid-cols-12 gap-4 h-[550px]">
           <div
-            className="col-span-12 md:col-span-9 rounded-[2.5rem] overflow-hidden relative group cursor-zoom-in"
+            className="col-span-12 md:col-span-9 rounded-xl overflow-hidden relative group cursor-zoom-in"
             onClick={() => setIsZoomOpen(true)}
           >
             <img
@@ -45,7 +45,7 @@ export const AdminPropertyGallery: React.FC<AdminPropertyGalleryProps> = ({
               <button
                 key={i}
                 onClick={() => setActivePhotoIndex(i)}
-                className={`relative flex-shrink-0 aspect-square rounded-[1.5rem] overflow-hidden border-4 transition-all ${
+                className={`relative flex-shrink-0 aspect-square rounded-xl overflow-hidden border-4 transition-all ${
                   activePhotoIndex === i
                     ? "border-primary scale-[0.98]"
                     : "border-transparent opacity-60 hover:opacity-100"

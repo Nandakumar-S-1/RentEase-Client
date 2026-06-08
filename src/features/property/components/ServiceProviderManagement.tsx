@@ -160,7 +160,7 @@ const ServiceProviderManagement: React.FC = () => {
           </div>
           <button
             onClick={() => setIsAdding(!isAdding)}
-            className="flex items-center gap-2 px-8 py-3.5 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/30 hover:scale-105 transition-all lg:w-fit"
+            className="flex items-center gap-2 px-8 py-3.5 bg-primary text-white font-black rounded-lg shadow-xl shadow-primary/30 hover:scale-105 transition-all lg:w-fit"
           >
             {isAdding ? <XCircle size={20} /> : <Plus size={20} />}
             {isAdding ? "Cancel" : "Add Provider"}
@@ -187,8 +187,8 @@ const ServiceProviderManagement: React.FC = () => {
           {!loading &&
             (!providers ||
               (Array.isArray(providers) && providers.length === 0)) && (
-              <div className="col-span-full py-20 bg-gray-50 dark:bg-white/5 rounded-[2.5rem] border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center px-6">
-                <div className="w-16 h-16 bg-white dark:bg-card rounded-2xl shadow-sm flex items-center justify-center mb-4 text-gray-300">
+              <div className="col-span-full py-20 bg-gray-50 dark:bg-white/5 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center px-6">
+                <div className="w-16 h-16 bg-white dark:bg-card rounded-lg shadow-sm flex items-center justify-center mb-4 text-gray-300">
                   <Search size={32} />
                 </div>
                 <h3 className="text-xl font-black text-gray-800 dark:text-white mb-2">

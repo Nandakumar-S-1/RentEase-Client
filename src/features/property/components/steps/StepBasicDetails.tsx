@@ -37,7 +37,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
           value={formData.title}
           onChange={handleInputChange}
           placeholder="e.g. Modern 2 BHK Flat in Kakkanad"
-          className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.title ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl focus:ring-2 focus:ring-primary/20 text-sm`}
+          className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.title ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg focus:ring-2 focus:ring-primary/20 text-sm`}
         />
         {validationErrors.title && (
           <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -54,7 +54,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
             name="propertyType"
             value={formData.propertyType}
             onChange={handleInputChange}
-            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.propertyType ? "border-red-500" : "border-border"} rounded-2xl text-sm`}
+            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.propertyType ? "border-red-500" : "border-border"} rounded-lg text-sm`}
           >
             <option value="">Select Type</option>
             {PROPERTY_TYPE_OPTIONS.map((opt) => (
@@ -80,7 +80,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
             value={formData.areaSqft}
             onChange={handleInputChange}
             placeholder="e.g. 1200"
-            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.areaSqft ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+            className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.areaSqft ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm`}
           />
           {validationErrors.areaSqft && (
             <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -105,7 +105,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
                   value={formData.bhk}
                   onChange={handleInputChange}
                   placeholder="e.g. 2"
-                  className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.bhk ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                  className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.bhk ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm`}
                 />
                 {validationErrors.bhk && (
                   <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -125,7 +125,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
                 value={formData.bathrooms}
                 onChange={handleInputChange}
                 placeholder="e.g. 2"
-                className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.bathrooms ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.bathrooms ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm`}
               />
               {validationErrors.bathrooms && (
                 <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -144,7 +144,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
                 value={formData.floorNumber}
                 onChange={handleInputChange}
                 placeholder="e.g. 2nd Floor"
-                className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-lg text-sm"
               />
             </div>
             <div className="space-y-2">
@@ -156,7 +156,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
                 value={formData.propertyAge}
                 onChange={handleInputChange}
                 placeholder="e.g. 2 years"
-                className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-lg text-sm"
               />
             </div>
             <div className="space-y-2">
@@ -170,7 +170,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
                 value={formData.totalFloors}
                 onChange={handleInputChange}
                 placeholder="e.g. 5"
-                className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.totalFloors ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.totalFloors ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm`}
               />
               {validationErrors.totalFloors && (
                 <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
@@ -188,7 +188,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
                 name="facingDirection"
                 value={formData.facingDirection}
                 onChange={handleInputChange}
-                className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-2xl text-sm"
+                className="w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border border-[color:var(--color-border)] rounded-lg text-sm"
               >
                 <option value="">Select Direction</option>
                 {[
@@ -215,7 +215,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
                 name="furnishingStatus"
                 value={formData.furnishingStatus}
                 onChange={handleInputChange}
-                className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.furnishingStatus ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+                className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.furnishingStatus ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm`}
               >
                 <option value="">Select Status</option>
                 {(FURNISHING_OPTIONS as string[]).map((opt: string) => (
@@ -244,7 +244,7 @@ export const StepBasicDetails: React.FC<StepBasicDetailsProps> = ({
           onChange={handleInputChange}
           rows={4}
           placeholder="Tell us about your property..."
-          className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.description ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-2xl text-sm`}
+          className={`w-full px-6 py-4 bg-[color:var(--color-secondary)]/50 dark:bg-white/5 border ${validationErrors.description ? "border-red-500" : "border-[color:var(--color-border)]"} rounded-lg text-sm`}
         />
         {validationErrors.description && (
           <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">

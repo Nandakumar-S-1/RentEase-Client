@@ -33,7 +33,7 @@ export interface S3UploadResult {
 
 export const createAgreement = async (data: Partial<Agreement>): Promise<Agreement> => {
     const response = await axiosApi.post(API_ROUTES.CREATE_AGREEMENT, data);
-    return response.data;
+    return response.data.data;
 };
 
 export const signOwner = async (id: string, signatureUrl: string): Promise<void> => {
@@ -42,22 +42,22 @@ export const signOwner = async (id: string, signatureUrl: string): Promise<void>
 
 export const signTenant = async (id: string, signatureUrl: string): Promise<{ pdfUrl: string }> => {
     const response = await axiosApi.post(API_ROUTES.SIGN_TENANT(id), { signatureUrl });
-    return response.data;
+    return response.data.data;
 };
 
 export const getAgreementById = async (id: string): Promise<Agreement> => {
     const response = await axiosApi.get(API_ROUTES.GET_AGREEMENT(id));
-    return response.data;
+    return response.data.data;
 };
 
 export const getMyAgreements = async (): Promise<Agreement[]> => {
     const response = await axiosApi.get(API_ROUTES.GET_MY_AGREEMENTS);
-    return response.data;
+    return response.data.data;
 };
 
 export const uploadKyc = async (id: string, kycUrl: string): Promise<Agreement> => {
     const response = await axiosApi.post(API_ROUTES.UPLOAD_KYC(id), { kycUrl });
-    return response.data;
+    return response.data.data;
 };
 
 export const getUploadUrls = async (
@@ -65,5 +65,5 @@ export const getUploadUrls = async (
     files: UploadPresetFile[]
 ): Promise<{ uploads: S3UploadResult[] }> => {
     const response = await axiosApi.post(API_ROUTES.GET_AGREEMENT_UPLOAD_URLS(id), { files });
-    return response.data;
+    return response.data.data;
 };

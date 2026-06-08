@@ -37,7 +37,7 @@ export const StepPhotos: React.FC<StepPhotosProps> = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="px-5 py-3 bg-primary/10 text-primary hover:bg-primary/20 rounded-2xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2"
+            className="px-5 py-3 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2"
           >
             <Plus size={14} /> Add Photo
           </button>
@@ -56,7 +56,7 @@ export const StepPhotos: React.FC<StepPhotosProps> = ({
       {totalPhotosCount === 0 ? (
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="border-2 border-dashed border-[color:var(--color-border)] hover:border-primary dark:hover:border-primary bg-[color:var(--color-secondary)]/30 rounded-[2.5rem] p-16 flex flex-col items-center justify-center text-center cursor-pointer group transition-all"
+          className="border-2 border-dashed border-[color:var(--color-border)] hover:border-primary dark:hover:border-primary bg-[color:var(--color-secondary)]/30 rounded-xl p-16 flex flex-col items-center justify-center text-center cursor-pointer group transition-all"
         >
           <div className="w-16 h-16 bg-primary/5 dark:bg-white/5 text-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-all mb-4">
             <Upload size={24} />
@@ -74,7 +74,7 @@ export const StepPhotos: React.FC<StepPhotosProps> = ({
           {existingPhotos.map((src, index) => (
             <div
               key={`existing-${src}`}
-              className="relative aspect-square bg-[color:var(--color-secondary)] rounded-3xl overflow-hidden group border border-[color:var(--color-border)]"
+              className="relative aspect-square bg-[color:var(--color-secondary)] rounded-xl overflow-hidden group border border-[color:var(--color-border)]"
             >
               <img
                 src={src}
@@ -107,7 +107,7 @@ export const StepPhotos: React.FC<StepPhotosProps> = ({
             return (
               <div
                 key={`new-${preview}`}
-                className="relative aspect-square bg-[color:var(--color-secondary)] rounded-3xl overflow-hidden group border border-[color:var(--color-border)]"
+                className="relative aspect-square bg-[color:var(--color-secondary)] rounded-xl overflow-hidden group border border-[color:var(--color-border)]"
               >
                 <img
                   src={preview}
@@ -137,7 +137,7 @@ export const StepPhotos: React.FC<StepPhotosProps> = ({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="aspect-square border-2 border-dashed border-[color:var(--color-border)] hover:border-primary/50 bg-[color:var(--color-secondary)]/30 rounded-3xl flex flex-col items-center justify-center text-[color:var(--color-muted-foreground)] hover:text-primary transition-all gap-2"
+              className="aspect-square border-2 border-dashed border-[color:var(--color-border)] hover:border-primary/50 bg-[color:var(--color-secondary)]/30 rounded-xl flex flex-col items-center justify-center text-[color:var(--color-muted-foreground)] hover:text-primary transition-all gap-2"
             >
               <Plus size={20} />
               <span className="text-[10px] font-black uppercase tracking-wider">

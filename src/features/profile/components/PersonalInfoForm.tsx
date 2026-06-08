@@ -6,12 +6,19 @@ import type {
   UpdateProfileResponse,
 } from "../types/profileTypes";
 import { toast } from "react-hot-toast";
+import { SlidersHorizontal } from "lucide-react";
 
 interface PersonalInfoFormProps {
   profile: ProfileData;
   saveProfile: (data: UpdateProfileData) => Promise<UpdateProfileResponse>;
   isSaving: boolean;
 }
+
+const OCCUPATION_PRESETS = [
+  "Working Professional",
+  "Student",
+  "Business Owner",
+];
 
 const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   profile,
@@ -27,12 +34,9 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
 
   const [isOtherOccupation, setIsOtherOccupation] = useState(
     profile.occupation
-      ? !["Working Professional", "Student", "Business Owner"].includes(
-          profile.occupation,
-        )
+      ? !OCCUPATION_PRESETS.includes(profile.occupation)
       : false,
   );
-
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -43,35 +47,26 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validate = () => {
+  const validate = (): string | null => {
     if (!formData.fullName?.trim()) return "Full name is required";
     if (formData.fullName.trim().length < 2)
       return "Name must be at least 2 characters";
-
-    if (formData.phone && !/^\+?[0-9]{10,13}$/.test(formData.phone)) {
-      return "Invalid phone number (e.g., +918765432109)";
-    }
-
-    if (formData.bio && formData.bio.length > 500) {
+    if (formData.phone && !/^\+?[0-9]{10,13}$/.test(formData.phone))
+      return "Invalid phone number (e.g. +918765432109)";
+    if (formData.bio && formData.bio.length > 500)
       return "Bio should be under 500 characters";
-    }
-
-    if (isOtherOccupation && !formData.occupation?.trim()) {
+    if (isOtherOccupation && !formData.occupation?.trim())
       return "Please specify your occupation";
-    }
-
     return null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const errorMsg = validate();
     if (errorMsg) {
       toast.error(errorMsg);
       return;
     }
-
     try {
       await saveProfile(formData);
       toast.success("Profile updated successfully!");
@@ -82,20 +77,25 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   };
 
   return (
-    <div className="space-y-10">
-      <div className="flex items-center justify-between border-b border-gray-100 dark:border-white/5 pb-6">
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center gap-3 pb-6 border-b border-[color:var(--color-border)]">
+        <div className="p-2.5 bg-primary/10 text-primary rounded-xl">
+          <SlidersHorizontal size={18} />
+        </div>
         <div>
-          <h3 className="text-2xl font-black text-gray-800 dark:text-white tracking-tight">
-            Personal Information
+          <h3 className="text-lg font-bold text-[color:var(--color-foreground)]">
+            Configure Profile
           </h3>
-          <p className="text-gray-500 font-medium text-sm">
-            Update your public profile and contact info.
+          <p className="text-sm text-[color:var(--color-muted-foreground)]">
+            Update your name, contact info, and a bit about yourself.
           </p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Name + Phone */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Input
             label="Full Name"
             name="fullName"
@@ -114,46 +114,36 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         </div>
 
         {profile.role !== "ADMIN" && (
-          <div className="space-y-8">
+          <>
             {/* Occupation */}
-            <div className="space-y-3">
-              <label className="text-sm font-black text-gray-700 dark:text-gray-200 ml-1">
-                Your Occupation
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-[color:var(--color-foreground)]">
+                Occupation
               </label>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <select
                   name="occupation"
-                  value={
-                    isOtherOccupation ? "Other" : formData.occupation || ""
-                  }
+                  value={isOtherOccupation ? "Other" : formData.occupation || ""}
                   onChange={(e) => {
-                    const value = e.target.value;
-
-                    if (value === "Other") {
+                    const val = e.target.value;
+                    if (val === "Other") {
                       setIsOtherOccupation(true);
-                      setFormData((prev) => ({
-                        ...prev,
-                        occupation: "",
-                      }));
+                      setFormData((prev) => ({ ...prev, occupation: "" }));
                     } else {
                       setIsOtherOccupation(false);
-                      setFormData((prev) => ({
-                        ...prev,
-                        occupation: value,
-                      }));
+                      setFormData((prev) => ({ ...prev, occupation: val }));
                     }
                   }}
-                  className="w-full py-4 px-6 rounded-2xl border border-gray-200 dark:bg-zinc-900 dark:text-white dark:border-white/10"
+                  className="w-full py-3 px-4 rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-foreground)] text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 >
                   <option value="" disabled hidden>
-                    Select Category
+                    Select category
                   </option>
-                  <option value="Working Professional">
-                    Working Professional
-                  </option>
-                  <option value="Student">Student</option>
-                  <option value="Business Owner">Business Owner</option>
+                  {OCCUPATION_PRESETS.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
                   <option value="Other">Other</option>
                 </select>
 
@@ -168,35 +158,48 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                 )}
               </div>
             </div>
-            <div className="space-y-3">
-              <label className="text-sm font-black text-gray-700 dark:text-gray-200 ml-1">
-                Short Bio
-              </label>
 
+            {/* Bio */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="block text-sm font-semibold text-[color:var(--color-foreground)]">
+                  Short Bio
+                </label>
+                <span className="text-xs text-[color:var(--color-muted-foreground)]">
+                  {(formData.bio ?? "").length} / 500
+                </span>
+              </div>
               <textarea
                 name="bio"
                 rows={4}
-                value={formData.bio}
+                value={formData.bio ?? ""}
                 onChange={handleChange}
+                maxLength={500}
                 placeholder="A few words about yourself..."
-                className="w-full py-4 px-6 rounded-[2rem] border border-gray-200 dark:bg-zinc-900 dark:text-white dark:border-white/10"
+                className="w-full py-3 px-4 rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-foreground)] text-sm placeholder:text-[color:var(--color-muted-foreground)] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
               />
             </div>
-          </div>
+          </>
         )}
 
-        <div className="flex justify-end pt-10">
+        {/* Submit */}
+        <div className="flex justify-end pt-2">
           <button
             type="submit"
             disabled={isSaving}
-            className="py-4 px-12 bg-primary text-white rounded-2xl font-black shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+            className="px-8 py-3 bg-primary text-white rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50"
           >
-            {isSaving ? "Saving..." : "Save Profile"}
+            {isSaving ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Saving…
+              </span>
+            ) : (
+              "Save Changes"
+            )}
           </button>
         </div>
       </form>
-
-
     </div>
   );
 };
