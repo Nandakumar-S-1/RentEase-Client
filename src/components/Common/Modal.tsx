@@ -62,10 +62,11 @@ export const Modal: React.FC<ModalProps> = ({
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className={`w-full sm:w-auto inline-flex min-w-[100px] justify-center rounded-xl px-6 py-2.5 text-sm font-bold text-white shadow-lg transition-all disabled:opacity-50 ${isDestructive
+            className={`w-full sm:w-auto inline-flex min-w-[100px] justify-center rounded-xl px-6 py-2.5 text-sm font-bold text-white shadow-lg transition-all disabled:opacity-50 ${
+              isDestructive
                 ? "bg-red-600 hover:bg-red-700 shadow-red-600/20"
                 : "bg-primary hover:bg-primary/90 shadow-primary/20"
-              }`}
+            }`}
           >
             {isLoading ? (
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />

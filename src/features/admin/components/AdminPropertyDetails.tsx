@@ -198,7 +198,9 @@ const AdminPropertyDetails = () => {
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
                   Final Decision
                 </p>
-                <p className="text-xs font-black text-primary">Requires Action</p>
+                <p className="text-xs font-black text-primary">
+                  Requires Action
+                </p>
               </div>
             </div>
 

@@ -5,17 +5,11 @@ import DashboardLayout from "../../../components/common/DashboardLayout";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import type { RootState } from "../../../app/store/store";
 import type { RoleType } from "../../../types/constants/role.constant";
-import {
-  Plus,
-  XCircle,
-  ChevronLeft,
-  Search,
-} from "lucide-react";
+import { Plus, XCircle, ChevronLeft, Search } from "lucide-react";
 import { LoadingOverlay, Modal, Pagination } from "../../../components/common";
 import { serviceProviderSchema } from "../schemas/propertySchemas";
 import { ServiceProviderCard } from "./partials/ServiceProviderCard";
 import { ServiceProviderForm } from "./partials/ServiceProviderForm";
-
 
 const ServiceProviderManagement: React.FC = () => {
   const { propertyId } = useParams<{ propertyId: string }>();

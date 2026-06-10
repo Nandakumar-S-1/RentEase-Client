@@ -54,10 +54,7 @@ const statusMeta: Record<
   },
 };
 
-const agreementStatusMeta: Record<
-  string,
-  { label: string; color: string }
-> = {
+const agreementStatusMeta: Record<string, { label: string; color: string }> = {
   ACTIVE: {
     label: "Active",
     color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10",
@@ -202,7 +199,11 @@ const OwnerDashboard: React.FC = () => {
           <StatCard
             label="Active Agreements"
             value={activeAgreements}
-            sub={pendingAgreements ? `${pendingAgreements} awaiting action` : "All clear"}
+            sub={
+              pendingAgreements
+                ? `${pendingAgreements} awaiting action`
+                : "All clear"
+            }
             icon={<FileText size={18} className="text-blue-500" />}
             accent="bg-blue-50 dark:bg-blue-500/10"
           />
@@ -254,7 +255,10 @@ const OwnerDashboard: React.FC = () => {
             </div>
           ) : recentProperties.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3 text-center px-4">
-              <Home size={32} className="text-[color:var(--color-muted-foreground)] opacity-40" />
+              <Home
+                size={32}
+                className="text-[color:var(--color-muted-foreground)] opacity-40"
+              />
               <p className="text-sm text-[color:var(--color-muted-foreground)]">
                 No properties yet.{" "}
                 <button
@@ -268,8 +272,7 @@ const OwnerDashboard: React.FC = () => {
           ) : (
             <div className="divide-y divide-[color:var(--color-border)]">
               {recentProperties.map((p) => {
-                const meta =
-                  statusMeta[p.status] ?? statusMeta["PENDING"];
+                const meta = statusMeta[p.status] ?? statusMeta["PENDING"];
                 const photo = p.photos?.[p.primaryPhotoIndex ?? 0];
                 return (
                   <div
@@ -365,11 +368,7 @@ const OwnerDashboard: React.FC = () => {
                   <div
                     key={a.id}
                     className="px-5 py-4 hover:bg-[color:var(--color-secondary)] cursor-pointer transition-colors"
-                    onClick={() =>
-                      navigate(
-                        PAGE_ROUTES.OWNER_AGREEMENTS,
-                      )
-                    }
+                    onClick={() => navigate(PAGE_ROUTES.OWNER_AGREEMENTS)}
                   >
                     <p className="text-xs font-bold text-[color:var(--color-muted-foreground)] mb-1">
                       #{a.agreementNumber}

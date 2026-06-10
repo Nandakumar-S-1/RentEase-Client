@@ -12,7 +12,10 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "../hooks/useNotifications";
-import type { Notification, NotificationType } from "../types/notificationTypes";
+import type {
+  Notification,
+  NotificationType,
+} from "../types/notificationTypes";
 import { formatDistanceToNow } from "../../../utils/dateUtils";
 
 interface NotificationDropdownProps {
@@ -28,23 +31,48 @@ const getNotificationMeta = (
 ): { icon: React.ReactNode; color: string } => {
   switch (type) {
     case "OWNER_VERIFICATION_APPROVED":
-      return { icon: <ShieldCheck size={16} />, color: "text-green-500 bg-green-50 dark:bg-green-500/10" };
+      return {
+        icon: <ShieldCheck size={16} />,
+        color: "text-green-500 bg-green-50 dark:bg-green-500/10",
+      };
     case "OWNER_VERIFICATION_REJECTED":
-      return { icon: <ShieldX size={16} />, color: "text-red-500 bg-red-50 dark:bg-red-500/10" };
+      return {
+        icon: <ShieldX size={16} />,
+        color: "text-red-500 bg-red-50 dark:bg-red-500/10",
+      };
     case "PROPERTY_APPROVED":
-      return { icon: <Home size={16} />, color: "text-green-500 bg-green-50 dark:bg-green-500/10" };
+      return {
+        icon: <Home size={16} />,
+        color: "text-green-500 bg-green-50 dark:bg-green-500/10",
+      };
     case "PROPERTY_REJECTED":
     case "PROPERTY_UNLISTED":
-      return { icon: <Home size={16} />, color: "text-red-500 bg-red-50 dark:bg-red-500/10" };
+      return {
+        icon: <Home size={16} />,
+        color: "text-red-500 bg-red-50 dark:bg-red-500/10",
+      };
     case "USER_SUSPENDED":
-      return { icon: <UserX size={16} />, color: "text-orange-500 bg-orange-50 dark:bg-orange-500/10" };
+      return {
+        icon: <UserX size={16} />,
+        color: "text-orange-500 bg-orange-50 dark:bg-orange-500/10",
+      };
     case "AGREEMENT_CREATED":
     case "AGREEMENT_SIGNED":
-      return { icon: <FileText size={16} />, color: "text-blue-500 bg-blue-50 dark:bg-blue-500/10" };
+      return {
+        icon: <FileText size={16} />,
+        color: "text-blue-500 bg-blue-50 dark:bg-blue-500/10",
+      };
     case "NEW_MESSAGE":
-      return { icon: <MessageSquare size={16} />, color: "text-purple-500 bg-purple-50 dark:bg-purple-500/10" };
+      return {
+        icon: <MessageSquare size={16} />,
+        color: "text-purple-500 bg-purple-50 dark:bg-purple-500/10",
+      };
     default:
-      return { icon: <Bell size={16} />, color: "text-[color:var(--color-muted-foreground)] bg-[color:var(--color-secondary)]" };
+      return {
+        icon: <Bell size={16} />,
+        color:
+          "text-[color:var(--color-muted-foreground)] bg-[color:var(--color-secondary)]",
+      };
   }
 };
 
@@ -80,11 +108,15 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         !notification.isRead ? "bg-[color:var(--color-secondary)]/40" : ""
       }`}
     >
-      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-0.5 ${color}`}>
+      <div
+        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-0.5 ${color}`}
+      >
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <p className={`text-sm leading-snug ${!notification.isRead ? "font-semibold" : "font-medium"} text-[color:var(--color-foreground)]`}>
+        <p
+          className={`text-sm leading-snug ${!notification.isRead ? "font-semibold" : "font-medium"} text-[color:var(--color-foreground)]`}
+        >
           {notification.title}
         </p>
         <p className="text-xs text-[color:var(--color-muted-foreground)] mt-0.5 line-clamp-2">
@@ -233,7 +265,10 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   useEffect(() => {
     if (inline) return;
     const handleOutsideClick = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         onClose();
       }
     };

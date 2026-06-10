@@ -7,7 +7,7 @@ interface StepPricingProps {
   handleInputChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
 }
 
@@ -97,7 +97,8 @@ export const StepPricing: React.FC<StepPricingProps> = ({
               Maintenance Included in Rent
             </span>
             <span className="text-[10px] text-[color:var(--color-muted-foreground)] font-semibold mt-0.5 block">
-              Rent amount above includes any recurring society or maintenance fees.
+              Rent amount above includes any recurring society or maintenance
+              fees.
             </span>
           </div>
         </label>

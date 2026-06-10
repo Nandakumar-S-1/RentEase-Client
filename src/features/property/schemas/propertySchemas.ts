@@ -14,81 +14,86 @@ const PROVIDER_TYPES = [
   "Other",
 ] as const;
 
-export const propertySchema = z.object({
-  title: z
-    .string()
-    .min(5, "Title must be at least 5 characters")
-    .max(100, "Title cannot exceed 100 characters"),
-  description: z
-    .string()
-    .min(5, "Description must be at least 5 characters")
-    .max(2000, "Description is too long"),
-  propertyType: z.nativeEnum(PropertyTypes),
-  bhk: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.coerce.number().int().positive().optional().nullable(),
-  ),
-  bathrooms: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.coerce.number().int().positive().optional().nullable(),
-  ),
-  floorNumber: z.string().optional().nullable(),
-  totalFloors: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.coerce.number().int().positive().optional().nullable(),
-  ),
-  propertyAge: z.string().optional().nullable(),
-  facingDirection: z.string().optional().nullable(),
-  furnishingStatus: z.string().optional().nullable(),
+export const propertySchema = z
+  .object({
+    title: z
+      .string()
+      .min(5, "Title must be at least 5 characters")
+      .max(100, "Title cannot exceed 100 characters"),
+    description: z
+      .string()
+      .min(5, "Description must be at least 5 characters")
+      .max(2000, "Description is too long"),
+    propertyType: z.nativeEnum(PropertyTypes),
+    bhk: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().int().positive().optional().nullable(),
+    ),
+    bathrooms: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().int().positive().optional().nullable(),
+    ),
+    floorNumber: z.string().optional().nullable(),
+    totalFloors: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().int().positive().optional().nullable(),
+    ),
+    propertyAge: z.string().optional().nullable(),
+    facingDirection: z.string().optional().nullable(),
+    furnishingStatus: z.string().optional().nullable(),
 
-  locationDistrict: z.string().min(2, "District is required"),
-  locationCity: z.string().min(2, "City is required"),
-  locationPinCode: z
-    .string()
-    .regex(/^\d{6}$/, "Pin code must be exactly 6 digits"),
-  fullAddress: z.string().min(10, "Address must be at least 10 characters"),
-  nearbyLandmarks: z.string().max(200).optional().nullable(),
-  latitude: z.number().optional().nullable(),
-  longitude: z.number().optional().nullable(),
+    locationDistrict: z.string().min(2, "District is required"),
+    locationCity: z.string().min(2, "City is required"),
+    locationPinCode: z
+      .string()
+      .regex(/^\d{6}$/, "Pin code must be exactly 6 digits"),
+    fullAddress: z.string().min(10, "Address must be at least 10 characters"),
+    nearbyLandmarks: z.string().max(200).optional().nullable(),
+    latitude: z.number().optional().nullable(),
+    longitude: z.number().optional().nullable(),
 
-  amenities: z.array(z.string()).optional(),
-  preferredTenantType: z.array(z.string()).optional(),
-  petsAllowed: z.boolean().optional().default(false),
-  smokingAllowed: z.boolean().optional().default(false),
-  maximumOccupants: z.coerce.number().int().positive().optional().nullable(),
-  landType: z.string().optional().nullable(),
-  isCornerPlot: z.boolean().optional().nullable(),
-  roadWidthFeet: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.coerce.number().nonnegative().optional().nullable(),
-  ),
-  shopType: z.string().optional().nullable(),
-  hasParking: z.boolean().optional().nullable(),
+    amenities: z.array(z.string()).optional(),
+    preferredTenantType: z.array(z.string()).optional(),
+    petsAllowed: z.boolean().optional().default(false),
+    smokingAllowed: z.boolean().optional().default(false),
+    maximumOccupants: z.coerce.number().int().positive().optional().nullable(),
+    landType: z.string().optional().nullable(),
+    isCornerPlot: z.boolean().optional().nullable(),
+    roadWidthFeet: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().nonnegative().optional().nullable(),
+    ),
+    shopType: z.string().optional().nullable(),
+    hasParking: z.boolean().optional().nullable(),
 
-  monthlyRent: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.coerce.number().positive("Rent must be a positive number"),
-  ),
-  depositAmount: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.coerce.number().positive("Deposit must be a positive number"),
-  ),
-  maintenanceCharges: z.coerce.number().nonnegative().optional().default(0),
-  maintenanceIncluded: z.boolean().optional().default(false),
-  areaSqft: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.coerce.number().positive("Area must be positive").optional().nullable(),
-  ),
-}).superRefine((data, ctx) => {
-  const needsOccupants = !["SHOP", "LAND"].includes(data.propertyType);
-  if (needsOccupants && (data.maximumOccupants === undefined || data.maximumOccupants === null)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: "Max occupants is required for this property type",
-      path: ["maximumOccupants"],
-    });
-  }
-});
+    monthlyRent: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().positive("Rent must be a positive number"),
+    ),
+    depositAmount: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().positive("Deposit must be a positive number"),
+    ),
+    maintenanceCharges: z.coerce.number().nonnegative().optional().default(0),
+    maintenanceIncluded: z.boolean().optional().default(false),
+    areaSqft: z.preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.coerce.number().positive("Area must be positive").optional().nullable(),
+    ),
+  })
+  .superRefine((data, ctx) => {
+    const needsOccupants = !["SHOP", "LAND"].includes(data.propertyType);
+    if (
+      needsOccupants &&
+      (data.maximumOccupants === undefined || data.maximumOccupants === null)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Max occupants is required for this property type",
+        path: ["maximumOccupants"],
+      });
+    }
+  });
 
 export const serviceProviderSchema = z
   .object({

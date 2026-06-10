@@ -38,7 +38,8 @@ export const AgreementDashboard = () => {
     uploadSignatureFile,
   } = useAgreements();
 
-  const [activeSignAgreement, setActiveSignAgreement] = useState<Agreement | null>(null);
+  const [activeSignAgreement, setActiveSignAgreement] =
+    useState<Agreement | null>(null);
   const [isSignModalOpen, setIsSignModalOpen] = useState(false);
   const [kycFiles, setKycFiles] = useState<{ [agreementId: string]: File }>({});
 
@@ -50,7 +51,10 @@ export const AgreementDashboard = () => {
     });
   }, [getMyAgreements]);
 
-  const handleKycFileChange = (agreementId: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleKycFileChange = (
+    agreementId: string,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       setKycFiles((prev) => ({ ...prev, [agreementId]: file }));
@@ -67,11 +71,15 @@ export const AgreementDashboard = () => {
     try {
       toast.loading("Uploading KYC Document...", { id: "kyc-upload" });
       await uploadKycFile(agreementId, file);
-      toast.success("KYC Document uploaded successfully!", { id: "kyc-upload" });
+      toast.success("KYC Document uploaded successfully!", {
+        id: "kyc-upload",
+      });
       getMyAgreements();
     } catch (err) {
       const error = err as Error;
-      toast.error(error.message || "Failed to upload KYC", { id: "kyc-upload" });
+      toast.error(error.message || "Failed to upload KYC", {
+        id: "kyc-upload",
+      });
     }
   };
 
@@ -86,15 +94,22 @@ export const AgreementDashboard = () => {
     try {
       toast.loading("Registering Signature...", { id: "sign" });
 
-      const file = dataURLtoFile(signatureData, `sig-${user?.role}-${Date.now()}.png`);
+      const file = dataURLtoFile(
+        signatureData,
+        `sig-${user?.role}-${Date.now()}.png`,
+      );
       const s3Url = await uploadSignatureFile(activeSignAgreement.id, file);
 
       if (user?.role === "OWNER") {
         await signOwner(activeSignAgreement.id, s3Url);
-        toast.success("Agreement signed successfully as landlord!", { id: "sign" });
+        toast.success("Agreement signed successfully as landlord!", {
+          id: "sign",
+        });
       } else {
         await signTenant(activeSignAgreement.id, s3Url);
-        toast.success("Agreement signed and contract activated!", { id: "sign" });
+        toast.success("Agreement signed and contract activated!", {
+          id: "sign",
+        });
       }
 
       setIsSignModalOpen(false);
@@ -107,7 +122,10 @@ export const AgreementDashboard = () => {
   };
 
   return (
-    <DashboardLayout role={user?.role as RoleType} userName={user?.fullname || "User"}>
+    <DashboardLayout
+      role={user?.role as RoleType}
+      userName={user?.fullname || "User"}
+    >
       <div className="pb-20 space-y-12 animate-in fade-in duration-1000">
         {/* Dynamic Premium Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
@@ -116,7 +134,8 @@ export const AgreementDashboard = () => {
               Agreements <span className="text-primary">Console</span>
             </h1>
             <p className="text-gray-500 dark:text-gray-400 font-bold text-lg max-w-xl">
-              Digital signature portal, automated lease drafts, and secure escrow terms.
+              Digital signature portal, automated lease drafts, and secure
+              escrow terms.
             </p>
           </div>
 
@@ -151,7 +170,8 @@ export const AgreementDashboard = () => {
                 No Contracts Drafted Yet
               </h3>
               <p className="text-gray-400 font-bold max-w-sm mt-2">
-                Lease agreements and legal matching parameters will appear in this control desk.
+                Lease agreements and legal matching parameters will appear in
+                this control desk.
               </p>
             </div>
           </div>

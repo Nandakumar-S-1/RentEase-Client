@@ -15,11 +15,11 @@ interface StepAmenitiesProps {
   handleInputChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
   handleCheckboxArray: (
     field: "amenities" | "preferredTenantType",
-    value: string
+    value: string,
   ) => void;
 }
 
@@ -75,7 +75,9 @@ export const StepAmenities: React.FC<StepAmenitiesProps> = ({
                 type="checkbox"
                 className="hidden"
                 checked={formData.preferredTenantType.includes(type)}
-                onChange={() => handleCheckboxArray("preferredTenantType", type)}
+                onChange={() =>
+                  handleCheckboxArray("preferredTenantType", type)
+                }
               />
               {type}
             </label>
@@ -85,7 +87,9 @@ export const StepAmenities: React.FC<StepAmenitiesProps> = ({
 
       {formData.propertyType !== "LAND" && (
         <div>
-          <h3 className="text-xl font-black mb-4">Property Rules & Occupancy</h3>
+          <h3 className="text-xl font-black mb-4">
+            Property Rules & Occupancy
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)]">
               <input

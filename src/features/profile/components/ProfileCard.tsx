@@ -23,10 +23,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
 
   return (
     <div className="space-y-8">
-
       {/* ── Bio & Occupation ──────────────────────────────── */}
       <section className="space-y-4">
-        <SectionLabel icon={<Briefcase size={14} />} text="Professional Identity" />
+        <SectionLabel
+          icon={<Briefcase size={14} />}
+          text="Professional Identity"
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Occupation */}
@@ -41,12 +43,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
 
           {/* Member since */}
           <div className="p-5 bg-[color:var(--color-secondary)] rounded-lg border border-[color:var(--color-border)] flex items-center gap-3">
-            <Clock size={16} className="text-[color:var(--color-muted-foreground)] flex-shrink-0" />
+            <Clock
+              size={16}
+              className="text-[color:var(--color-muted-foreground)] flex-shrink-0"
+            />
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--color-muted-foreground)] mb-0.5">
                 Member Since
               </p>
-              <p className="font-semibold text-[color:var(--color-foreground)]">{joinedDate}</p>
+              <p className="font-semibold text-[color:var(--color-foreground)]">
+                {joinedDate}
+              </p>
             </div>
           </div>
         </div>
@@ -69,7 +76,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
           <div className="p-5 border border-dashed border-[color:var(--color-border)] rounded-lg text-center">
             <p className="text-sm text-[color:var(--color-muted-foreground)]">
               No bio yet —{" "}
-              <span className="text-primary font-medium">add one in Configure</span>
+              <span className="text-primary font-medium">
+                add one in Configure
+              </span>
             </p>
           </div>
         )}
@@ -77,7 +86,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
 
       {/* ── Contact & Verifications ───────────────────────── */}
       <section className="space-y-4">
-        <SectionLabel icon={<Mail size={14} />} text="Contact & Verifications" />
+        <SectionLabel
+          icon={<Mail size={14} />}
+          text="Contact & Verifications"
+        />
 
         <div className="divide-y divide-[color:var(--color-border)] border border-[color:var(--color-border)] rounded-lg overflow-hidden">
           <ContactRow
@@ -93,7 +105,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
           />
           {isOwner && profile.verificationStatus === "VERIFIED" && (
             <div className="flex items-center gap-3 px-5 py-4 bg-emerald-50 dark:bg-emerald-500/10">
-              <CheckCircle2 size={16} className="text-emerald-500 flex-shrink-0" />
+              <CheckCircle2
+                size={16}
+                className="text-emerald-500 flex-shrink-0"
+              />
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                   Verified Owner
@@ -128,7 +143,9 @@ const ContactRow: React.FC<{
   muted?: boolean;
 }> = ({ icon, label, value, muted }) => (
   <div className="flex items-center gap-3 px-5 py-4 bg-[color:var(--color-surface)]">
-    <span className="text-[color:var(--color-muted-foreground)] flex-shrink-0">{icon}</span>
+    <span className="text-[color:var(--color-muted-foreground)] flex-shrink-0">
+      {icon}
+    </span>
     <div>
       <p className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--color-muted-foreground)]">
         {label}

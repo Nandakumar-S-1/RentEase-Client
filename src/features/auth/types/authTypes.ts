@@ -9,7 +9,7 @@ export interface User {
   role: RoleType;
   avatarUrl?: string | null;
   verificationStatus?: VerificationStatus;
-  authProvider?: 'GOOGLE' | 'LOCAL';
+  authProvider?: "GOOGLE" | "LOCAL";
 }
 
 export interface AuthResponse {

@@ -111,7 +111,8 @@ const TenantDashboard: React.FC = () => {
           axiosApi.get(API_ROUTES.WISHLIST),
         ]);
         setAgreements(agRes);
-        const wlItems: PropertyData[] = wlRes.data?.data?.properties ?? wlRes.data?.data ?? [];
+        const wlItems: PropertyData[] =
+          wlRes.data?.data?.properties ?? wlRes.data?.data ?? [];
         setWishlistCount(Array.isArray(wlItems) ? wlItems.length : 0);
       } catch {
         // best-effort
@@ -207,7 +208,11 @@ const TenantDashboard: React.FC = () => {
           <StatCard
             label="Total Agreements"
             value={allAgreements}
-            sub={pendingAgreements.length ? `${pendingAgreements.length} need action` : "All clear"}
+            sub={
+              pendingAgreements.length
+                ? `${pendingAgreements.length} need action`
+                : "All clear"
+            }
             icon={<FileText size={18} className="text-blue-500" />}
             accent="bg-blue-50 dark:bg-blue-500/10"
             onClick={() => navigate(PAGE_ROUTES.TENANT_AGREEMENTS)}
@@ -285,7 +290,10 @@ const TenantDashboard: React.FC = () => {
                   className="flex items-center gap-4 px-5 py-4 hover:bg-[color:var(--color-secondary)] cursor-pointer transition-colors"
                 >
                   <div className="w-9 h-9 rounded-xl bg-[color:var(--color-secondary)] flex items-center justify-center flex-shrink-0">
-                    <FileText size={16} className="text-[color:var(--color-muted-foreground)]" />
+                    <FileText
+                      size={16}
+                      className="text-[color:var(--color-muted-foreground)]"
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-[color:var(--color-foreground)]">

@@ -123,7 +123,9 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <select
                   name="occupation"
-                  value={isOtherOccupation ? "Other" : formData.occupation || ""}
+                  value={
+                    isOtherOccupation ? "Other" : formData.occupation || ""
+                  }
                   onChange={(e) => {
                     const val = e.target.value;
                     if (val === "Other") {

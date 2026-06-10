@@ -4,7 +4,10 @@ import { Bell, Search, Settings, Menu } from "lucide-react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { logout } from "../../features/auth/slices/AuthSlice";
-import { resetNotifications, setUnreadCount } from "../../features/notifications/slices/notificationSlice";
+import {
+  resetNotifications,
+  setUnreadCount,
+} from "../../features/notifications/slices/notificationSlice";
 import { RoleTypes } from "../../types/constants/role.constant";
 import { useNavigate } from "react-router-dom";
 import { PAGE_ROUTES } from "../../config/routes";
@@ -147,7 +150,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               }}
               className="group p-2 text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)] hover:bg-[color:var(--color-secondary)] rounded-lg transition-all"
             >
-              <Settings size={20} className="transition-transform duration-700 ease-in-out group-hover:rotate-180" />
+              <Settings
+                size={20}
+                className="transition-transform duration-700 ease-in-out group-hover:rotate-180"
+              />
             </button>
           </div>
         </header>

@@ -1,5 +1,8 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Notification, NotificationsState } from "../types/notificationTypes";
+import type {
+  Notification,
+  NotificationsState,
+} from "../types/notificationTypes";
 
 const initialState: NotificationsState = {
   items: [],
@@ -24,12 +27,17 @@ const notificationSlice = createSlice({
 
     setInitialNotifications: (
       state,
-      action: PayloadAction<{ notifications: Notification[]; unreadCount: number; limit: number }>,
+      action: PayloadAction<{
+        notifications: Notification[];
+        unreadCount: number;
+        limit: number;
+      }>,
     ) => {
       state.items = action.payload.notifications;
       state.unreadCount = action.payload.unreadCount;
       state.page = 1;
-      state.hasMore = action.payload.notifications.length >= action.payload.limit;
+      state.hasMore =
+        action.payload.notifications.length >= action.payload.limit;
       state.isLoading = false;
     },
 

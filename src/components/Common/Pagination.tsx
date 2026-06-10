@@ -31,11 +31,8 @@ export const Pagination: React.FC<PaginationProps> = ({
           {startItem}
         </span>{" "}
         to{" "}
-        <span className="text-[color:var(--color-foreground)]">
-          {endItem}
-        </span>{" "}
-        of{" "}
-        <span className="text-[color:var(--color-foreground)]">{total}</span>{" "}
+        <span className="text-[color:var(--color-foreground)]">{endItem}</span>{" "}
+        of <span className="text-[color:var(--color-foreground)]">{total}</span>{" "}
         {itemName}
       </p>
 
