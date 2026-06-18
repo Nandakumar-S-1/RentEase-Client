@@ -20,7 +20,6 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
-  Calendar,
 } from "lucide-react";
 import { usePropertyDetail } from "../hooks/usePropertyDetail";
 import { useWishlist } from "../hooks/useWishlist";
@@ -47,8 +46,14 @@ const TenantPropertyDetails = () => {
     toast.success("Contacting owner feature coming soon!", { icon: "📞" });
   };
 
-  const nextPhoto = () => setActivePhotoIndex((i) => (i + 1) % (property.photos?.length || 1));
-  const prevPhoto = () => setActivePhotoIndex((i) => (i - 1 + (property.photos?.length || 1)) % (property.photos?.length || 1));
+  const nextPhoto = () =>
+    setActivePhotoIndex((i) => (i + 1) % (property.photos?.length || 1));
+  const prevPhoto = () =>
+    setActivePhotoIndex(
+      (i) =>
+        (i - 1 + (property.photos?.length || 1)) %
+        (property.photos?.length || 1),
+    );
 
   return (
     <DashboardLayout
@@ -67,11 +72,15 @@ const TenantPropertyDetails = () => {
           </button>
           <div className="flex gap-2">
             <button
-              onClick={(e) => { e.stopPropagation(); toggle(); }}
-              className={`p-2.5 rounded-xl border transition-colors ${isSaved
+              onClick={(e) => {
+                e.stopPropagation();
+                toggle();
+              }}
+              className={`p-2.5 rounded-xl border transition-colors ${
+                isSaved
                   ? "bg-red-50 dark:bg-red-500/10 text-red-500 border-red-200 dark:border-red-500/20"
                   : "border-[color:var(--color-border)] text-[color:var(--color-muted-foreground)] hover:text-red-400"
-                }`}
+              }`}
             >
               <Heart size={18} fill={isSaved ? "currentColor" : "none"} />
             </button>
@@ -86,7 +95,10 @@ const TenantPropertyDetails = () => {
           <div className="lg:col-span-8 space-y-8 animate-in fade-in duration-500">
             {/* Photo Gallery */}
             <div className="relative rounded-lg overflow-hidden bg-[color:var(--color-surface)] border border-[color:var(--color-border)] shadow-sm">
-              <div className="relative h-[450px] cursor-pointer" onClick={() => setIsZoomOpen(true)}>
+              <div
+                className="relative h-[450px] cursor-pointer"
+                onClick={() => setIsZoomOpen(true)}
+              >
                 <img
                   src={property.photos[activePhotoIndex]}
                   className="w-full h-full object-cover"
@@ -95,13 +107,19 @@ const TenantPropertyDetails = () => {
                 {property.photos.length > 1 && (
                   <>
                     <button
-                      onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevPhoto();
+                      }}
                       className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-colors"
                     >
                       <ChevronLeft size={20} />
                     </button>
                     <button
-                      onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextPhoto();
+                      }}
                       className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-colors"
                     >
                       <ChevronRight size={20} />
@@ -126,10 +144,17 @@ const TenantPropertyDetails = () => {
                     <button
                       key={i}
                       onClick={() => setActivePhotoIndex(i)}
-                      className={`w-20 h-14 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${activePhotoIndex === i ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
-                        }`}
+                      className={`w-20 h-14 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${
+                        activePhotoIndex === i
+                          ? "border-primary"
+                          : "border-transparent opacity-60 hover:opacity-100"
+                      }`}
                     >
-                      <img src={img} className="w-full h-full object-cover" alt={`Photo ${i + 1}`} />
+                      <img
+                        src={img}
+                        className="w-full h-full object-cover"
+                        alt={`Photo ${i + 1}`}
+                      />
                     </button>
                   ))}
                 </div>
@@ -144,7 +169,8 @@ const TenantPropertyDetails = () => {
               <div className="flex items-center gap-2 text-[color:var(--color-muted-foreground)]">
                 <MapPin size={16} className="text-primary" />
                 <span className="text-sm">
-                  {property.fullAddress || `${property.locationCity}, ${property.locationDistrict}`}
+                  {property.fullAddress ||
+                    `${property.locationCity}, ${property.locationDistrict}`}
                 </span>
               </div>
             </div>
@@ -152,22 +178,48 @@ const TenantPropertyDetails = () => {
             {/* Quick Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { icon: Maximize2, label: "Area", val: `${property.areaSqft || "–"} sqft`, show: true },
-                { icon: Bed, label: "Bedrooms", val: `${property.bhk || "–"} BHK`, show: property.propertyType !== "LAND" && property.propertyType !== "SHOP" },
-                { icon: Bath, label: "Bathrooms", val: `${property.bathrooms || "–"}`, show: property.propertyType !== "LAND" },
-                { icon: Layers, label: "Floor", val: property.floorNumber || "–", show: property.propertyType !== "LAND" },
-              ].filter(s => s.show).map((stat, i) => (
-                <div
-                  key={i}
-                  className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl p-4 hover:shadow-md transition-shadow"
-                >
-                  <div className="flex items-center gap-2 text-[color:var(--color-muted-foreground)] mb-2">
-                    <stat.icon size={16} className="text-primary" />
-                    <span className="text-xs font-medium">{stat.label}</span>
+                {
+                  icon: Maximize2,
+                  label: "Area",
+                  val: `${property.areaSqft || "–"} sqft`,
+                  show: true,
+                },
+                {
+                  icon: Bed,
+                  label: "Bedrooms",
+                  val: `${property.bhk || "–"} BHK`,
+                  show:
+                    property.propertyType !== "LAND" &&
+                    property.propertyType !== "SHOP",
+                },
+                {
+                  icon: Bath,
+                  label: "Bathrooms",
+                  val: `${property.bathrooms || "–"}`,
+                  show: property.propertyType !== "LAND",
+                },
+                {
+                  icon: Layers,
+                  label: "Floor",
+                  val: property.floorNumber || "–",
+                  show: property.propertyType !== "LAND",
+                },
+              ]
+                .filter((s) => s.show)
+                .map((stat, i) => (
+                  <div
+                    key={i}
+                    className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl p-4 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 text-[color:var(--color-muted-foreground)] mb-2">
+                      <stat.icon size={16} className="text-primary" />
+                      <span className="text-xs font-medium">{stat.label}</span>
+                    </div>
+                    <p className="text-sm font-bold text-[color:var(--color-foreground)]">
+                      {stat.val}
+                    </p>
                   </div>
-                  <p className="text-sm font-bold text-[color:var(--color-foreground)]">{stat.val}</p>
-                </div>
-              ))}
+                ))}
             </div>
 
             {/* Description */}
@@ -176,7 +228,12 @@ const TenantPropertyDetails = () => {
                 <span className="w-1 h-5 bg-primary rounded-full" />
                 About This Property
               </h3>
-              <p className="text-[color:var(--color-muted-foreground)] leading-relaxed" style={{ overflowWrap: "anywhere" }}>{property.description}</p>
+              <p
+                className="text-[color:var(--color-muted-foreground)] leading-relaxed"
+                style={{ overflowWrap: "anywhere" }}
+              >
+                {property.description}
+              </p>
             </div>
 
             {/* Property Rules */}
@@ -188,28 +245,55 @@ const TenantPropertyDetails = () => {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50">
-                    <PawPrint size={18} className={property.petsAllowed ? "text-emerald-500" : "text-[color:var(--color-muted-foreground)]"} />
+                    <PawPrint
+                      size={18}
+                      className={
+                        property.petsAllowed
+                          ? "text-emerald-500"
+                          : "text-[color:var(--color-muted-foreground)]"
+                      }
+                    />
                     <div>
-                      <p className="text-xs text-[color:var(--color-muted-foreground)]">Pets</p>
-                      <p className="text-sm font-semibold">{property.petsAllowed ? "Allowed" : "Not Allowed"}</p>
+                      <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                        Pets
+                      </p>
+                      <p className="text-sm font-semibold">
+                        {property.petsAllowed ? "Allowed" : "Not Allowed"}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50">
-                    <Cigarette size={18} className={property.smokingAllowed ? "text-emerald-500" : "text-[color:var(--color-muted-foreground)]"} />
+                    <Cigarette
+                      size={18}
+                      className={
+                        property.smokingAllowed
+                          ? "text-emerald-500"
+                          : "text-[color:var(--color-muted-foreground)]"
+                      }
+                    />
                     <div>
-                      <p className="text-xs text-[color:var(--color-muted-foreground)]">Smoking</p>
-                      <p className="text-sm font-semibold">{property.smokingAllowed ? "Allowed" : "Not Allowed"}</p>
+                      <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                        Smoking
+                      </p>
+                      <p className="text-sm font-semibold">
+                        {property.smokingAllowed ? "Allowed" : "Not Allowed"}
+                      </p>
                     </div>
                   </div>
-                  {property.propertyType !== "SHOP" && property.maximumOccupants && (
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50">
-                      <Users size={18} className="text-primary" />
-                      <div>
-                        <p className="text-xs text-[color:var(--color-muted-foreground)]">Max Occupants</p>
-                        <p className="text-sm font-semibold">{property.maximumOccupants}</p>
+                  {property.propertyType !== "SHOP" &&
+                    property.maximumOccupants && (
+                      <div className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50">
+                        <Users size={18} className="text-primary" />
+                        <div>
+                          <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                            Max Occupants
+                          </p>
+                          <p className="text-sm font-semibold">
+                            {property.maximumOccupants}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               </div>
             )}
@@ -227,8 +311,13 @@ const TenantPropertyDetails = () => {
                       key={amenity}
                       className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50"
                     >
-                      <CheckCircle size={16} className="text-emerald-500 shrink-0" />
-                      <span className="text-sm font-medium text-[color:var(--color-foreground)]">{amenity}</span>
+                      <CheckCircle
+                        size={16}
+                        className="text-emerald-500 shrink-0"
+                      />
+                      <span className="text-sm font-medium text-[color:var(--color-foreground)]">
+                        {amenity}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -245,7 +334,11 @@ const TenantPropertyDetails = () => {
               </div>
               <div className="h-[300px]">
                 {property.latitude && property.longitude ? (
-                  <PropertyLocationMap latitude={property.latitude} longitude={property.longitude} isReadOnly={true} />
+                  <PropertyLocationMap
+                    latitude={property.latitude}
+                    longitude={property.longitude}
+                    isReadOnly={true}
+                  />
                 ) : (
                   <div className="w-full h-full bg-[color:var(--color-secondary)] flex items-center justify-center text-[color:var(--color-muted-foreground)] text-sm">
                     Location not available
@@ -268,24 +361,45 @@ const TenantPropertyDetails = () => {
             <div className="sticky top-24 space-y-6 animate-in fade-in duration-500">
               {/* Pricing Card */}
               <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-lg p-6 shadow-sm">
-                <p className="text-xs font-medium text-[color:var(--color-muted-foreground)] uppercase tracking-wider mb-2">Monthly Rent</p>
+                <p className="text-xs font-medium text-[color:var(--color-muted-foreground)] uppercase tracking-wider mb-2">
+                  Monthly Rent
+                </p>
                 <div className="flex items-end gap-1 mb-6">
-                  <span className="text-3xl font-bold text-primary">₹{property.monthlyRent?.toLocaleString()}</span>
-                  <span className="text-[color:var(--color-muted-foreground)] text-sm pb-1">/month</span>
+                  <span className="text-3xl font-bold text-primary">
+                    ₹{property.monthlyRent?.toLocaleString()}
+                  </span>
+                  <span className="text-[color:var(--color-muted-foreground)] text-sm pb-1">
+                    /month
+                  </span>
                 </div>
 
                 <div className="space-y-3 mb-6">
                   {[
-                    { label: "Security Deposit", val: `₹${property.depositAmount?.toLocaleString()}` },
+                    {
+                      label: "Security Deposit",
+                      val: `₹${property.depositAmount?.toLocaleString()}`,
+                    },
                     {
                       label: "Maintenance",
-                      val: property.maintenanceIncluded ? "Included" : `₹${property.maintenanceCharges?.toLocaleString() || "0"}`,
+                      val: property.maintenanceIncluded
+                        ? "Included"
+                        : `₹${property.maintenanceCharges?.toLocaleString() || "0"}`,
                     },
-                    { label: "Furnishing", val: property.furnishingStatus || "–" },
+                    {
+                      label: "Furnishing",
+                      val: property.furnishingStatus || "–",
+                    },
                   ].map((row, i) => (
-                    <div key={i} className="flex justify-between items-center py-2 border-b border-[color:var(--color-border)] last:border-0 text-sm">
-                      <span className="text-[color:var(--color-muted-foreground)]">{row.label}</span>
-                      <span className="font-semibold text-[color:var(--color-foreground)]">{row.val}</span>
+                    <div
+                      key={i}
+                      className="flex justify-between items-center py-2 border-b border-[color:var(--color-border)] last:border-0 text-sm"
+                    >
+                      <span className="text-[color:var(--color-muted-foreground)]">
+                        {row.label}
+                      </span>
+                      <span className="font-semibold text-[color:var(--color-foreground)]">
+                        {row.val}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -305,14 +419,20 @@ const TenantPropertyDetails = () => {
 
               {/* Owner Info */}
               <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-lg p-6">
-                <h4 className="text-xs font-medium text-[color:var(--color-muted-foreground)] uppercase tracking-wider mb-4">Listed By</h4>
+                <h4 className="text-xs font-medium text-[color:var(--color-muted-foreground)] uppercase tracking-wider mb-4">
+                  Listed By
+                </h4>
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                     <UserIcon size={24} />
                   </div>
                   <div>
-                    <p className="font-bold text-[color:var(--color-foreground)]">{property.owner?.fullName || "Verified Owner"}</p>
-                    <p className="text-xs text-emerald-600 font-medium">✓ Identity Verified</p>
+                    <p className="font-bold text-[color:var(--color-foreground)]">
+                      {property.owner?.fullName || "Verified Owner"}
+                    </p>
+                    <p className="text-xs text-emerald-600 font-medium">
+                      ✓ Identity Verified
+                    </p>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -322,7 +442,9 @@ const TenantPropertyDetails = () => {
                       className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50 hover:bg-[color:var(--color-secondary)] transition-colors text-sm"
                     >
                       <Phone size={16} className="text-primary" />
-                      <span className="font-medium">{property.owner.phone}</span>
+                      <span className="font-medium">
+                        {property.owner.phone}
+                      </span>
                     </a>
                   )}
                   {property.owner?.email && (
@@ -331,7 +453,9 @@ const TenantPropertyDetails = () => {
                       className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50 hover:bg-[color:var(--color-secondary)] transition-colors text-sm"
                     >
                       <Mail size={16} className="text-primary" />
-                      <span className="font-medium truncate">{property.owner.email}</span>
+                      <span className="font-medium truncate">
+                        {property.owner.email}
+                      </span>
                     </a>
                   )}
                 </div>
@@ -349,7 +473,10 @@ const TenantPropertyDetails = () => {
         >
           <button
             className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-[210]"
-            onClick={(e) => { e.stopPropagation(); setIsZoomOpen(false); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsZoomOpen(false);
+            }}
           >
             <X size={24} />
           </button>
@@ -365,9 +492,15 @@ const TenantPropertyDetails = () => {
               {property.photos.map((_: string, i: number) => (
                 <button
                   key={i}
-                  onClick={(e) => { e.stopPropagation(); setActivePhotoIndex(i); }}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${activePhotoIndex === i ? "bg-primary w-6" : "bg-white/30 hover:bg-white/50"
-                    }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActivePhotoIndex(i);
+                  }}
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${
+                    activePhotoIndex === i
+                      ? "bg-primary w-6"
+                      : "bg-white/30 hover:bg-white/50"
+                  }`}
                 />
               ))}
             </div>

@@ -19,7 +19,6 @@ import {
   X,
   ShieldCheck,
   Bath,
-  Calendar,
   IndianRupee,
   Home,
   Sofa,
@@ -32,10 +31,7 @@ import {
 import { usePropertyDetail } from "../hooks/usePropertyDetail";
 import { LoadingOverlay, Modal } from "../../../components/common";
 import { PAGE_ROUTES } from "../../../config/routes";
-import {
-  unlistProperty,
-  relistProperty,
-} from "../services/propertyService";
+import { unlistProperty, relistProperty } from "../services/propertyService";
 import { toast } from "react-hot-toast";
 import DashboardLayout from "../../../components/common/DashboardLayout";
 import { PropertyLocationMap } from "./PropertyLocationMap";
@@ -130,8 +126,14 @@ const OwnerPropertyDetails = () => {
 
   const status = getStatusConfig();
 
-  const nextPhoto = () => setActivePhotoIndex((i) => (i + 1) % (property.photos?.length || 1));
-  const prevPhoto = () => setActivePhotoIndex((i) => (i - 1 + (property.photos?.length || 1)) % (property.photos?.length || 1));
+  const nextPhoto = () =>
+    setActivePhotoIndex((i) => (i + 1) % (property.photos?.length || 1));
+  const prevPhoto = () =>
+    setActivePhotoIndex(
+      (i) =>
+        (i - 1 + (property.photos?.length || 1)) %
+        (property.photos?.length || 1),
+    );
 
   return (
     <DashboardLayout
@@ -154,13 +156,18 @@ const OwnerPropertyDetails = () => {
               </h1>
               <div className="flex items-center gap-2 text-sm text-[color:var(--color-muted-foreground)] mt-1">
                 <MapPin size={14} className="text-primary" />
-                <span>{property.fullAddress || `${property.locationCity}, ${property.locationDistrict}`}</span>
+                <span>
+                  {property.fullAddress ||
+                    `${property.locationCity}, ${property.locationDistrict}`}
+                </span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl border ${status.bg} ${status.color} ${status.border}`}>
+            <div
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl border ${status.bg} ${status.color} ${status.border}`}
+            >
               <status.icon size={16} />
               <span className="text-xs font-bold">{status.label}</span>
             </div>
@@ -172,7 +179,9 @@ const OwnerPropertyDetails = () => {
               Edit
             </button>
             <button
-              onClick={() => navigate(`/owner/properties/${property.id}/service-providers`)}
+              onClick={() =>
+                navigate(`/owner/properties/${property.id}/service-providers`)
+              }
               className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[color:var(--color-border)] hover:bg-[color:var(--color-secondary)] transition-colors text-sm font-medium"
             >
               <Wrench size={16} />
@@ -186,9 +195,12 @@ const OwnerPropertyDetails = () => {
           <div className="mb-8 p-5 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 rounded-lg flex items-start gap-4">
             <AlertCircle className="text-rose-600 shrink-0 mt-0.5" size={20} />
             <div className="flex-1">
-              <p className="font-semibold text-rose-700 dark:text-rose-400 text-sm mb-1">Listing Rejected</p>
+              <p className="font-semibold text-rose-700 dark:text-rose-400 text-sm mb-1">
+                Listing Rejected
+              </p>
               <p className="text-rose-600/80 dark:text-rose-300/60 text-sm">
-                {property.rejectionReason || "Please update your listing and resubmit for review."}
+                {property.rejectionReason ||
+                  "Please update your listing and resubmit for review."}
               </p>
             </div>
             <button
@@ -205,7 +217,10 @@ const OwnerPropertyDetails = () => {
           <div className="lg:col-span-8 space-y-8">
             {/* Photo Gallery */}
             <div className="relative rounded-lg overflow-hidden bg-[color:var(--color-surface)] border border-[color:var(--color-border)] shadow-sm">
-              <div className="relative h-[400px] cursor-pointer" onClick={() => setIsZoomOpen(true)}>
+              <div
+                className="relative h-[400px] cursor-pointer"
+                onClick={() => setIsZoomOpen(true)}
+              >
                 <img
                   src={property.photos?.[activePhotoIndex] || ""}
                   alt={property.title}
@@ -214,13 +229,19 @@ const OwnerPropertyDetails = () => {
                 {property.photos && property.photos.length > 1 && (
                   <>
                     <button
-                      onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevPhoto();
+                      }}
                       className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-colors"
                     >
                       <ChevronLeft size={20} />
                     </button>
                     <button
-                      onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextPhoto();
+                      }}
                       className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-colors"
                     >
                       <ChevronRight size={20} />
@@ -238,10 +259,16 @@ const OwnerPropertyDetails = () => {
                       key={i}
                       onClick={() => setActivePhotoIndex(i)}
                       className={`w-16 h-12 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${
-                        activePhotoIndex === i ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
+                        activePhotoIndex === i
+                          ? "border-primary"
+                          : "border-transparent opacity-60 hover:opacity-100"
                       }`}
                     >
-                      <img src={img} className="w-full h-full object-cover" alt={`Photo ${i + 1}`} />
+                      <img
+                        src={img}
+                        className="w-full h-full object-cover"
+                        alt={`Photo ${i + 1}`}
+                      />
                     </button>
                   ))}
                 </div>
@@ -251,26 +278,72 @@ const OwnerPropertyDetails = () => {
             {/* Property Specs */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: "Area", val: `${property.areaSqft || "–"} sqft`, icon: Maximize2, show: true },
-                { label: "BHK", val: `${property.bhk || "–"} BHK`, icon: Bed, show: property.propertyType !== "LAND" && property.propertyType !== "SHOP" },
-                { label: "Bathrooms", val: `${property.bathrooms || "–"}`, icon: Bath, show: property.propertyType !== "LAND" },
-                { label: "Floor", val: property.floorNumber || "–", icon: Layers, show: property.propertyType !== "LAND" },
-                { label: "Monthly Rent", val: `₹${property.monthlyRent?.toLocaleString() || "–"}`, icon: IndianRupee, show: true },
-                { label: "Deposit", val: `₹${property.depositAmount?.toLocaleString() || "–"}`, icon: TrendingUp, show: true },
-                { label: "Type", val: property.propertyType || "–", icon: Home, show: true },
-                { label: "Furnishing", val: property.furnishingStatus || "–", icon: Sofa, show: !!property.furnishingStatus },
-              ].filter(s => s.show).map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl p-4 hover:shadow-md transition-shadow"
-                >
-                  <div className="flex items-center gap-2 text-[color:var(--color-muted-foreground)] mb-2">
-                    <item.icon size={16} className="text-primary" />
-                    <span className="text-xs font-medium">{item.label}</span>
+                {
+                  label: "Area",
+                  val: `${property.areaSqft || "–"} sqft`,
+                  icon: Maximize2,
+                  show: true,
+                },
+                {
+                  label: "BHK",
+                  val: `${property.bhk || "–"} BHK`,
+                  icon: Bed,
+                  show:
+                    property.propertyType !== "LAND" &&
+                    property.propertyType !== "SHOP",
+                },
+                {
+                  label: "Bathrooms",
+                  val: `${property.bathrooms || "–"}`,
+                  icon: Bath,
+                  show: property.propertyType !== "LAND",
+                },
+                {
+                  label: "Floor",
+                  val: property.floorNumber || "–",
+                  icon: Layers,
+                  show: property.propertyType !== "LAND",
+                },
+                {
+                  label: "Monthly Rent",
+                  val: `₹${property.monthlyRent?.toLocaleString() || "–"}`,
+                  icon: IndianRupee,
+                  show: true,
+                },
+                {
+                  label: "Deposit",
+                  val: `₹${property.depositAmount?.toLocaleString() || "–"}`,
+                  icon: TrendingUp,
+                  show: true,
+                },
+                {
+                  label: "Type",
+                  val: property.propertyType || "–",
+                  icon: Home,
+                  show: true,
+                },
+                {
+                  label: "Furnishing",
+                  val: property.furnishingStatus || "–",
+                  icon: Sofa,
+                  show: !!property.furnishingStatus,
+                },
+              ]
+                .filter((s) => s.show)
+                .map((item, i) => (
+                  <div
+                    key={i}
+                    className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl p-4 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 text-[color:var(--color-muted-foreground)] mb-2">
+                      <item.icon size={16} className="text-primary" />
+                      <span className="text-xs font-medium">{item.label}</span>
+                    </div>
+                    <p className="text-sm font-bold text-[color:var(--color-foreground)] truncate">
+                      {item.val}
+                    </p>
                   </div>
-                  <p className="text-sm font-bold text-[color:var(--color-foreground)] truncate">{item.val}</p>
-                </div>
-              ))}
+                ))}
             </div>
 
             {/* Description */}
@@ -279,7 +352,12 @@ const OwnerPropertyDetails = () => {
                 <span className="w-1 h-5 bg-primary rounded-full" />
                 Description
               </h3>
-              <p className="text-[color:var(--color-muted-foreground)] leading-relaxed" style={{ overflowWrap: "anywhere" }}>{property.description}</p>
+              <p
+                className="text-[color:var(--color-muted-foreground)] leading-relaxed"
+                style={{ overflowWrap: "anywhere" }}
+              >
+                {property.description}
+              </p>
             </div>
 
             {/* Property Rules */}
@@ -291,28 +369,55 @@ const OwnerPropertyDetails = () => {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50">
-                    <PawPrint size={18} className={property.petsAllowed ? "text-emerald-500" : "text-[color:var(--color-muted-foreground)]"} />
+                    <PawPrint
+                      size={18}
+                      className={
+                        property.petsAllowed
+                          ? "text-emerald-500"
+                          : "text-[color:var(--color-muted-foreground)]"
+                      }
+                    />
                     <div>
-                      <p className="text-xs text-[color:var(--color-muted-foreground)]">Pets</p>
-                      <p className="text-sm font-semibold">{property.petsAllowed ? "Allowed" : "Not Allowed"}</p>
+                      <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                        Pets
+                      </p>
+                      <p className="text-sm font-semibold">
+                        {property.petsAllowed ? "Allowed" : "Not Allowed"}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50">
-                    <Cigarette size={18} className={property.smokingAllowed ? "text-emerald-500" : "text-[color:var(--color-muted-foreground)]"} />
+                    <Cigarette
+                      size={18}
+                      className={
+                        property.smokingAllowed
+                          ? "text-emerald-500"
+                          : "text-[color:var(--color-muted-foreground)]"
+                      }
+                    />
                     <div>
-                      <p className="text-xs text-[color:var(--color-muted-foreground)]">Smoking</p>
-                      <p className="text-sm font-semibold">{property.smokingAllowed ? "Allowed" : "Not Allowed"}</p>
+                      <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                        Smoking
+                      </p>
+                      <p className="text-sm font-semibold">
+                        {property.smokingAllowed ? "Allowed" : "Not Allowed"}
+                      </p>
                     </div>
                   </div>
-                  {property.propertyType !== "SHOP" && property.maximumOccupants && (
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50">
-                      <Users size={18} className="text-primary" />
-                      <div>
-                        <p className="text-xs text-[color:var(--color-muted-foreground)]">Max Occupants</p>
-                        <p className="text-sm font-semibold">{property.maximumOccupants}</p>
+                  {property.propertyType !== "SHOP" &&
+                    property.maximumOccupants && (
+                      <div className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50">
+                        <Users size={18} className="text-primary" />
+                        <div>
+                          <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                            Max Occupants
+                          </p>
+                          <p className="text-sm font-semibold">
+                            {property.maximumOccupants}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               </div>
             )}
@@ -330,8 +435,13 @@ const OwnerPropertyDetails = () => {
                       key={amenity}
                       className="flex items-center gap-3 p-3 rounded-xl bg-[color:var(--color-secondary)]/50"
                     >
-                      <CheckCircle size={16} className="text-emerald-500 shrink-0" />
-                      <span className="text-sm font-medium text-[color:var(--color-foreground)]">{amenity}</span>
+                      <CheckCircle
+                        size={16}
+                        className="text-emerald-500 shrink-0"
+                      />
+                      <span className="text-sm font-medium text-[color:var(--color-foreground)]">
+                        {amenity}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -348,7 +458,11 @@ const OwnerPropertyDetails = () => {
               </div>
               <div className="h-[300px]">
                 {property.latitude && property.longitude ? (
-                  <PropertyLocationMap latitude={property.latitude} longitude={property.longitude} isReadOnly={true} />
+                  <PropertyLocationMap
+                    latitude={property.latitude}
+                    longitude={property.longitude}
+                    isReadOnly={true}
+                  />
                 ) : (
                   <div className="w-full h-full bg-[color:var(--color-secondary)] flex items-center justify-center text-[color:var(--color-muted-foreground)] text-sm">
                     Location not available
@@ -373,13 +487,21 @@ const OwnerPropertyDetails = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center p-4 rounded-xl bg-[color:var(--color-secondary)]/50">
                     <Eye size={20} className="mx-auto text-primary mb-2" />
-                    <p className="text-2xl font-bold text-[color:var(--color-foreground)]">{property.viewsCount || 0}</p>
-                    <p className="text-xs text-[color:var(--color-muted-foreground)]">Views</p>
+                    <p className="text-2xl font-bold text-[color:var(--color-foreground)]">
+                      {property.viewsCount || 0}
+                    </p>
+                    <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                      Views
+                    </p>
                   </div>
                   <div className="text-center p-4 rounded-xl bg-[color:var(--color-secondary)]/50">
                     <Heart size={20} className="mx-auto text-rose-500 mb-2" />
-                    <p className="text-2xl font-bold text-[color:var(--color-foreground)]">{property.wishlistCount || 0}</p>
-                    <p className="text-xs text-[color:var(--color-muted-foreground)]">Wishlisted</p>
+                    <p className="text-2xl font-bold text-[color:var(--color-foreground)]">
+                      {property.wishlistCount || 0}
+                    </p>
+                    <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                      Wishlisted
+                    </p>
                   </div>
                 </div>
               </div>
@@ -416,21 +538,35 @@ const OwnerPropertyDetails = () => {
                 </h4>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-[color:var(--color-muted-foreground)]">Listed</span>
+                    <span className="text-[color:var(--color-muted-foreground)]">
+                      Listed
+                    </span>
                     <span className="font-medium text-[color:var(--color-foreground)]">
-                      {new Date(property.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                      {new Date(property.createdAt).toLocaleDateString(
+                        "en-IN",
+                        { day: "numeric", month: "short", year: "numeric" },
+                      )}
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-[color:var(--color-muted-foreground)]">Last Updated</span>
+                    <span className="text-[color:var(--color-muted-foreground)]">
+                      Last Updated
+                    </span>
                     <span className="font-medium text-[color:var(--color-foreground)]">
-                      {new Date(property.updatedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                      {new Date(property.updatedAt).toLocaleDateString(
+                        "en-IN",
+                        { day: "numeric", month: "short", year: "numeric" },
+                      )}
                     </span>
                   </div>
                   {property.nearbyLandmarks && (
                     <div className="flex justify-between items-start text-sm">
-                      <span className="text-[color:var(--color-muted-foreground)] shrink-0">Landmarks</span>
-                      <span className="font-medium text-[color:var(--color-foreground)] text-right ml-4">{property.nearbyLandmarks}</span>
+                      <span className="text-[color:var(--color-muted-foreground)] shrink-0">
+                        Landmarks
+                      </span>
+                      <span className="font-medium text-[color:var(--color-foreground)] text-right ml-4">
+                        {property.nearbyLandmarks}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -443,7 +579,8 @@ const OwnerPropertyDetails = () => {
                   <span className="text-sm font-bold">Platform Verified</span>
                 </div>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  This listing is protected by RentEase platform policies and verified ownership.
+                  This listing is protected by RentEase platform policies and
+                  verified ownership.
                 </p>
               </div>
             </div>
@@ -479,7 +616,10 @@ const OwnerPropertyDetails = () => {
         >
           <button
             className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-[210]"
-            onClick={(e) => { e.stopPropagation(); setIsZoomOpen(false); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsZoomOpen(false);
+            }}
           >
             <X size={24} />
           </button>
@@ -495,9 +635,14 @@ const OwnerPropertyDetails = () => {
               {property.photos.map((_: string, i: number) => (
                 <button
                   key={i}
-                  onClick={(e) => { e.stopPropagation(); setActivePhotoIndex(i); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActivePhotoIndex(i);
+                  }}
                   className={`w-2.5 h-2.5 rounded-full transition-all ${
-                    activePhotoIndex === i ? "bg-primary w-6" : "bg-white/30 hover:bg-white/50"
+                    activePhotoIndex === i
+                      ? "bg-primary w-6"
+                      : "bg-white/30 hover:bg-white/50"
                   }`}
                 />
               ))}

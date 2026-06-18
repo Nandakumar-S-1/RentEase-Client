@@ -30,7 +30,8 @@ export const StepPhotos: React.FC<StepPhotosProps> = ({
             Manage Property Photos
           </h3>
           <p className="text-xs text-[color:var(--color-muted-foreground)] font-semibold mt-1">
-            Upload up to 5 photos total. The first photo will be the main listing cover image.
+            Upload up to 5 photos total. The first photo will be the main
+            listing cover image.
           </p>
         </div>
         {totalPhotosCount < 5 && (

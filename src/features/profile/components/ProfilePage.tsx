@@ -63,9 +63,11 @@ const ProfilePage: React.FC = () => {
   }
 
   return (
-    <DashboardLayout role={profile.role as RoleType} userName={profile.fullName}>
+    <DashboardLayout
+      role={profile.role as RoleType}
+      userName={profile.fullName}
+    >
       <div className="max-w-5xl mx-auto space-y-8 pb-16">
-
         {/* ── Hero header ─────────────────────────────────────────── */}
         <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-[color:var(--color-border)] p-8">
           {/* subtle background grid */}
@@ -130,7 +132,9 @@ const ProfilePage: React.FC = () => {
                 </p>
               </div>
               <div className="px-4 py-2 bg-[color:var(--color-surface)] rounded-xl border border-[color:var(--color-border)] text-center shadow-sm">
-                <p className="text-lg font-black text-[color:var(--color-foreground)]">4.9</p>
+                <p className="text-lg font-black text-[color:var(--color-foreground)]">
+                  4.9
+                </p>
                 <p className="text-[10px] font-bold uppercase tracking-wider text-[color:var(--color-muted-foreground)]">
                   Rating
                 </p>
@@ -159,7 +163,6 @@ const ProfilePage: React.FC = () => {
 
         {/* ── Tab content ─────────────────────────────────────────── */}
         <div className="animate-in fade-in duration-200">
-
           {/* Identity */}
           {activeTab === "identity" && (
             <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-xl p-8 shadow-sm">
@@ -195,8 +198,10 @@ const ProfilePage: React.FC = () => {
           )}
 
           {/* Preferences / Alerts — coming soon */}
-          {(activeTab === "preferences") && (
-            <ComingSoon label={tabs.find((t) => t.id === activeTab)?.label ?? ""} />
+          {activeTab === "preferences" && (
+            <ComingSoon
+              label={tabs.find((t) => t.id === activeTab)?.label ?? ""}
+            />
           )}
         </div>
       </div>

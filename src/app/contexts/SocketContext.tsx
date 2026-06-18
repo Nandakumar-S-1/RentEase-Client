@@ -1,3 +1,4 @@
+// eslint-disable-next-line react-refresh/only-export-components -- Context provider and hook are intentionally co-located
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,19 +17,22 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { user, isAuthenticated } = useSelector(
+    (state: RootState) => state.auth,
+  );
   const dispatch = useDispatch();
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     if (isAuthenticated && user?.id) {
       const socketInstance = io(
-        import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:3000",
+        import.meta.env.VITE_API_URL?.replace("/api", "") ||
+          "http://localhost:3000",
         {
           query: {
             userId: user.id,
           },
-        }
+        },
       );
 
       socketInstance.on("connect", () => {
@@ -54,6 +58,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
         setSocket(null);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- 'socket' is intentionally omitted; including it would cause an infinite loop since this effect manages the socket instance
   }, [isAuthenticated, user?.id, dispatch]);
 
   return (

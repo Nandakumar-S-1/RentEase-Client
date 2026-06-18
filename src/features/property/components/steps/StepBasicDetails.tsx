@@ -14,7 +14,7 @@ interface StepBasicDetailsProps {
   handleInputChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
 }
 

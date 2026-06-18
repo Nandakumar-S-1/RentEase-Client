@@ -146,13 +146,29 @@ const LandingPage: React.FC = () => {
 
         {/* Mobile Menu Dropdown */}
         <div
-          className={`md:hidden bg-[color:var(--color-surface)] border-b border-[color:var(--color-border)] overflow-hidden transition-all duration-300 ${isMenuOpen ? "max-h-[400px] py-6" : "max-h-0 py-0"
-            }`}
+          className={`md:hidden bg-[color:var(--color-surface)] border-b border-[color:var(--color-border)] overflow-hidden transition-all duration-300 ${
+            isMenuOpen ? "max-h-[400px] py-6" : "max-h-0 py-0"
+          }`}
         >
           <div className="px-4 space-y-4">
-            <a href="#" className="block text-base font-bold text-[color:var(--color-muted-foreground)] py-2 hover:text-primary">Home</a>
-            <a href="#" className="block text-base font-bold text-[color:var(--color-muted-foreground)] py-2 hover:text-primary">Properties</a>
-            <a href="#" className="block text-base font-bold text-[color:var(--color-muted-foreground)] py-2 hover:text-primary">How It Works</a>
+            <a
+              href="#"
+              className="block text-base font-bold text-[color:var(--color-muted-foreground)] py-2 hover:text-primary"
+            >
+              Home
+            </a>
+            <a
+              href="#"
+              className="block text-base font-bold text-[color:var(--color-muted-foreground)] py-2 hover:text-primary"
+            >
+              Properties
+            </a>
+            <a
+              href="#"
+              className="block text-base font-bold text-[color:var(--color-muted-foreground)] py-2 hover:text-primary"
+            >
+              How It Works
+            </a>
             <div className="pt-4 space-y-3">
               {user ? (
                 <button
@@ -252,10 +268,30 @@ const LandingPage: React.FC = () => {
                       }
                       className="w-full text-sm font-semibold focus:outline-none bg-transparent text-[color:var(--color-foreground)] appearance-none cursor-pointer"
                     >
-                      <option value="" className="bg-[color:var(--color-surface)]">All Types</option>
-                      <option value="HOUSE" className="bg-[color:var(--color-surface)]">House</option>
-                      <option value="FLAT" className="bg-[color:var(--color-surface)]">Flat</option>
-                      <option value="PG" className="bg-[color:var(--color-surface)]">PG/Hostel</option>
+                      <option
+                        value=""
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        All Types
+                      </option>
+                      <option
+                        value="HOUSE"
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        House
+                      </option>
+                      <option
+                        value="FLAT"
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        Flat
+                      </option>
+                      <option
+                        value="PG"
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        PG/Hostel
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -278,11 +314,36 @@ const LandingPage: React.FC = () => {
                       }
                       className="w-full text-sm font-semibold focus:outline-none bg-transparent text-[color:var(--color-foreground)] appearance-none cursor-pointer"
                     >
-                      <option value="" className="bg-[color:var(--color-surface)]">Any Budget</option>
-                      <option value="0-5000" className="bg-[color:var(--color-surface)]">Under 5k</option>
-                      <option value="5000-15000" className="bg-[color:var(--color-surface)]">5k - 15k</option>
-                      <option value="15000-30000" className="bg-[color:var(--color-surface)]">15k - 30k</option>
-                      <option value="30000+" className="bg-[color:var(--color-surface)]">30k+</option>
+                      <option
+                        value=""
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        Any Budget
+                      </option>
+                      <option
+                        value="0-5000"
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        Under 5k
+                      </option>
+                      <option
+                        value="5000-15000"
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        5k - 15k
+                      </option>
+                      <option
+                        value="15000-30000"
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        15k - 30k
+                      </option>
+                      <option
+                        value="30000+"
+                        className="bg-[color:var(--color-surface)]"
+                      >
+                        30k+
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -373,8 +434,13 @@ const LandingPage: React.FC = () => {
                       {property.title}
                     </h3>
                     <p className="flex items-center gap-1 text-xs text-[color:var(--color-muted-foreground)] font-medium mb-4">
-                      <MapPin size={12} className="text-[color:var(--color-muted-foreground)] shrink-0" />
-                      <span className="truncate">{property.locationCity}, {property.locationDistrict}</span>
+                      <MapPin
+                        size={12}
+                        className="text-[color:var(--color-muted-foreground)] shrink-0"
+                      />
+                      <span className="truncate">
+                        {property.locationCity}, {property.locationDistrict}
+                      </span>
                     </p>
                     <div className="flex items-center justify-between mt-auto">
                       <div className="flex items-center gap-1 text-[10px] font-bold text-[color:var(--color-muted)] uppercase tracking-wider">
@@ -412,7 +478,10 @@ const LandingPage: React.FC = () => {
               { label: "Rent Collected", value: "₹50L+" },
               { label: "Average Rating", value: "4.8★" },
             ].map((stat, i) => (
-              <div key={i} className="text-center p-4 sm:p-6 bg-[color:var(--color-surface)] rounded-lg border border-[color:var(--color-border)] shadow-sm transition-all">
+              <div
+                key={i}
+                className="text-center p-4 sm:p-6 bg-[color:var(--color-surface)] rounded-lg border border-[color:var(--color-border)] shadow-sm transition-all"
+              >
                 <p className="text-2xl sm:text-3xl font-extrabold text-[color:var(--color-foreground)] mb-1">
                   {stat.value}
                 </p>
@@ -461,11 +530,16 @@ const LandingPage: React.FC = () => {
               color: "bg-blue-50 dark:bg-blue-500/10 text-blue-600",
             },
           ].map((item, i) => (
-            <div key={i} className="relative p-8 sm:p-10 bg-[color:var(--color-surface)] rounded-xl border border-[color:var(--color-border)] shadow-sm text-center transition-all">
+            <div
+              key={i}
+              className="relative p-8 sm:p-10 bg-[color:var(--color-surface)] rounded-xl border border-[color:var(--color-border)] shadow-sm text-center transition-all"
+            >
               <div className="absolute top-4 right-6 font-black text-4xl sm:text-5xl text-[color:var(--color-muted)]/10 select-none">
                 {item.step}
               </div>
-              <div className={`w-14 h-14 ${item.color} rounded-lg flex items-center justify-center mb-6 sm:mb-8 mx-auto`}>
+              <div
+                className={`w-14 h-14 ${item.color} rounded-lg flex items-center justify-center mb-6 sm:mb-8 mx-auto`}
+              >
                 {item.icon}
               </div>
               <h3 className="text-xl font-bold mb-3 sm:mb-4 text-[color:var(--color-foreground)]">
@@ -494,24 +568,52 @@ const LandingPage: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 relative z-10">
             <div className="bg-white/10 backdrop-blur-sm p-6 sm:p-8 rounded-lg sm:rounded-xl flex-1 max-w-sm border border-white/10 mx-auto w-full">
-              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">I'm a Property Owner</h3>
-              <p className="text-xs sm:text-sm text-blue-100/70 mb-6 sm:mb-8">List your property and connect with verified tenants</p>
+              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                I'm a Property Owner
+              </h3>
+              <p className="text-xs sm:text-sm text-blue-100/70 mb-6 sm:mb-8">
+                List your property and connect with verified tenants
+              </p>
               <button
-                onClick={() => navigate(user?.role === RoleTypes.OWNER_USER ? PAGE_ROUTES.OWNER_ADD_PROPERTY : user ? getDashboardRoute() : "/onboarding")}
+                onClick={() =>
+                  navigate(
+                    user?.role === RoleTypes.OWNER_USER
+                      ? PAGE_ROUTES.OWNER_ADD_PROPERTY
+                      : user
+                        ? getDashboardRoute()
+                        : "/onboarding",
+                  )
+                }
                 className="w-full py-3 sm:py-4 bg-white text-primary font-bold rounded-xl hover:bg-blue-50 transition-all"
               >
-                {user?.role === RoleTypes.OWNER_USER ? "Add Property" : "Get Started"}
+                {user?.role === RoleTypes.OWNER_USER
+                  ? "Add Property"
+                  : "Get Started"}
               </button>
             </div>
 
             <div className="bg-white/10 backdrop-blur-sm p-6 sm:p-8 rounded-lg sm:rounded-xl flex-1 max-w-sm border border-white/10 mx-auto w-full">
-              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">I'm Looking for Rental</h3>
-              <p className="text-xs sm:text-sm text-blue-100/70 mb-6 sm:mb-8">Find your perfect home from thousands of listings</p>
+              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                I'm Looking for Rental
+              </h3>
+              <p className="text-xs sm:text-sm text-blue-100/70 mb-6 sm:mb-8">
+                Find your perfect home from thousands of listings
+              </p>
               <button
-                onClick={() => navigate(user?.role === RoleTypes.TENANT_USER ? PAGE_ROUTES.SEARCH_PROPERTIES : user ? getDashboardRoute() : PAGE_ROUTES.LOGIN)}
+                onClick={() =>
+                  navigate(
+                    user?.role === RoleTypes.TENANT_USER
+                      ? PAGE_ROUTES.SEARCH_PROPERTIES
+                      : user
+                        ? getDashboardRoute()
+                        : PAGE_ROUTES.LOGIN,
+                  )
+                }
                 className="w-full py-3 sm:py-4 bg-white text-primary font-bold rounded-xl hover:bg-blue-50 transition-all"
               >
-                {user?.role === RoleTypes.TENANT_USER ? "Search Now" : "Start Searching"}
+                {user?.role === RoleTypes.TENANT_USER
+                  ? "Search Now"
+                  : "Start Searching"}
               </button>
             </div>
           </div>
@@ -544,9 +646,21 @@ const LandingPage: React.FC = () => {
                 Company
               </h4>
               <ul className="space-y-3 sm:space-y-4 text-sm font-semibold text-slate-300">
-                <li><a href="#" className="hover:text-primary transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Careers
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Blog
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -555,10 +669,26 @@ const LandingPage: React.FC = () => {
                 Product
               </h4>
               <ul className="space-y-3 sm:space-y-4 text-sm font-semibold text-slate-300">
-                <li><a href="#" className="hover:text-primary transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">For Owners</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">For Tenants</a></li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Pricing
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    For Owners
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    For Tenants
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -567,9 +697,21 @@ const LandingPage: React.FC = () => {
                 Legal
               </h4>
               <ul className="space-y-3 sm:space-y-4 text-sm font-semibold text-slate-300">
-                <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Cookie Policy
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -579,9 +721,24 @@ const LandingPage: React.FC = () => {
               © 2026 RentEase. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a href="#" className="text-slate-500 hover:text-white transition-colors"><Star size={18} /></a>
-              <a href="#" className="text-slate-500 hover:text-white transition-colors"><Zap size={18} /></a>
-              <a href="#" className="text-slate-500 hover:text-white transition-colors"><Users size={18} /></a>
+              <a
+                href="#"
+                className="text-slate-500 hover:text-white transition-colors"
+              >
+                <Star size={18} />
+              </a>
+              <a
+                href="#"
+                className="text-slate-500 hover:text-white transition-colors"
+              >
+                <Zap size={18} />
+              </a>
+              <a
+                href="#"
+                className="text-slate-500 hover:text-white transition-colors"
+              >
+                <Users size={18} />
+              </a>
             </div>
           </div>
         </div>

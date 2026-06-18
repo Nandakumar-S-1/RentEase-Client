@@ -47,6 +47,8 @@ export const PAGE_ROUTES = {
   ONBOARDING: "/onboarding",
   OWNER_DASHBOARD: "/owner/dashboard",
   TENANT_DASHBOARD: "/tenant/dashboard",
+  PAYMENT_SUCCESS: "/payments/success",
+  PAYMENT_CANCEL: "/payments/cancel",
 } as const;
 
 export const API_ROUTES = {
@@ -68,6 +70,10 @@ export const API_ROUTES = {
   ADMIN_DEACTIVATE_USER: (userId: string) =>
     `/admin/users/deactivate/${userId}`,
   ADMIN_USER_DETAILS: (userId: string) => `/admin/users/${userId}`,
+  ADMIN_USER_ACTIVITY: (userId: string) => `/admin/users/${userId}/activity`,
+  ADMIN_USER_KYC: (userId: string) => `/admin/users/${userId}/kyc-document`,
+  ADMIN_AGREEMENTS: "/admin/agreements",
+  ADMIN_PAYMENTS: "/admin/payments",
 
   SUBMIT_VERIFICATION: "/owner/submit-verification",
   VERIFICATION_STATUS: "/owner/verification-status",
@@ -109,6 +115,12 @@ export const API_ROUTES = {
   GET_UNREAD_COUNT: "/notifications/unread-count",
   MARK_NOTIFICATION_READ: (id: string) => `/notifications/${id}/read`,
   MARK_ALL_NOTIFICATIONS_READ: "/notifications/read-all",
+
+  // Payments
+  GET_PAYMENT_BY_ID: (id: string) => `/payments/${id}`,
+  GET_PAYMENTS_BY_AGREEMENT: (agreementId: string) =>
+    `/payments/agreement/${agreementId}`,
+  INITIATE_CHECKOUT: (id: string) => `/payments/${id}/checkout`,
 } as const;
 
 export const PATH_ROUTES = {

@@ -9,8 +9,11 @@ import {
   PenTool,
   Upload,
   Download,
+  CreditCard,
 } from "lucide-react";
 import type { Agreement } from "../services/agreementService";
+import { useNavigate } from "react-router-dom";
+import { PAGE_ROUTES } from "../../../config/routes";
 
 interface AgreementCardProps {
   agreement: Agreement;
@@ -31,6 +34,7 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
 }) => {
   const isOwner = userRole === "OWNER";
   const isTenant = userRole === "TENANT";
+  const navigate = useNavigate();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -41,6 +45,13 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
           icon: Clock,
           label: "Drafting Phase",
         };
+      case "PENDING_OWNER_SIGNATURE":
+        return {
+          bg: "bg-blue-100/70 dark:bg-blue-500/10",
+          color: "text-blue-600",
+          icon: PenTool,
+          label: "Awaiting Owner Signature",
+        };
       case "PENDING_TENANT_SIGNATURE":
         return {
           bg: "bg-amber-100/70 dark:bg-amber-500/10",
@@ -48,12 +59,33 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
           icon: PenTool,
           label: "Awaiting Tenant",
         };
+      case "PENDING_PAYMENT":
+        return {
+          bg: "bg-violet-100/70 dark:bg-violet-500/10",
+          color: "text-violet-600",
+          icon: CreditCard,
+          label: "Deposit Pending",
+        };
       case "ACTIVE":
         return {
           bg: "bg-emerald-100/70 dark:bg-emerald-500/10",
           color: "text-emerald-600",
           icon: CheckCircle,
           label: "Activated & Live",
+        };
+      case "EXPIRED":
+        return {
+          bg: "bg-gray-100 dark:bg-white/5",
+          color: "text-gray-500",
+          icon: Clock,
+          label: "Expired",
+        };
+      case "TERMINATED":
+        return {
+          bg: "bg-red-100/70 dark:bg-red-500/10",
+          color: "text-red-500",
+          icon: AlertCircle,
+          label: "Terminated",
         };
       default:
         return {
@@ -157,7 +189,8 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
                       KYC Government ID Required
                     </h5>
                     <p className="text-[10px] text-gray-400 font-semibold leading-normal max-w-xs">
-                      Please upload Aadhaar or Passport before digitizing your signature.
+                      Please upload Aadhaar or Passport before digitizing your
+                      signature.
                     </p>
                   </div>
 
@@ -196,7 +229,23 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
             </div>
           )}
 
-          {/* 3. ACTIVE DOWNLOAD PDF */}
+          {/* 3. PENDING PAYMENT — tenant needs to pay deposit */}
+          {agreement.status === "PENDING_PAYMENT" && isTenant && (
+            <button
+              onClick={() => navigate(PAGE_ROUTES.TENANT_PAYMENTS)}
+              className="w-full sm:w-auto px-8 py-4 bg-violet-600 text-white rounded-lg text-xs font-black uppercase tracking-widest shadow-xl shadow-violet-500/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+            >
+              <CreditCard size={16} /> Pay Security Deposit
+            </button>
+          )}
+
+          {agreement.status === "PENDING_PAYMENT" && isOwner && (
+            <div className="flex items-center gap-2 text-xs font-black text-violet-600 bg-violet-50 dark:bg-violet-500/10 px-5 py-3 rounded-lg">
+              <CreditCard size={16} /> Waiting for tenant deposit payment
+            </div>
+          )}
+
+          {/* 5. ACTIVE DOWNLOAD PDF */}
           {agreement.status === "ACTIVE" && agreement.agreementPdfUrl && (
             <a
               href={agreement.agreementPdfUrl}

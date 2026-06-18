@@ -51,6 +51,15 @@ const AgreementDashboard = lazy(
 const AgreementCreationPage = lazy(
   () => import("../../features/agreements/components/AgreementCreationPage"),
 );
+const PaymentsPage = lazy(
+  () => import("../../features/payments/components/PaymentsPage"),
+);
+const PaymentSuccessPage = lazy(
+  () => import("../../features/payments/components/PaymentSuccessPage"),
+);
+const PaymentCancelPage = lazy(
+  () => import("../../features/payments/components/PaymentCancelPage"),
+);
 
 export const UserRouter = () => {
   return (
@@ -215,6 +224,38 @@ export const UserRouter = () => {
           element={
             <ProtectedRoute>
               <AgreementDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.OWNER_PAYMENTS}
+          element={
+            <ProtectedRoute>
+              <PaymentsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.TENANT_PAYMENTS}
+          element={
+            <ProtectedRoute>
+              <PaymentsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.PAYMENT_SUCCESS}
+          element={
+            <ProtectedRoute>
+              <PaymentSuccessPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.PAYMENT_CANCEL}
+          element={
+            <ProtectedRoute>
+              <PaymentCancelPage />
             </ProtectedRoute>
           }
         />

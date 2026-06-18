@@ -75,19 +75,25 @@ export const ThemeToggle: React.FC<Props> = ({ className }) => {
         {/* Band 1 (Outer) */}
         <div
           className={`absolute left-[0px] top-[-40px] w-[120px] h-[120px] rounded-full bg-[#0f1522] transition-all duration-500 ease-out ${
-            isDark ? "scale-100 translate-x-0 opacity-100" : "scale-75 translate-x-4 opacity-0"
+            isDark
+              ? "scale-100 translate-x-0 opacity-100"
+              : "scale-75 translate-x-4 opacity-0"
           }`}
         />
         {/* Band 2 (Middle) */}
         <div
           className={`absolute left-[15px] top-[-25px] w-[90px] h-[90px] rounded-full bg-[#161e2e] transition-all duration-500 ease-out ${
-            isDark ? "scale-100 translate-x-0 opacity-100" : "scale-75 translate-x-4 opacity-0"
+            isDark
+              ? "scale-100 translate-x-0 opacity-100"
+              : "scale-75 translate-x-4 opacity-0"
           }`}
         />
         {/* Band 3 (Inner) */}
         <div
           className={`absolute left-[30px] top-[-10px] w-[60px] h-[60px] rounded-full bg-[#2b3553] transition-all duration-500 ease-out ${
-            isDark ? "scale-100 translate-x-0 opacity-100" : "scale-75 translate-x-4 opacity-0"
+            isDark
+              ? "scale-100 translate-x-0 opacity-100"
+              : "scale-75 translate-x-4 opacity-0"
           }`}
         />
 
@@ -122,7 +128,9 @@ export const ThemeToggle: React.FC<Props> = ({ className }) => {
       {/* Back Layer of Clouds */}
       <div
         className={`absolute inset-0 transition-all duration-500 ease-in-out ${
-          isDark ? "opacity-0 translate-y-6 scale-95" : "opacity-100 translate-y-0 scale-100"
+          isDark
+            ? "opacity-0 translate-y-6 scale-95"
+            : "opacity-100 translate-y-0 scale-100"
         }`}
       >
         <div className="absolute bottom-[-15px] right-[-4px] w-14 h-14 rounded-full bg-[#e0f2fe]/40 backdrop-blur-[0.5px]" />
@@ -132,7 +140,9 @@ export const ThemeToggle: React.FC<Props> = ({ className }) => {
       {/* Middle Layer of Clouds */}
       <div
         className={`absolute inset-0 transition-all duration-500 ease-in-out delay-75 ${
-          isDark ? "opacity-0 translate-y-6 scale-90" : "opacity-100 translate-y-0 scale-100"
+          isDark
+            ? "opacity-0 translate-y-6 scale-90"
+            : "opacity-100 translate-y-0 scale-100"
         }`}
       >
         <div className="absolute bottom-[-12px] right-[-8px] w-12 h-12 rounded-full bg-white/60" />
@@ -165,7 +175,9 @@ export const ThemeToggle: React.FC<Props> = ({ className }) => {
       {/* Front Layer of Clouds (rendered after the knob to overlap it slightly in light mode) */}
       <div
         className={`absolute inset-0 transition-all duration-500 ease-in-out delay-150 pointer-events-none ${
-          isDark ? "opacity-0 translate-y-6 scale-75" : "opacity-100 translate-y-0 scale-100"
+          isDark
+            ? "opacity-0 translate-y-6 scale-75"
+            : "opacity-100 translate-y-0 scale-100"
         }`}
       >
         <div className="absolute bottom-[-10px] right-[-10px] w-10 h-10 rounded-full bg-white shadow-sm" />

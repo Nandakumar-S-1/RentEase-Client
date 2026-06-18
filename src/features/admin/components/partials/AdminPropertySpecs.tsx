@@ -1,5 +1,12 @@
 import React from "react";
-import { Home as HomeIcon, Maximize2, Bed, Bath, Layers, IndianRupee } from "lucide-react";
+import {
+  Home as HomeIcon,
+  Maximize2,
+  Bed,
+  Bath,
+  Layers,
+  IndianRupee,
+} from "lucide-react";
 
 interface AdminPropertySpecsProps {
   property: {

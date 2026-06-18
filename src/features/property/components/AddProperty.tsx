@@ -5,12 +5,18 @@ import type { RootState } from "../../../app/store/store";
 import type { RoleType } from "../../../types/constants/role.constant";
 import { PAGE_ROUTES } from "../../../config/routes";
 import { useNavigate } from "react-router-dom";
-import { createProperty, getPropertyPhotoUploadUrls } from "../services/propertyService";
+import {
+  createProperty,
+  getPropertyPhotoUploadUrls,
+} from "../services/propertyService";
 import type { CreatePropertyData } from "../types/propertyTypes";
 import { getApiErrorMessage } from "../../../types/common";
 
 import { toast } from "react-hot-toast";
-import { PropertyTypes, type PropertyType } from "../../../types/constants/property.constant";
+import {
+  PropertyTypes,
+  type PropertyType,
+} from "../../../types/constants/property.constant";
 import { propertySchema } from "../schemas/propertySchemas";
 import { PropertyFormLayout } from "./partials/PropertyFormLayout";
 
@@ -28,7 +34,9 @@ const AddProperty: React.FC = () => {
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
 
   const [formData, setFormData] = useState({
     title: "",
@@ -72,14 +80,26 @@ const AddProperty: React.FC = () => {
   const [previews, setPreviews] = useState<string[]>([]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const target = e.target as HTMLInputElement;
     const { name, value, type, checked } = target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+    setFormData((prev) => {
+      const updates: Record<string, unknown> = {
+        [name]: type === "checkbox" ? checked : value,
+      };
+
+      // If property type changes to SHOP or LAND, clear maximumOccupants
+      if (name === "propertyType" && (value === "SHOP" || value === "LAND")) {
+        updates.maximumOccupants = "";
+      }
+
+      return { ...prev, ...updates };
+    });
+
     if (validationErrors[name])
       setValidationErrors((prev) => {
         const next = { ...prev };
@@ -88,7 +108,10 @@ const AddProperty: React.FC = () => {
       });
   };
 
-  const handleCheckboxArray = (field: "amenities" | "preferredTenantType", value: string) => {
+  const handleCheckboxArray = (
+    field: "amenities" | "preferredTenantType",
+    value: string,
+  ) => {
     setFormData((prev) => {
       const current = prev[field];
       const updated = current.includes(value)
@@ -116,12 +139,19 @@ const AddProperty: React.FC = () => {
   const validateCurrentStep = () => {
     const numericData = {
       ...formData,
-      monthlyRent: Number(formData.monthlyRent),
-      depositAmount: Number(formData.depositAmount),
-      maintenanceCharges: Number(formData.maintenanceCharges),
+      monthlyRent: formData.monthlyRent
+        ? Number(formData.monthlyRent)
+        : undefined,
+      depositAmount: formData.depositAmount
+        ? Number(formData.depositAmount)
+        : undefined,
+      maintenanceCharges: Number(formData.maintenanceCharges || 0),
       areaSqft: formData.areaSqft ? Number(formData.areaSqft) : null,
       bhk: formData.bhk ? Number(formData.bhk) : null,
       bathrooms: formData.bathrooms ? Number(formData.bathrooms) : null,
+      maximumOccupants: formData.maximumOccupants
+        ? Number(formData.maximumOccupants)
+        : null,
     };
 
     const result = propertySchema.safeParse(numericData);
@@ -135,9 +165,15 @@ const AddProperty: React.FC = () => {
       const field = issue.path[0]?.toString();
       if (!field) return false;
 
-      if (step === 1) return ["title", "description", "propertyType"].includes(field);
+      if (step === 1)
+        return ["title", "description", "propertyType"].includes(field);
       if (step === 2)
-        return ["locationDistrict", "locationCity", "locationPinCode", "fullAddress"].includes(field);
+        return [
+          "locationDistrict",
+          "locationCity",
+          "locationPinCode",
+          "fullAddress",
+        ].includes(field);
       if (step === 3) return ["maximumOccupants"].includes(field);
       if (step === 5) return ["monthlyRent", "depositAmount"].includes(field);
       return false;
@@ -173,11 +209,17 @@ const AddProperty: React.FC = () => {
       ...formData,
       monthlyRent: Number(formData.monthlyRent),
       depositAmount: Number(formData.depositAmount),
-      maintenanceCharges: Number(formData.maintenanceCharges),
+      maintenanceCharges: Number(formData.maintenanceCharges || 0),
       areaSqft: formData.areaSqft ? Number(formData.areaSqft) : null,
       bhk: formData.bhk ? Number(formData.bhk) : null,
       bathrooms: formData.bathrooms ? Number(formData.bathrooms) : null,
       totalFloors: formData.totalFloors ? Number(formData.totalFloors) : null,
+      maximumOccupants: formData.maximumOccupants
+        ? Number(formData.maximumOccupants)
+        : null,
+      roadWidthFeet: formData.roadWidthFeet
+        ? Number(formData.roadWidthFeet)
+        : null,
     };
 
     const result = propertySchema.safeParse(validationData);
@@ -208,8 +250,8 @@ const AddProperty: React.FC = () => {
             body: files[idx],
           }).then((r) => {
             if (!r.ok) throw new Error(`Upload failed for file ${idx + 1}`);
-          })
-        )
+          }),
+        ),
       );
 
       const payload: CreatePropertyData = {
@@ -222,12 +264,16 @@ const AddProperty: React.FC = () => {
       toast.success("Property added successfully!");
       navigate(PAGE_ROUTES.OWNER_PROPERTIES);
     } catch (err) {
-      const error = err as { response?: { data?: { errors?: Record<string, string | string[]> } } };
+      const error = err as {
+        response?: { data?: { errors?: Record<string, string | string[]> } };
+      };
       const apiErrors = error?.response?.data?.errors;
       if (apiErrors) {
         const errors: Record<string, string> = {};
         Object.entries(apiErrors).forEach(([key, messages]) => {
-          errors[key] = Array.isArray(messages) ? messages[0] : (messages as string);
+          errors[key] = Array.isArray(messages)
+            ? messages[0]
+            : (messages as string);
         });
         setValidationErrors(errors);
         toast.error("Please fix the validation errors");
@@ -240,7 +286,10 @@ const AddProperty: React.FC = () => {
   };
 
   return (
-    <DashboardLayout role={user?.role as RoleType} userName={user?.fullname || "User"}>
+    <DashboardLayout
+      role={user?.role as RoleType}
+      userName={user?.fullname || "User"}
+    >
       <div className="max-w-4xl mx-auto pb-20 space-y-8 animate-in fade-in duration-500">
         <PropertyFormLayout
           step={step}
@@ -262,7 +311,13 @@ const AddProperty: React.FC = () => {
               formData={formData}
               validationErrors={validationErrors}
               handleInputChange={handleInputChange}
-              onLocationChange={(lat, lng) => setFormData((prev) => ({ ...prev, latitude: lat, longitude: lng }))}
+              onLocationChange={(lat, lng) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  latitude: lat,
+                  longitude: lng,
+                }))
+              }
               onAddressFetch={(addr) => {
                 setFormData((prev) => ({
                   ...prev,

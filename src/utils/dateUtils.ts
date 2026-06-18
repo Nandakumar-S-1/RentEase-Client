@@ -15,8 +15,7 @@ export const formatDistanceToNow = (dateInput: string | Date): string => {
     return `${diffHours} ${diffHours === 1 ? "hour" : "hours"} ago`;
 
   const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7)
-    return `${diffDays} ${diffDays === 1 ? "day" : "days"} ago`;
+  if (diffDays < 7) return `${diffDays} ${diffDays === 1 ? "day" : "days"} ago`;
 
   const diffWeeks = Math.floor(diffDays / 7);
   if (diffWeeks < 5)
@@ -29,3 +28,5 @@ export const formatDistanceToNow = (dateInput: string | Date): string => {
   const diffYears = Math.floor(diffDays / 365);
   return `${diffYears} ${diffYears === 1 ? "year" : "years"} ago`;
 };
+
+export const formatRelativeTime = formatDistanceToNow;

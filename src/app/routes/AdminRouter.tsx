@@ -29,6 +29,15 @@ const AdminProperties = lazy(
 const AdminPropertyDetails = lazy(
   () => import("../../features/admin/components/AdminPropertyDetails"),
 );
+const AdminAgreements = lazy(
+  () => import("../../features/admin/components/AdminAgreements"),
+);
+const AdminAgreementDetails = lazy(
+  () => import("../../features/admin/components/AdminAgreementDetails"),
+);
+const AdminPayments = lazy(
+  () => import("../../features/admin/components/AdminPayments"),
+);
 const NotFound = lazy(() => import("../../components/common/NotFound"));
 
 function parseStoredUser() {
@@ -125,6 +134,36 @@ export const AdminRouter = () => {
             <ProtectedRoute>
               <AdminLayout>
                 <AdminPropertyDetails />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/agreements"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminAgreements />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/agreements/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminAgreementDetails />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payments"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminPayments />
               </AdminLayout>
             </ProtectedRoute>
           }

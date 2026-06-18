@@ -6,7 +6,9 @@ interface AgreementStatsProps {
   agreements: Agreement[];
 }
 
-export const AgreementStats: React.FC<AgreementStatsProps> = ({ agreements }) => {
+export const AgreementStats: React.FC<AgreementStatsProps> = ({
+  agreements,
+}) => {
   const pendingCount = agreements.filter((a) => a.status !== "ACTIVE").length;
   const activeCount = agreements.filter((a) => a.status === "ACTIVE").length;
 

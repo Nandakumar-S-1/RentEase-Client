@@ -1,13 +1,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 
-const STEPS = [
-  "Basic Details",
-  "Location",
-  "Amenities",
-  "Photos",
-  "Pricing",
-];
+const STEPS = ["Basic Details", "Location", "Amenities", "Photos", "Pricing"];
 
 interface PropertyFormLayoutProps {
   step: number;
@@ -54,11 +48,7 @@ export const PropertyFormLayout: React.FC<PropertyFormLayoutProps> = ({
                         : "bg-[color:var(--color-secondary)] text-[color:var(--color-muted-foreground)]"
                   }`}
                 >
-                  {isCompleted ? (
-                    <CheckCircle2 size={16} />
-                  ) : (
-                    currentStepNumber
-                  )}
+                  {isCompleted ? <CheckCircle2 size={16} /> : currentStepNumber}
                 </div>
                 <span
                   className={`text-[9px] font-black uppercase tracking-widest hidden md:inline transition-colors duration-500 ${
@@ -105,7 +95,9 @@ export const PropertyFormLayout: React.FC<PropertyFormLayoutProps> = ({
             onClick={handleSubmit}
             disabled={loading}
             className={`flex items-center gap-2 px-8 py-3 text-white font-black rounded-lg shadow-xl hover:scale-105 transition-all disabled:opacity-50 ${
-              isEdit ? "bg-primary shadow-primary/30" : "bg-green-500 shadow-green-500/30"
+              isEdit
+                ? "bg-primary shadow-primary/30"
+                : "bg-green-500 shadow-green-500/30"
             }`}
           >
             {loading ? (

@@ -201,122 +201,122 @@ const Sidebar: React.FC<SidebarProps> = ({
         ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}
       >
-      <div className="mb-8 pl-2">
-        <Logo className="text-[color:var(--color-foreground)]" />
-      </div>
+        <div className="mb-8 pl-2">
+          <Logo className="text-[color:var(--color-foreground)]" />
+        </div>
 
-      <div className="px-2 mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--color-muted-foreground)]">
-        {role ? role.charAt(0) + role.slice(1).toLowerCase() : ""} Dashboard
-      </div>
+        <div className="px-2 mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--color-muted-foreground)]">
+          {role ? role.charAt(0) + role.slice(1).toLowerCase() : ""} Dashboard
+        </div>
 
-      <nav className="flex-1 space-y-1">
-        {currentMenu.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.path)}
-              className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 group/item ${
-                isActive
-                  ? "bg-primary text-white shadow-lg shadow-primary/20"
-                  : "hover:bg-[color:var(--color-secondary)] text-[color:var(--color-muted-foreground)] hover:text-primary"
-              }`}
-            >
-              <div className="flex items-center gap-3.5">
-                <div
-                  className={`transition-transform duration-200 group-hover/item:scale-110 ${isActive ? "text-white" : "text-[color:var(--color-muted)] group-hover/item:text-primary"}`}
-                >
-                  {item.icon}
+        <nav className="flex-1 space-y-1">
+          {currentMenu.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <button
+                key={item.label}
+                onClick={() => navigate(item.path)}
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 group/item ${
+                  isActive
+                    ? "bg-primary text-white shadow-lg shadow-primary/20"
+                    : "hover:bg-[color:var(--color-secondary)] text-[color:var(--color-muted-foreground)] hover:text-primary"
+                }`}
+              >
+                <div className="flex items-center gap-3.5">
+                  <div
+                    className={`transition-transform duration-200 group-hover/item:scale-110 ${isActive ? "text-white" : "text-[color:var(--color-muted)] group-hover/item:text-primary"}`}
+                  >
+                    {item.icon}
+                  </div>
+                  <span
+                    className={`text-sm tracking-tight ${isActive ? "font-black" : "font-bold"}`}
+                  >
+                    {item.label}
+                  </span>
                 </div>
-                <span
-                  className={`text-sm tracking-tight ${isActive ? "font-black" : "font-bold"}`}
-                >
-                  {item.label}
-                </span>
-              </div>
-            </button>
-          );
-        })}
-      </nav>
+              </button>
+            );
+          })}
+        </nav>
 
-      <div className="mt-auto border-t border-[color:var(--color-border)] pt-4">
-        {role !== RoleTypes.ADMIN_USER && (
-          <div className="flex items-center gap-3 px-3 py-2 mb-2">
-            <button
-              onClick={() => navigate(PAGE_ROUTES.PROFILE)}
-              className="flex items-center gap-3 flex-1 min-w-0 text-left hover:bg-[color:var(--color-secondary)] p-1 rounded-lg transition-colors group"
-            >
-              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white font-bold text-sm overflow-hidden group-hover:scale-105 transition-transform">
-                {avatarUrl ? (
-                  <img
-                    src={avatarUrl}
-                    alt={userName}
-                    className="w-full h-full object-cover"
-                  />
-                ) : userName ? (
-                  userName
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")
-                ) : (
-                  "??"
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-black text-[color:var(--color-foreground)] truncate">
-                  {userName}
-                </p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-muted-foreground)] truncate">
-                  {role ? role.toLowerCase() : ""}
-                </p>
-              </div>
-            </button>
-            <button
-              onClick={() => setIsLogoutModalOpen(true)}
-              className="p-1.5 text-[color:var(--color-muted-foreground)] hover:text-primary hover:bg-[color:var(--color-secondary)] rounded-lg transition-colors"
-            >
-              <LogOut size={18} />
-            </button>
-          </div>
-        )}
-        {role === RoleTypes.ADMIN_USER && (
-          <div className="flex items-center justify-between px-3 py-2 mb-2">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-red-600/10 text-red-600 font-bold text-sm border border-red-200 dark:border-red-900/50">
-                AD
-              </div>
-              <div>
-                <p className="text-sm font-black text-[color:var(--color-foreground)]">
-                  Admin
-                </p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-red-500">
-                  System
-                </p>
-              </div>
+        <div className="mt-auto border-t border-[color:var(--color-border)] pt-4">
+          {role !== RoleTypes.ADMIN_USER && (
+            <div className="flex items-center gap-3 px-3 py-2 mb-2">
+              <button
+                onClick={() => navigate(PAGE_ROUTES.PROFILE)}
+                className="flex items-center gap-3 flex-1 min-w-0 text-left hover:bg-[color:var(--color-secondary)] p-1 rounded-lg transition-colors group"
+              >
+                <div className="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white font-bold text-sm overflow-hidden group-hover:scale-105 transition-transform">
+                  {avatarUrl ? (
+                    <img
+                      src={avatarUrl}
+                      alt={userName}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : userName ? (
+                    userName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                  ) : (
+                    "??"
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-black text-[color:var(--color-foreground)] truncate">
+                    {userName}
+                  </p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[color:var(--color-muted-foreground)] truncate">
+                    {role ? role.toLowerCase() : ""}
+                  </p>
+                </div>
+              </button>
+              <button
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="p-1.5 text-[color:var(--color-muted-foreground)] hover:text-primary hover:bg-[color:var(--color-secondary)] rounded-lg transition-colors"
+              >
+                <LogOut size={18} />
+              </button>
             </div>
-            <button
-              onClick={() => setIsLogoutModalOpen(true)}
-              className="p-1.5 text-[color:var(--color-muted-foreground)] hover:text-primary hover:bg-[color:var(--color-secondary)] rounded-lg transition-colors"
-            >
-              <LogOut size={18} />
-            </button>
-          </div>
-        )}
+          )}
+          {role === RoleTypes.ADMIN_USER && (
+            <div className="flex items-center justify-between px-3 py-2 mb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 flex items-center justify-center rounded-full bg-red-600/10 text-red-600 font-bold text-sm border border-red-200 dark:border-red-900/50">
+                  AD
+                </div>
+                <div>
+                  <p className="text-sm font-black text-[color:var(--color-foreground)]">
+                    Admin
+                  </p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-red-500">
+                    System
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="p-1.5 text-[color:var(--color-muted-foreground)] hover:text-primary hover:bg-[color:var(--color-secondary)] rounded-lg transition-colors"
+              >
+                <LogOut size={18} />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
 
-    <Modal
-      isOpen={isLogoutModalOpen}
-      onClose={() => setIsLogoutModalOpen(false)}
-      onConfirm={() => {
-        setIsLogoutModalOpen(false);
-        onLogout();
-      }}
-      title={LABELS.CONFIRM_LOGOUT}
-      description={LABELS.LOGOUT_DESCRIPTION}
-      confirmText={LABELS.LOGOUT}
-      isDestructive={true}
-    />
+      <Modal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={() => {
+          setIsLogoutModalOpen(false);
+          onLogout();
+        }}
+        title={LABELS.CONFIRM_LOGOUT}
+        description={LABELS.LOGOUT_DESCRIPTION}
+        confirmText={LABELS.LOGOUT}
+        isDestructive={true}
+      />
     </>
   );
 };

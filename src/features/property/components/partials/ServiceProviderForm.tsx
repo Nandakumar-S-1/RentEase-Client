@@ -21,13 +21,15 @@ interface ServiceProviderFormProps {
     typicalChargesMin: string;
     typicalChargesMax: string;
   };
-  setNewProvider: React.Dispatch<React.SetStateAction<{
-    providerName: string;
-    providerType: string;
-    phone: string;
-    typicalChargesMin: string;
-    typicalChargesMax: string;
-  }>>;
+  setNewProvider: React.Dispatch<
+    React.SetStateAction<{
+      providerName: string;
+      providerType: string;
+      phone: string;
+      typicalChargesMin: string;
+      typicalChargesMax: string;
+    }>
+  >;
   formErrors: Record<string, string>;
   handleAddSubmit: (e: React.FormEvent) => void;
 }

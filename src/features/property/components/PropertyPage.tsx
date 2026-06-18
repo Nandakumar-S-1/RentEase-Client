@@ -80,13 +80,16 @@ const PropertyPage: React.FC = () => {
     }
   }, [debouncedSearchTerm, setFilters, setPage]);
 
-  const handleFilterChange = React.useCallback((newFilters: Record<string, unknown>) => {
-    const result = propertyFilterSchema.safeParse(newFilters);
-    if (result.success) {
-      setFilters((prev) => ({ ...prev, ...newFilters }));
-      setPage(1);
-    }
-  }, [setFilters, setPage]);
+  const handleFilterChange = React.useCallback(
+    (newFilters: Record<string, unknown>) => {
+      const result = propertyFilterSchema.safeParse(newFilters);
+      if (result.success) {
+        setFilters((prev) => ({ ...prev, ...newFilters }));
+        setPage(1);
+      }
+    },
+    [setFilters, setPage],
+  );
 
   const resetFilters = () => {
     setFilters({});
@@ -175,10 +178,11 @@ const PropertyPage: React.FC = () => {
                     setStatus(tab.id === "ALL" ? undefined : tab.id);
                     setPage(1);
                   }}
-                  className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all flex items-center gap-2 ${(status || "ALL") === tab.id
+                  className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all flex items-center gap-2 ${
+                    (status || "ALL") === tab.id
                       ? "bg-primary text-white shadow-lg shadow-primary/20"
                       : "text-gray-500 hover:text-gray-900 dark:hover:text-white"
-                    }`}
+                  }`}
                 >
                   {tab.label}
                   {(status || "ALL") === tab.id && (

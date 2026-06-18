@@ -8,10 +8,15 @@ interface StepLocationProps {
   handleInputChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
   onLocationChange: (lat: number, lng: number) => void;
-  onAddressFetch: (addr: { district: string; city: string; pincode: string; formattedAddress: string; }) => void;
+  onAddressFetch: (addr: {
+    district: string;
+    city: string;
+    pincode: string;
+    formattedAddress: string;
+  }) => void;
 }
 
 export const StepLocation: React.FC<StepLocationProps> = ({
