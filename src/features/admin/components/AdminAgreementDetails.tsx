@@ -23,10 +23,14 @@ import { LoadingOverlay } from "../../../components/common";
 
 const statusColors: Record<string, string> = {
   DRAFT: "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300",
-  PENDING_OWNER_SIGNATURE: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-  PENDING_TENANT_SIGNATURE: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
-  PENDING_PAYMENT: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-  ACTIVE: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  PENDING_OWNER_SIGNATURE:
+    "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+  PENDING_TENANT_SIGNATURE:
+    "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+  PENDING_PAYMENT:
+    "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+  ACTIVE:
+    "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   TERMINATED: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
   EXPIRED: "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400",
 };
@@ -64,7 +68,13 @@ const UserCard = ({
   onClick,
 }: {
   label: string;
-  user: { id: string; fullname: string; email: string; phone?: string; avatarUrl?: string } | null;
+  user: {
+    id: string;
+    fullname: string;
+    email: string;
+    phone?: string;
+    avatarUrl?: string;
+  } | null;
   onClick?: () => void;
 }) => (
   <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5 shadow-sm">
@@ -72,10 +82,7 @@ const UserCard = ({
       {label}
     </p>
     {user ? (
-      <div
-        className={onClick ? "cursor-pointer group" : ""}
-        onClick={onClick}
-      >
+      <div className={onClick ? "cursor-pointer group" : ""} onClick={onClick}>
         <div className="flex items-center gap-3 mb-3">
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center font-bold text-primary text-lg shrink-0">
             {user.fullname.charAt(0).toUpperCase()}
@@ -302,10 +309,7 @@ const AdminAgreementDetails = () => {
               })}
             />
             {durationMonths !== null && (
-              <InfoRow
-                label="Duration"
-                value={`${durationMonths} months`}
-              />
+              <InfoRow label="Duration" value={`${durationMonths} months`} />
             )}
             <InfoRow
               label="Lock-in Period"
@@ -372,7 +376,9 @@ const AdminAgreementDetails = () => {
                     <p className="text-xs text-gray-500">
                       Signed{" "}
                       {agreement.tenantSignedAt
-                        ? new Date(agreement.tenantSignedAt).toLocaleDateString()
+                        ? new Date(
+                            agreement.tenantSignedAt,
+                          ).toLocaleDateString()
                         : "—"}
                     </p>
                     <a

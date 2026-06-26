@@ -18,6 +18,16 @@ import { getMyAgreements } from "../../features/agreements/services/agreementSer
 import type { PropertyData } from "../../features/property/types/propertyTypes";
 import type { Agreement } from "../../features/agreements/services/agreementService";
 import { PAGE_ROUTES } from "../../config/routes";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { PropertyStatus } from "../../types/constants/property.constant";
+import { AgreementStatus } from "../../types/constants/agreement.constant";
 
 /* ── tiny helpers ─────────────────────────────────────────────── */
 const fmt = (n: number) =>
@@ -55,28 +65,28 @@ const statusMeta: Record<
 };
 
 const agreementStatusMeta: Record<string, { label: string; color: string }> = {
-  ACTIVE: {
+  [AgreementStatus.ACTIVE]: {
     label: "Active",
     color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10",
   },
-  PENDING_OWNER_SIGNATURE: {
-    label: "Awaiting your signature",
-    color: "text-amber-600 bg-amber-50 dark:bg-amber-500/10",
-  },
-  PENDING_TENANT_SIGNATURE: {
+  [AgreementStatus.PENDING_TENANT_SIGNATURE]: {
     label: "Awaiting tenant",
     color: "text-blue-600 bg-blue-50 dark:bg-blue-500/10",
+  },
+  [AgreementStatus.PENDING_PAYMENT]: {
+    label: "Pending payment",
+    color: "text-amber-600 bg-amber-50 dark:bg-amber-500/10",
   },
   PENDING_KYC: {
     label: "KYC pending",
     color: "text-orange-600 bg-orange-50 dark:bg-orange-500/10",
   },
-  EXPIRED: {
+  [AgreementStatus.EXPIRED]: {
     label: "Expired",
     color:
       "text-[color:var(--color-muted-foreground)] bg-[color:var(--color-secondary)]",
   },
-  TERMINATED: {
+  [AgreementStatus.TERMINATED]: {
     label: "Terminated",
     color: "text-red-500 bg-red-50 dark:bg-red-500/10",
   },
@@ -135,20 +145,44 @@ const OwnerDashboard: React.FC = () => {
     load();
   }, []);
 
-  const activeProps = properties.filter((p) => p.status === "ACTIVE").length;
-  const pendingProps = properties.filter((p) => p.status === "PENDING").length;
+  const activeProps = properties.filter(
+    (p) => p.status === PropertyStatus.ACTIVE,
+  ).length;
+  const pendingProps = properties.filter(
+    (p) => p.status === PropertyStatus.PENDING,
+  ).length;
   const activeAgreements = agreements.filter(
-    (a) => a.status === "ACTIVE",
+    (a) => a.status === AgreementStatus.ACTIVE,
   ).length;
   const pendingAgreements = agreements.filter((a) =>
     a.status.startsWith("PENDING"),
   ).length;
   const monthlyIncome = agreements
-    .filter((a) => a.status === "ACTIVE")
+    .filter((a) => a.status === AgreementStatus.ACTIVE)
     .reduce((sum, a) => sum + a.monthlyRent, 0);
 
   const recentProperties = properties.slice(0, 4);
   const recentAgreements = agreements.slice(0, 3);
+
+  // Calculate accurate expected revenue per month for the last 6 months based on active agreement start dates
+  const last6Months = Array.from({ length: 6 }).map((_, i) => {
+    const d = new Date();
+    d.setMonth(d.getMonth() - (5 - i));
+    // Set to end of month to safely compare if the agreement started during or before this month
+    d.setMonth(d.getMonth() + 1, 0);
+    return d;
+  });
+
+  const chartData = last6Months.map((date) => {
+    const monthName = date.toLocaleString("default", { month: "short" });
+    const revenueForMonth = agreements
+      .filter(
+        (a) =>
+          a.status === AgreementStatus.ACTIVE && new Date(a.startDate) <= date,
+      )
+      .reduce((sum, a) => sum + a.monthlyRent, 0);
+    return { name: monthName, Revenue: revenueForMonth };
+  });
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
@@ -225,6 +259,46 @@ const OwnerDashboard: React.FC = () => {
           />
         </div>
       )}
+      {/* ── Revenue Chart ────────────────────────────────────── */}
+      <div className="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-lg p-5">
+        <h2 className="font-bold text-sm text-[color:var(--color-foreground)] mb-4">
+          Revenue Overview
+        </h2>
+        <div className="h-64 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <XAxis
+                dataKey="name"
+                stroke="#888888"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                stroke="#888888"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value) => `₹${value}`}
+              />
+              <Tooltip
+                cursor={{ fill: "transparent" }}
+                contentStyle={{
+                  borderRadius: "8px",
+                  border: "none",
+                  boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                }}
+              />
+              <Bar
+                dataKey="Revenue"
+                fill="currentColor"
+                className="fill-primary"
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* ── Recent properties ──────────────────────────── */}
@@ -272,7 +346,8 @@ const OwnerDashboard: React.FC = () => {
           ) : (
             <div className="divide-y divide-[color:var(--color-border)]">
               {recentProperties.map((p) => {
-                const meta = statusMeta[p.status] ?? statusMeta["PENDING"];
+                const meta =
+                  statusMeta[p.status] ?? statusMeta[PropertyStatus.PENDING];
                 const photo = p.photos?.[p.primaryPhotoIndex ?? 0];
                 return (
                   <div
@@ -363,7 +438,7 @@ const OwnerDashboard: React.FC = () => {
               {recentAgreements.map((a) => {
                 const meta =
                   agreementStatusMeta[a.status] ??
-                  agreementStatusMeta["ACTIVE"];
+                  agreementStatusMeta[AgreementStatus.ACTIVE];
                 return (
                   <div
                     key={a.id}

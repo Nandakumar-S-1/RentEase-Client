@@ -32,6 +32,20 @@ export interface Payment {
   isRefunded: boolean;
   createdAt: string;
   updatedAt: string;
+  property?: { title: string; locationCity: string };
+  payer?: {
+    fullName: string;
+    email: string;
+    phone?: string;
+    avatarUrl?: string;
+  };
+  payee?: {
+    fullName: string;
+    email: string;
+    phone?: string;
+    avatarUrl?: string;
+  };
+  agreement?: { agreementNumber: string };
 }
 
 export interface CheckoutResponse {

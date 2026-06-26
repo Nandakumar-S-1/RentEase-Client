@@ -14,10 +14,17 @@ export interface Agreement {
   depositAmount: number;
   lockInPeriodMonths?: number;
   noticePeriodMonths?: number;
+  maintenanceIncluded?: boolean;
+  maintenanceCharges?: number;
+  lateFeePerDay?: number;
+  rentEscalationPercentage?: number;
   agreementPdfUrl?: string;
   ownerSignatureUrl?: string;
   tenantSignatureUrl?: string;
   tenantKycDocumentUrl?: string;
+  property?: { title: string; locationCity: string };
+  tenant?: { fullName: string; email: string };
+  owner?: { fullName: string; email: string };
 }
 
 export interface UploadPresetFile {

@@ -11,6 +11,7 @@ const initialState: NotificationsState = {
   hasMore: true,
   isLoading: false,
   isFetchingMore: false,
+  sidebarBadges: {},
 };
 
 const notificationSlice = createSlice({
@@ -82,6 +83,27 @@ const notificationSlice = createSlice({
     },
 
     resetNotifications: () => initialState,
+
+    setSidebarBadge: (
+      state,
+      action: PayloadAction<{ key: string; count: number }>,
+    ) => {
+      state.sidebarBadges[action.payload.key] = action.payload.count;
+    },
+    incrementSidebarBadge: (state, action: PayloadAction<string>) => {
+      const key = action.payload;
+      state.sidebarBadges[key] = (state.sidebarBadges[key] || 0) + 1;
+    },
+    decrementSidebarBadge: (state, action: PayloadAction<string>) => {
+      const key = action.payload;
+      state.sidebarBadges[key] = Math.max(
+        0,
+        (state.sidebarBadges[key] || 0) - 1,
+      );
+    },
+    clearSidebarBadge: (state, action: PayloadAction<string>) => {
+      state.sidebarBadges[action.payload] = 0;
+    },
   },
 });
 
@@ -95,6 +117,10 @@ export const {
   setUnreadCount,
   addNotification,
   resetNotifications,
+  setSidebarBadge,
+  incrementSidebarBadge,
+  decrementSidebarBadge,
+  clearSidebarBadge,
 } = notificationSlice.actions;
 
 export default notificationSlice.reducer;

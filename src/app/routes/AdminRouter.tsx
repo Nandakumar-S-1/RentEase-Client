@@ -38,6 +38,9 @@ const AdminAgreementDetails = lazy(
 const AdminPayments = lazy(
   () => import("../../features/admin/components/AdminPayments"),
 );
+const AdminPaymentDetails = lazy(
+  () => import("../../features/admin/components/AdminPaymentDetails"),
+);
 const NotFound = lazy(() => import("../../components/common/NotFound"));
 
 function parseStoredUser() {
@@ -164,6 +167,16 @@ export const AdminRouter = () => {
             <ProtectedRoute>
               <AdminLayout>
                 <AdminPayments />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payments/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminPaymentDetails />
               </AdminLayout>
             </ProtectedRoute>
           }

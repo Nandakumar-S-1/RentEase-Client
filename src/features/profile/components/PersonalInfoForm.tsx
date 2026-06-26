@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RoleTypes as ROLES } from "../../../types/constants/role.constant";
 import { Input } from "../../../components/common/Input";
 import type {
   ProfileData,
@@ -113,7 +114,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
           />
         </div>
 
-        {profile.role !== "ADMIN" && (
+        {profile.role !== ROLES.ADMIN_USER && (
           <>
             {/* Occupation */}
             <div className="space-y-2">

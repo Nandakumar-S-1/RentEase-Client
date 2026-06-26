@@ -28,10 +28,16 @@ const PaymentSuccessPage: React.FC = () => {
     if (!paymentId) return;
     let cancelled = false;
     getPaymentById(paymentId)
-      .then((data) => { if (!cancelled) setPayment(data); })
+      .then((data) => {
+        if (!cancelled) setPayment(data);
+      })
       .catch(() => {})
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [paymentId]);
 
   const dashboardRoute =

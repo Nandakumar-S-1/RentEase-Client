@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { X, Upload, PenTool } from "lucide-react";
+import { RoleTypes as ROLES } from "../../../types/constants/role.constant";
 import toast from "react-hot-toast";
 
 interface SignatureModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSign: (signatureData: string) => void;
-  role: "OWNER" | "TENANT";
+  role: string;
 }
 
 export const SignatureModal: React.FC<SignatureModalProps> = ({
@@ -66,7 +67,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
               Digital Signature
             </h3>
             <p className="text-sm text-gray-500">
-              Sign as {role === "OWNER" ? "Property Owner" : "Tenant"}
+              Sign as {role === ROLES.OWNER_USER ? "Property Owner" : "Tenant"}
             </p>
           </div>
           <button

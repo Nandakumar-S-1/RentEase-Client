@@ -31,6 +31,7 @@ export const PAGE_ROUTES = {
     "/owner/properties/:propertyId/service-providers",
   TENANT_AGREEMENTS: "/tenant/agreements",
   AGREEMENT_DETAIL: "/agreements/:id",
+  PAYMENT_DETAIL: "/payments/:id",
   TENANT_PAYMENTS: "/tenant/payments",
   TENANT_MAINTENANCE: "/tenant/maintenance",
   TENANT_WISHLIST: "/tenant/wishlist",
@@ -121,6 +122,18 @@ export const API_ROUTES = {
   GET_PAYMENTS_BY_AGREEMENT: (agreementId: string) =>
     `/payments/agreement/${agreementId}`,
   INITIATE_CHECKOUT: (id: string) => `/payments/${id}/checkout`,
+
+  // Chat
+  GET_MY_CHATS: "/chat/my-chats",
+  GET_CHAT_MESSAGES: (chatId: string) => `/chat/${chatId}/messages`,
+  SEND_MESSAGE: "/chat/messages",
+  INITIATE_CHAT: "/chat/initiate",
+
+  // Maintenance
+  CREATE_MAINTENANCE: "/maintenance",
+  GET_MAINTENANCE: "/maintenance",
+  ASSIGN_PROVIDER: (id: string) => `/maintenance/${id}/assign`,
+  UPDATE_MAINTENANCE_STATUS: (id: string) => `/maintenance/${id}/status`,
 } as const;
 
 export const PATH_ROUTES = {

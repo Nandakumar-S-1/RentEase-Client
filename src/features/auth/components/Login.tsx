@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { RoleTypes as ROLES } from "../../../types/constants/role.constant";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import {
@@ -59,7 +60,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    await loginWithGoogle("TENANT");
+    await loginWithGoogle(ROLES.TENANT_USER);
   };
 
   return (

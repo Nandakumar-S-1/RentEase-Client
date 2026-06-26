@@ -131,7 +131,7 @@ const EditProperty: React.FC = () => {
     const { name, value, type, checked } = target;
 
     setFormData((prev) => {
-      const updates: any = {
+      const updates: Record<string, string | boolean> = {
         [name]: type === "checkbox" ? checked : value,
       };
 

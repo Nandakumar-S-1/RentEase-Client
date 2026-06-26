@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../../components/common/DashboardLayout";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import type { RootState } from "../../../app/store/store";
-import type { RoleType } from "../../../types/constants/role.constant";
+import {
+  RoleTypes as ROLES,
+  type RoleType,
+} from "../../../types/constants/role.constant";
 import { usePayments } from "../hooks/usePayments";
 import { getMyAgreements } from "../../agreements/services/agreementService";
 import type { Agreement } from "../../agreements/services/agreementService";
@@ -133,7 +136,7 @@ const AgreementSection: React.FC<AgreementSectionProps> = ({
               <PaymentCard
                 key={p.id}
                 payment={p}
-                canPay={userRole === "TENANT" && p.payerId === userId}
+                canPay={userRole === ROLES.TENANT_USER && p.payerId === userId}
                 onCheckout={checkout}
                 isCheckingOut={isCheckingOut}
               />
@@ -179,7 +182,7 @@ const PaymentsPage: React.FC = () => {
             Payments
           </h1>
           <p className="text-sm text-[color:var(--color-muted-foreground)] mt-1">
-            {user?.role === "TENANT"
+            {user?.role === ROLES.TENANT_USER
               ? "Track and complete your rental payments."
               : "View payments received across your agreements."}
           </p>

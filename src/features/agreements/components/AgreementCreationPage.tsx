@@ -122,7 +122,10 @@ const AgreementCreationPage: React.FC = () => {
       toast.success("Draft agreement created successfully!");
       navigate(PAGE_ROUTES.OWNER_AGREEMENTS);
     } catch (err: unknown) {
-      const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
+      const axiosError = err as {
+        response?: { data?: { message?: string } };
+        message?: string;
+      };
       const errorMsg =
         axiosError.response?.data?.message ||
         axiosError.message ||

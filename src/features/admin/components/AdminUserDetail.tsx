@@ -173,7 +173,13 @@ const AdminUserDetail = () => {
     if (activeTab === "PAYMENTS" && id) {
       fetchUserPayments(1);
     }
-  }, [activeTab, id, fetchUserProperties, fetchUserActivity, fetchUserPayments]);
+  }, [
+    activeTab,
+    id,
+    fetchUserProperties,
+    fetchUserActivity,
+    fetchUserPayments,
+  ]);
 
   const handleStatusToggle = async () => {
     if (!user) return;

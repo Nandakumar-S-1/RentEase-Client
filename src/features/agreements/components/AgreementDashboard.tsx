@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { RoleTypes as ROLES } from "../../../types/constants/role.constant";
 import { useAgreements } from "../hooks/useAgreements";
 import { SignatureModal } from "./SignatureModal";
 import { AgreementStats } from "./AgreementStats";
@@ -100,7 +101,7 @@ export const AgreementDashboard = () => {
       );
       const s3Url = await uploadSignatureFile(activeSignAgreement.id, file);
 
-      if (user?.role === "OWNER") {
+      if (user?.role === ROLES.OWNER_USER) {
         await signOwner(activeSignAgreement.id, s3Url);
         toast.success("Agreement signed successfully as landlord!", {
           id: "sign",
@@ -139,7 +140,7 @@ export const AgreementDashboard = () => {
             </p>
           </div>
 
-          {user?.role === "OWNER" && (
+          {user?.role === ROLES.OWNER_USER && (
             <button
               onClick={() => navigate(PAGE_ROUTES.OWNER_CREATE_AGREEMENT)}
               className="px-8 py-4.5 bg-primary text-white rounded-xl text-sm font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] hover:shadow-2xl transition-all"
@@ -196,7 +197,9 @@ export const AgreementDashboard = () => {
         isOpen={isSignModalOpen}
         onClose={() => setIsSignModalOpen(false)}
         onSign={handleSignatureSubmit}
-        role={user?.role === "OWNER" ? "OWNER" : "TENANT"}
+        role={
+          user?.role === ROLES.OWNER_USER ? ROLES.OWNER_USER : ROLES.TENANT_USER
+        }
       />
     </DashboardLayout>
   );

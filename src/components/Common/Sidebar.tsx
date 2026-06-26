@@ -21,6 +21,7 @@ import { Modal } from "./index";
 import { RoleTypes, type RoleType } from "../../types/constants/role.constant";
 import { PAGE_ROUTES } from "../../config/routes";
 import { LABELS } from "../../types/constants/label.constants";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 interface SidebarProps {
   role: RoleType;
@@ -35,6 +36,7 @@ type SidebarMenuItem = {
   icon: React.ReactNode;
   label: string;
   path: string;
+  badgeKey?: string;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -145,6 +147,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         icon: <ShieldCheck size={20} />,
         label: LABELS.OWNER_VERIFICATION,
         path: PAGE_ROUTES.ADMIN_OWNERS,
+        badgeKey: "admin_owner_verification",
       },
       {
         icon: <Building2 size={20} />,
@@ -161,25 +164,28 @@ const Sidebar: React.FC<SidebarProps> = ({
         label: LABELS.PAYMENTS,
         path: PAGE_ROUTES.ADMIN_PAYMENTS,
       },
-      {
-        icon: <Flag size={20} />,
-        label: LABELS.FLAGGED_CONTENT,
-        path: PAGE_ROUTES.ADMIN_FLAGGED,
-      },
-      {
-        icon: <BarChart3 size={20} />,
-        label: LABELS.ANALYTICS,
-        path: PAGE_ROUTES.ADMIN_ANALYTICS,
-      },
-      {
-        icon: <Settings size={20} />,
-        label: LABELS.SETTINGS,
-        path: PAGE_ROUTES.ADMIN_SETTINGS,
-      },
+      // {
+      //   icon: <Flag size={20} />,
+      //   label: LABELS.FLAGGED_CONTENT,
+      //   path: PAGE_ROUTES.ADMIN_FLAGGED,
+      // },
+      // {
+      //   icon: <BarChart3 size={20} />,
+      //   label: LABELS.ANALYTICS,
+      //   path: PAGE_ROUTES.ADMIN_ANALYTICS,
+      // },
+      // {
+      //   icon: <Settings size={20} />,
+      //   label: LABELS.SETTINGS,
+      //   path: PAGE_ROUTES.ADMIN_SETTINGS,
+      // },
     ],
   };
 
   const currentMenu = menuItems[role] || [];
+  const sidebarBadges = useAppSelector(
+    (state) => state.notifications.sidebarBadges,
+  );
 
   return (
     <>
@@ -234,6 +240,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                     {item.label}
                   </span>
                 </div>
+                {item.badgeKey && sidebarBadges[item.badgeKey] > 0 && (
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isActive ? "bg-white text-primary" : "bg-danger text-white"}`}
+                  >
+                    {sidebarBadges[item.badgeKey]}
+                  </span>
+                )}
               </button>
             );
           })}

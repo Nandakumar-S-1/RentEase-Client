@@ -12,6 +12,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@jitsi/react-sdk": "^1.4.4",
     "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.4",
     "date-fns": "^4.1.0",
@@ -28,6 +29,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.13.0",
     "react-signature-canvas": "^1.1.0-alpha.2",
+    "recharts": "^3.8.1",
     "socket.io-client": "^4.8.3",
     "sort-by": "^1.2.0",
     "zod": "^4.3.6"

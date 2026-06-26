@@ -60,6 +60,22 @@ const PaymentSuccessPage = lazy(
 const PaymentCancelPage = lazy(
   () => import("../../features/payments/components/PaymentCancelPage"),
 );
+const AgreementDetailsPage = lazy(
+  () => import("../../features/agreements/components/AgreementDetailsPage"),
+);
+const PaymentDetailsPage = lazy(
+  () => import("../../features/payments/components/PaymentDetailsPage"),
+);
+const TenantMaintenance = lazy(() =>
+  import("../../components/pages/TenantMaintenance").then((m) => ({
+    default: m.TenantMaintenance,
+  })),
+);
+const OwnerMaintenance = lazy(() =>
+  import("../../components/pages/OwnerMaintenance").then((m) => ({
+    default: m.OwnerMaintenance,
+  })),
+);
 
 export const UserRouter = () => {
   return (
@@ -223,7 +239,15 @@ export const UserRouter = () => {
           path={PAGE_ROUTES.AGREEMENT_DETAIL}
           element={
             <ProtectedRoute>
-              <AgreementDashboard />
+              <AgreementDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.PAYMENT_DETAIL}
+          element={
+            <ProtectedRoute>
+              <PaymentDetailsPage />
             </ProtectedRoute>
           }
         />
@@ -256,6 +280,22 @@ export const UserRouter = () => {
           element={
             <ProtectedRoute>
               <PaymentCancelPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.TENANT_MAINTENANCE}
+          element={
+            <ProtectedRoute>
+              <TenantMaintenance />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={PAGE_ROUTES.OWNER_MAINTENANCE}
+          element={
+            <ProtectedRoute>
+              <OwnerMaintenance />
             </ProtectedRoute>
           }
         />

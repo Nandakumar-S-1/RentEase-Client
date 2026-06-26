@@ -30,6 +30,8 @@ import type { RootState } from "../../../app/store/store";
 import type { RoleType } from "../../../types/constants/role.constant";
 import { toast } from "react-hot-toast";
 import { PropertyLocationMap } from "./PropertyLocationMap";
+import { initiateChat } from "../../chat/services/chatService";
+import { PAGE_ROUTES } from "../../../config/routes";
 
 const TenantPropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,10 +42,30 @@ const TenantPropertyDetails = () => {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
 
+  const [isInitiatingChat, setIsInitiatingChat] = useState(false);
+
   if (loading || !property) return <LoadingOverlay />;
 
-  const handleContact = () => {
-    toast.success("Contacting owner feature coming soon!", { icon: "📞" });
+  const handleContact = async () => {
+    if (!user || !property) return;
+    try {
+      setIsInitiatingChat(true);
+      const response = await initiateChat({
+        ownerId: property.ownerId,
+        propertyId: property.id,
+      });
+      if (response.success && response.chat) {
+        navigate(PAGE_ROUTES.MESSAGES, {
+          state: { selectedChat: response.chat.id },
+        });
+      }
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Failed to initiate chat";
+      toast.error(message, { icon: "❌" });
+    } finally {
+      setIsInitiatingChat(false);
+    }
   };
 
   const nextPhoto = () =>
@@ -406,9 +428,10 @@ const TenantPropertyDetails = () => {
 
                 <button
                   onClick={handleContact}
-                  className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors text-sm mb-3"
+                  disabled={isInitiatingChat}
+                  className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors text-sm mb-3 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Contact Owner
+                  {isInitiatingChat ? "Initiating Chat..." : "Contact Owner"}
                 </button>
 
                 <div className="flex items-center justify-center gap-2 text-xs text-emerald-600 font-medium">

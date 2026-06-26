@@ -1,4 +1,5 @@
 import React from "react";
+import { RoleTypes as ROLES } from "../../../types/constants/role.constant";
 import {
   Clock,
   CheckCircle,
@@ -10,6 +11,10 @@ import {
   Upload,
   Download,
   CreditCard,
+  Shield,
+  FileText,
+  TrendingUp,
+  Wrench,
 } from "lucide-react";
 import type { Agreement } from "../services/agreementService";
 import { useNavigate } from "react-router-dom";
@@ -32,8 +37,8 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
   onKycUpload,
   onInitiateSign,
 }) => {
-  const isOwner = userRole === "OWNER";
-  const isTenant = userRole === "TENANT";
+  const isOwner = userRole === ROLES.OWNER_USER;
+  const isTenant = userRole === ROLES.TENANT_USER;
   const navigate = useNavigate();
 
   const getStatusBadge = (status: string) => {
@@ -165,6 +170,44 @@ export const AgreementCard: React.FC<AgreementCardProps> = ({
               <span>Tenant KYC Verified Document Uploaded</span>
             </div>
           )}
+
+          {/* Expanded Details Grid */}
+          <div className="grid grid-cols-2 gap-4 pt-4 mt-4 border-t border-gray-100 dark:border-white/5">
+            <div className="space-y-1">
+              <p className="flex items-center gap-1.5 text-[10px] font-black uppercase text-gray-400">
+                <Shield size={12} /> Lock-in Period
+              </p>
+              <p className="text-xs font-bold text-gray-700 dark:text-gray-200">
+                {agreement.lockInPeriodMonths} Months
+              </p>
+            </div>
+            <div className="space-y-1">
+              <p className="flex items-center gap-1.5 text-[10px] font-black uppercase text-gray-400">
+                <FileText size={12} /> Notice Period
+              </p>
+              <p className="text-xs font-bold text-gray-700 dark:text-gray-200">
+                {agreement.noticePeriodMonths} Months
+              </p>
+            </div>
+            <div className="space-y-1">
+              <p className="flex items-center gap-1.5 text-[10px] font-black uppercase text-gray-400">
+                <Wrench size={12} /> Maintenance
+              </p>
+              <p className="text-xs font-bold text-gray-700 dark:text-gray-200">
+                {agreement.maintenanceIncluded
+                  ? "Included in Rent"
+                  : `₹${agreement.maintenanceCharges?.toLocaleString() || 0}/mo`}
+              </p>
+            </div>
+            <div className="space-y-1">
+              <p className="flex items-center gap-1.5 text-[10px] font-black uppercase text-gray-400">
+                <TrendingUp size={12} /> Escalation
+              </p>
+              <p className="text-xs font-bold text-gray-700 dark:text-gray-200">
+                {agreement.rentEscalationPercentage}% annually
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Button actions Column */}

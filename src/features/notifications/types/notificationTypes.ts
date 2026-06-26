@@ -47,4 +47,5 @@ export interface NotificationsState {
   hasMore: boolean;
   isLoading: boolean;
   isFetchingMore: boolean;
+  sidebarBadges: Record<string, number>;
 }
